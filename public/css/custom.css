@@ -1,0 +1,18 @@
+.invalid-feedback {
+        margin-left: 18%;
+    }
+
+    .text-success {
+        color: green;
+        padding: 0.5rem;
+        text-align: center;
+    }
+
+    .text-danger {
+        color: red;
+        padding: 0.5rem;
+    }
+
+    .dlt-btn {
+        color: red !important;
+    }
