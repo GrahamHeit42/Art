@@ -26,8 +26,8 @@ class CreateUsersTable extends Migration
             $table->string('path')->nullable();
             $table->tinyInteger('status')->default(0);
             // $table->tinyInteger('is_delete')->default(0);
-            $table->tinyInteger('is_active')->default(0)->nullable()->after('phone');
-            $table->tinyInteger('is_delete')->default(0)->nullable()->after('is_active');
+            $table->tinyInteger('is_active')->default(0)->nullable();
+            $table->tinyInteger('is_delete')->default(0)->nullable();
             $table->timestamp('delete_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
