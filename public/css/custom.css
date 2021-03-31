@@ -1,18 +1,20 @@
-.invalid-feedback {
-        margin-left: 18%;
+.m-auto{
+    margin: auto;
+}
+.br-50p{
+    border-radius: 50px;
+}
+.ml-40-pr{
+    margin-left: 40%;
+}
+.btn2{
+    margin-left: 10px;
+    padding: 7px;
+}
+.hide{
+    visibility: hidden;
+}
+    .rounded2r {
+        border-radius: 0px 25px 25px 0px;
     }
 
-    .text-success {
-        color: green;
-        padding: 0.5rem;
-        text-align: center;
-    }
-
-    .text-danger {
-        color: red;
-        padding: 0.5rem;
-    }
-
-    .dlt-btn {
-        color: red !important;
-    }

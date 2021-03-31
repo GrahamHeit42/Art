@@ -16,6 +16,14 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+    <!-- Toastr -->
+    <!-- <script src="{{asset('js/jquery-1.9.1.min.js')}}"></script> -->
+    <link href="{{asset('css/toastr.css')}}" rel="stylesheet" />
+    <script src="{{asset('js/toastr.js')}}"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -34,8 +42,15 @@
             {{ $slot }}
         </main>
     </div>
-
-
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

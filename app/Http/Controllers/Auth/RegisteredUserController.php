@@ -9,10 +9,11 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Role;
+use App\Http\Controllers\CustomController;
 
 class RegisteredUserController extends Controller
 {
+
     /**
      * Display the registration view.
      *
@@ -20,8 +21,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('auth.register', compact('roles'));
+        return view('auth.register');
     }
 
     /**
@@ -34,21 +34,39 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
-            'role_id' => 'required',
-            'name' => 'required|string|max:255',
+            'username' => 'required|unique:users|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|unique:users',
             'password' => 'required|string|confirmed|min:8',
         ]);
 
+        $imagePath = "";
+        if ($files = $request->file('path')) {
+            $customController = new CustomController;
+            $directoryName = $customController->getPublicImagePath();
+            if (!is_dir($directoryName)) {
+                mkdir($directoryName, 0777, true);
+            }
+
+            $filePath = $request->input('username') . '_' . time() . $files->getClientOriginalName();
+            $move = $files->move($directoryName, $filePath);
+            if ($move) {
+                $imagePath = $filePath;
+            }
+        }
+
         Auth::login($user = User::create([
-            'role_id' => $request->role_id,
-            'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'is_active' => 1,
+            'role_id' => 2,
+            'username' => $request->username,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'status' => 1,
+            'path' => $imagePath
         ]));
 
         event(new Registered($user));
