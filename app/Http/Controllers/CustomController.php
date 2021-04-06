@@ -5,9 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class CustomController extends Controller
 {
+    public function getDashboard()
+    {
+        if (Auth::user()->is_admin == 1) {
+            $usersCount = User::all()->count();
+            return view('admin.dashboard', compact('usersCount'));
+        } else {
+            return view('user.dashboard');
+        }
+    }
     public function getImagePath()
     {
         return '/upload/images/';
@@ -21,18 +31,22 @@ class CustomController extends Controller
     public function profile()
     {
         $user = User::find(Auth::id());
-        if (!empty($user->path)) {
-            $user->path = $this->getImagePath() . $user->path;
+        if (!empty($user->profile_image)) {
+            $user->profile_image = $this->getImagePath() . $user->profile_image;
         }
-        return view('profile', compact('user'));
+        if (Auth::user()->is_admin == 1) {
+            return view('admin.profile', compact('user'));
+        } else {
+            return view('profile', compact('user'));
+        }
     }
 
     public function profileImageDelete($id)
     {
         $user = User::find($id);
-        $delete = $this->UnlinkImage($this->getPublicImagePath(), $user->path);
+        $delete = $this->UnlinkImage($this->getPublicImagePath(), $user->profile_image);
         if ($delete) {
-            $user->path = "";
+            $user->profile_image = "";
             $user->save();
             $succ = 'success';
             $msg = "success";
@@ -58,22 +72,20 @@ class CustomController extends Controller
     {
         $id = Auth::id();
         $request->validate([
-            'username' => 'required|string|max:255|unique:users,username,' . $id,
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
         ]);
 
         $user = User::find($id);
-        $user->username = $request->username;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        if ($files = $request->file('path')) {
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        if ($files = $request->file('profile_image')) {
             $directoryName = $this->getPublicImagePath();
 
-            $filePath = $request->input('username') . '_' . time() . $files->getClientOriginalName();
+            $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
             $move = $files->move($directoryName, $filePath);
             if ($move) {
-                $user->path = $filePath;
+                $user->profile_image = $filePath;
             }
         }
         $save = $user->save();
@@ -81,6 +93,41 @@ class CustomController extends Controller
             return redirect('profile')->with('success', config('constants.PROFILE_SUCCESS'));
         } else {
             return redirect()->back()->withErrors([config('constants.FAIL')]);
+        }
+    }
+
+    public function changePassword()
+    {
+        if (Auth::user()->is_admin == 1) {
+            return view('admin.changePassword');
+        } else {
+            return view('changePassword');
+        }
+    }
+
+    public function saveChangePassword(Request $request)
+    {
+        $id = Auth::user()->id;
+        if (empty($id)) {
+            return redirect()->back()->withErrors([config('constants . USER_ID_REQUIRED')]);
+        } else {
+            $request->validate([
+                'old_password' => 'required|string|min:8',
+                'password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|same:password',
+            ]);
+
+            $user = User::find($id);
+            if (!Hash::check($request->old_password, $user->password)) {
+                return redirect()->back()->withErrors([config('constants.OLD_PASSWORD_NOT_MATCH')]);
+            }
+            $user->password = Hash::make($request->password);
+            $save = $user->save();
+            if ($save) {
+                return redirect()->back()->with('success', config('constants.PASSWORD_SUCCESS'));
+            } else {
+                return redirect()->back()->withErrors([config('constants . FAIL')]);
+            }
         }
     }
 }

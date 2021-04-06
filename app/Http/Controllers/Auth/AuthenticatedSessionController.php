@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Date;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,6 +33,10 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = User::find(auth()->user()->id);
+        $user->last_login_at = Date('Y-m-d H:i:s');
+        $user->save();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

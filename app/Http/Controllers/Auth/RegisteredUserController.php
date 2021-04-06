@@ -36,22 +36,21 @@ class RegisteredUserController extends Controller
     {
 
         $request->validate([
-            'username' => 'required|unique:users|string|max:255',
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
         ]);
 
         $imagePath = "";
-        if ($files = $request->file('path')) {
+        if ($files = $request->file('profile_image')) {
             $customController = new CustomController;
             $directoryName = $customController->getPublicImagePath();
             if (!is_dir($directoryName)) {
                 mkdir($directoryName, 0777, true);
             }
 
-            $filePath = $request->input('username') . '_' . time() . $files->getClientOriginalName();
+            $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
             $move = $files->move($directoryName, $filePath);
             if ($move) {
                 $imagePath = $filePath;
@@ -61,12 +60,10 @@ class RegisteredUserController extends Controller
         Auth::login($user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 2,
-            'username' => $request->username,
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'status' => 1,
-            'path' => $imagePath
+            'profile_image' => $imagePath
         ]));
 
         event(new Registered($user));

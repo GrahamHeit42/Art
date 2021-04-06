@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CustomController;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -10,208 +11,135 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-
-    public function profile()
+    public function usersList()
     {
-        $user = Auth::user();
-        return view('profile', compact('user'));
+        $users = User::where('id', '!=', Auth::user()->id)->get();
+        return view('admin.usersList', compact('users'));
     }
 
-    public function saveProfile(Request $request)
+    public function user()
+    {
+        return view('admin.user');
+    }
+
+    public function userSave(Request $request)
     {
         $id = $request->id;
+
         if (empty($id)) {
-            return redirect()->back()->withErrors(['User Id Required.']);
-        } else {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => "required|string|email|max:255|unique:users,email," . $id,
-                'phone' => "required|string|unique:users,phone," . $id,
-            ]);
-
-            $user = User::find($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->phone = $request->phone;
-            $save = $user->save();
-            if ($save) {
-                return redirect('profile')->with('success', 'Profile updated successfully!');
-            } else {
-                return redirect()->back()->withErrors(['There is some error.']);
-            }
-        }
-    }
-
-    public function changepw()
-    {
-        return view('changepw');
-    }
-
-    public function saveChangepw(Request $request)
-    {
-        $id = Auth::user()->id;
-        if (empty($id)) {
-            return redirect()->back()->withErrors(['User Id Required.']);
-        } else {
-            $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => "required|string|email|max:255|unique:users,email",
                 'password' => 'required|string|min:8',
-                'confirm_password' => 'required|string|same:password',
+                'is_admin' => 'required',
+                'status' => 'required',
             ]);
 
-            $user = User::find($id);
-            $user->password = Hash::make($request->password);
-            $save = $user->save();
-            if ($save) {
-                return redirect('changepw')->with('success', 'Password updated successfully!');
-            } else {
-                return redirect()->back()->withErrors(['There is some error.']);
+            $imagePath = "";
+            if ($files = $request->file('profile_image')) {
+                $customController = new CustomController;
+                $directoryName = $customController->getPublicImagePath();
+                if (!is_dir($directoryName)) {
+                    mkdir($directoryName, 0777, true);
+                }
+
+                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
+                $move = $files->move($directoryName, $filePath);
+                if ($move) {
+                    $imagePath = $filePath;
+                }
             }
-        }
-    }
-
-    // Artists 
-    public function allArtists()
-    {
-        $artists = User::select()->where('role_id', 2)->where('is_delete', 0)->get();
-        return view('admin.artistlist', compact('artists'));
-    }
-
-    public function insertArtist()
-    {
-        return view('admin.artist');
-    }
-
-    public function saveArtist(Request $request)
-    {
-        $id = $request->id;
-        if (empty($id)) {
-            $request->validate([
-                'role_id' => 'required',
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'phone' => 'required|string|unique:users',
-                'password' => 'required|string|min:8',
-            ]);
-
             $save = User::create([
-                'role_id' => $request->role_id,
-                'name' => $request->name,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'email' => $request->email,
-                'phone' => $request->phone,
                 'password' => Hash::make($request->password),
-                'is_active' => 1,
+                'is_admin' => $request->is_admin,
+                'status' => $request->status,
+                'profile_image' => $imagePath,
             ]);
-            $succ = 'Artist Added Successfully!';
+            $succ = config('constants.INSERT_MSG');
         } else {
             $request->validate([
-                'role_id' => 'required',
-                'name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'is_admin' => 'required',
+                'status' => 'required',
                 'email' => "required|string|email|max:255|unique:users,email," . $id,
-                'phone' => "required|string|unique:users,phone," . $id,
             ]);
+            if (!empty($request->password)) {
+                $request->validate([
+                    'password' => 'required|string|min:8',
+                ]);
+            }
+            $imagePath = "";
+            if ($files = $request->file('profile_image')) {
+                $customController = new CustomController;
+                $directoryName = $customController->getPublicImagePath();
+
+                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
+                $move = $files->move($directoryName, $filePath);
+                if ($move) {
+                    $imagePath = $filePath;
+                }
+            }
 
             $user = User::find($id);
-            $user->name = $request->name;
-            // $user->email = $request->email;
-            $user->phone = $request->phone;
-            $user->is_active = $request->is_active;
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->is_admin = $request->is_admin;
+            $user->profile_image = $imagePath;
+            if (!empty($password)) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->status = $request->status;
             $save = $user->save();
-            $succ = 'Artist Updated Successfully!';
+            $succ = config('constants.UPDATE_MSG');
         }
 
         if ($save) {
-            return redirect('artistlist')->with('success', $succ);
+            return redirect('usersList')->with('success', $succ);
         } else {
-            return redirect()->back()->with('errors', 'There is some error.');
+            return redirect()->back()->with('errors', config('constants.FAIL'));
         }
     }
 
-    public function viewArtist(Request $request, $id)
+    public function userView(Request $request, $id)
     {
-        $artist = User::select('*')->where('id', $id)->first();
-        return view('admin.artist', compact('artist'));
+        $user = User::select('*')->where('id', $id)->first();
+        if (!empty($user->profile_image)) {
+            $customController = new CustomController;
+            $user->profile_image = $customController->getImagePath() . $user->profile_image;
+        }
+        return view('admin.user', compact('user'));
     }
 
-    public function deleteArtist(Request $request, $id)
+    public function userDelete($id)
     {
-        $artist = User::find($id);
-        $artist->is_active = 0;
-        $artist->is_delete = 1;
-        $artist->delete_at = Date('Y-m-d H:i:s');
-        $artist->save();
-        return redirect('artistlist')->with('success', 'Deleted!');
+        $user = User::find($id);
+        $user->status = 2;
+        $user->deleted_at = Date('Y-m-d H:i:s');
+        $user->save();
+        return redirect('usersList')->with('success', config('constants.DELETE_MSG'));
     }
 
-    // Buyers
-    public function allBuyers()
+    public function userImageDelete($id)
     {
-        $buyers = User::select()->where('role_id', 3)->where('is_delete', 0)->get();
-        return view('admin.buyerlist', compact('buyers'));
-    }
+        $user = User::find($id);
+        $customController = new CustomController;
+        $delete = $customController->UnlinkImage($customController->getPublicImagePath(), $user->profile_image);
 
-    public function insertBuyer()
-    {
-        return view('admin.buyer');
-    }
-
-    public function saveBuyer(Request $request)
-    {
-        $id = $request->id;
-        if (empty($id)) {
-            $request->validate([
-                'role_id' => 'required',
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'phone' => 'required|string|unique:users',
-                'password' => 'required|string|min:8',
-            ]);
-
-            $save = User::create([
-                'role_id' => $request->role_id,
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
-                'is_active' => 1,
-            ]);
-            $succ = 'Artist Added Successfully!';
+        if ($delete) {
+            $user->profile_image = "";
+            $user->save();
+            $succ = 'success';
+            $msg = "success";
         } else {
-            $request->validate([
-                'role_id' => 'required',
-                'name' => 'required|string|max:255',
-                'email' => "required|string|email|max:255|unique:users,email," . $id,
-                'phone' => "required|string|unique:users,phone," . $id,
-            ]);
-
-            $user = User::find($id);
-            $user->name = $request->name;
-            // $user->email = $request->email;
-            $user->phone = $request->phone;
-            $user->is_active = $request->is_active;
-            $save = $user->save();
-            $succ = 'Buyer Updated Successfully!';
+            $succ = 'errors';
+            $msg = "fail";
         }
 
-        if ($save) {
-            return redirect('buyerlist')->with('success', $succ);
-        } else {
-            return redirect()->back()->with('errors', 'There is some error.');
-        }
-    }
-
-    public function viewBuyer(Request $request, $id)
-    {
-        $buyer = User::select('*')->where('id', $id)->first();
-        return view('admin.buyer', compact('buyer'));
-    }
-
-    public function deleteBuyer(Request $request, $id)
-    {
-        $buyer = User::find($id);
-        $buyer->is_active = 0;
-        $buyer->is_delete = 1;
-        $buyer->delete_at = Date('Y-m-d H:i:s');
-        $buyer->save();
-        return redirect('buyerlist')->with('success', 'Deleted!');
+        return response()->json(['success' => $succ, 'message' => $msg()], 200);
     }
 }

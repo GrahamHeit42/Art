@@ -14,27 +14,33 @@
                         @csrf
                         <div class="container">
                             <div class="row col-md-12">
-                                @if(!empty($user->path))
+                                @if(!empty($user->profile_image))
                                 <div class="form-group row col-md-12">
-                                    <img src="{{$user->path}}" class="m-auto br-50p" width="100" height="100" />
+                                    <img src="{{$user->profile_image}}" class="m-auto br-50p" width="100" height="100" />
                                 </div>
                                 <div class="form-group row col-md-12">
 
                                     <button type="button" class="open-modal m-auto btn btn-sm btn-danger" id="dlt-btn" data-id="{{$user->id}}">Remove Image</button>
 
                                 </div>
-                                @else
-                                <div class="form-group">
-                                    <!-- <button class="btn btn-sm btn-info btn2 col-sm-2">Image</button> -->
-                                    <input type="file" class="custom-file-input cursor-pointer" id="path" name="path" />
-                                    <label for="path" class="custom-file-label cursor-pointer col-sm-3 m-auto">
-                                        <span class="rounded2r">Upload Profile Image</span>
-                                    </label>
-                                    <span id="filename"></span>
-                                </div>
                                 @endif
                             </div>
                             <div class="row col-md-12">
+
+                                <div class="form-group row col-md-6">
+                                    <label for="first_name" class="col-sm-4 col-form-label">First Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="first_name" value="{{$user->first_name ??  ''}}" class="form-control {{ $errors->has('first_name') ? 'border-danger' : ''}}" />
+                                        <small class="form-text text-danger">{!! $errors->first('first_name') !!}</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row col-md-6">
+                                    <label for="last_name" class="col-sm-4 col-form-label">Last Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="last_name" value="{{$user->last_name ??  ''}}" class="form-control {{ $errors->has('last_name') ? 'border-danger' : ''}}" />
+                                        <small class="form-text text-danger">{!! $errors->first('last_name') !!}</small>
+                                    </div>
+                                </div>
                                 <div class="form-group row col-md-6">
                                     <label for="email" class="col-sm-4 col-form-label">Email</label>
                                     <div class="col-sm-8">
@@ -43,24 +49,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row col-md-6">
-                                    <label for="username" class="col-sm-4 col-form-label">User Name</label>
+                                    <label for="email" class="col-sm-4 col-form-label">Upload</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="username" value="{{$user->username ?? ''}}" class="form-control {{ $errors->has('username') ? 'border-danger' : ''}}" />
-                                        <small class="form-text text-danger">{!! $errors->first('username') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="firstname" class="col-sm-4 col-form-label">First Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="firstname" value="{{$user->firstname ??  ''}}" class="form-control {{ $errors->has('firstname') ? 'border-danger' : ''}}" />
-                                        <small class="form-text text-danger">{!! $errors->first('firstname') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="lastname" class="col-sm-4 col-form-label">Last Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="lastname" value="{{$user->lastname ??  ''}}" class="form-control {{ $errors->has('lastname') ? 'border-danger' : ''}}" />
-                                        <small class="form-text text-danger">{!! $errors->first('lastname') !!}</small>
+                                        <input type="file" class="custom-file-input cursor-pointer" id="profile_image" name="profile_image" />
+                                        <label for="profile_image" class="custom-file-label cursor-pointer col-sm-11 m-auto">
+                                            <span class="rounded2r">Upload Profile Image</span>
+                                        </label>
+                                        <span id="filename" class="col-md-12 txt-centre"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row col-md-12">
@@ -97,6 +92,20 @@
 
         });
     });
+</script>
+<script>
+    $(document).ready(function() {
+        $('input[type=file]').change(function() {
+            checkImage(this);
+        });
+    });
+
+    function checkImage(input) {
+        if (input.files && input.files[0]) {
+            var filename = $('input[type=file]').val().split('\\').pop();
+            $("#filename").html(filename);
+        }
+    }
 </script>
 @if(session()->has('success'))
 <script type="text/javascript">

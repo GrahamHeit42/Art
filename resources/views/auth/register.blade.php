@@ -10,7 +10,6 @@
 
     .file-upload {
         margin: 1rem;
-        /* border-radius: 25px; */
         background-color: grey;
         color: #fff;
         padding: 0.5rem;
@@ -26,38 +25,30 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo"></x-slot>
-        <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         <form method="POST" enctype="multipart/form-data" action="{{ route('register') }}">
             @csrf
 
-            <!-- <input type="file" name="path" id="path" /> -->
             <div class="form-group mt-4 imgDiv">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input cursor-pointer" id="path" name="path" />
-                    <label for="path" class="file-upload custom-file-label cursor-pointer">
+                <div class="custom-file mb-4">
+                    <input type="file" class="custom-file-input cursor-pointer" id="profile_image" name="profile_image" />
+                    <label for="profile_image" class="file-upload custom-file-label cursor-pointer">
                         <span class="rounded2r">Upload Profile Image</span>
-                        <!-- insert filename using javaScript when file has uploaded -->
                     </label>
-                    <span id="filename"></span>
                 </div>
+                <span id="filename"></span>
             </div>
 
             <div class="mt-4">
-                <x-label for="username" :value="__('User Name')" />
+                <x-label for="first_name" :value="__('First Name')" />
 
-                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
+                <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required />
             </div>
             <div class="mt-4">
-                <x-label for="firstname" :value="__('First Name')" />
+                <x-label for="last_name" :value="__('Last Name')" />
 
-                <x-input id="firstname" class="block mt-1 w-full" type="text" name="firstname" :value="old('firstname')" required />
-            </div>
-            <div class="mt-4">
-                <x-label for="lastname" :value="__('Last Name')" />
-
-                <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required />
+                <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required />
             </div>
 
             <div class="mt-4">
@@ -88,6 +79,14 @@
                 </x-button>
             </div>
         </form>
+        <div class="form-group">
+            <div class="col-md-6" style="text-align: center;">
+                <a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook"><button class="btn-fb"><img src="{{asset('/images/fb_icon1.png')}}" alt="Facebook Login" width="50" height="50" /></button></a>
+
+                <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus"><button class="btn-g"><img src="{{asset('/images/google_icon1.png')}}" alt="Google Login" width="50" height="50" /></button></a>
+
+            </div>
+        </div>
     </x-auth-card>
 </x-guest-layout>
 <script>

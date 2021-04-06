@@ -14,7 +14,9 @@
 .hide{
     visibility: hidden;
 }
-    .rounded2r {
+.rounded2r{
         border-radius: 0px 25px 25px 0px;
     }
-
+.txt-centre{
+    text-align: center;
+    }

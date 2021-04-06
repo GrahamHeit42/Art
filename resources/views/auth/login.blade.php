@@ -1,3 +1,18 @@
+<style>
+    /* .btn-fb {
+        background-color: #3578e5;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .btn-g {
+        background-color: brown;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+    } */
+</style>
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
@@ -50,5 +65,13 @@
                 </x-button>
             </div>
         </form>
+        <div class="form-group">
+            <div class="col-md-6" style="text-align: center;">
+                <a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook"><button class="btn-fb"><img src="{{asset('/images/fb_icon1.png')}}" alt="Facebook Login" width="50" height="50" /></button></a>
+
+                <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus"><button class="btn-g"><img src="{{asset('/images/google_icon1.png')}}" alt="Google Login" width="50" height="50" /></button></a>
+
+            </div>
+        </div>
     </x-auth-card>
 </x-guest-layout>
