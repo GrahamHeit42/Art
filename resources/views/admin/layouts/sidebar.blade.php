@@ -69,10 +69,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('usersList')}}" class="nav-link">
+                            <a href="{{url('users')}}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Manage Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('posts')}}" class="nav-link">
+                                <i class="nav-icon far fa-newspaper"></i>
+                                <p>
+                                    Manage Posts
                                 </p>
                             </a>
                         </li>
@@ -88,7 +96,7 @@
                             <ul class="nav nav-treeview">
 
                                 <li class="nav-item">
-                                    <a href="{{url('changePassword')}}" class="nav-link">
+                                    <a href="{{url('change-password')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Change Password</p>
                                     </a>

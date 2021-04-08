@@ -72,7 +72,7 @@
             var id = $(this).data("id");
 
             $.ajax({
-                url: "/profileImageDelete/" + id,
+                url: "/profile-image-delete/" + id,
                 type: 'post',
                 data: {
                     "id": id,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -9,38 +10,73 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomController extends Controller
 {
+    /**
+     * Dashboard view.
+     *
+     * @return \Illuminate\View\View
+     */
     public function getDashboard()
     {
-        if (Auth::user()->is_admin == 1) {
-            $usersCount = User::all()->count();
-            return view('admin.dashboard', compact('usersCount'));
+        if (Auth::user()->is_admin == 2) {
+            $users = User::where(function ($query) {
+                $query->where('is_admin', 0)
+                    ->orWhere('is_admin', 1);
+            })->count();
+            $activeUsers = User::where(function ($query) {
+                $query->where('is_admin', 0)
+                    ->orWhere('is_admin', 1);
+            })->where('status', 1)->count();
+            $posts = Post::all()->count();
+
+            return view('admin.dashboard', compact('users', 'activeUsers', 'posts'));
+        } else if (Auth::user()->is_admin == 1) {
+            $users = User::where('is_admin', 0)->count();
+            $activeUsers = User::where('is_admin', 0)->where('status', 1)->count();
+            return view('admin.dashboard', compact('users', 'activeUsers'));
         } else {
-            return view('user.dashboard');
+            return view('frontend.dashboard');
         }
     }
+    /**
+     * Get image store path.
+     *
+     * @return string
+     */
     public function getImagePath()
     {
         return '/upload/images/';
     }
-
+    /**
+     * Get public image store path.
+     *
+     * @return string
+     */
     public function getPublicImagePath()
     {
         return public_path() . $this->getImagePath();
     }
-
+    /**
+     * Profile view.
+     *
+     * @return \Illuminate\View\View
+     */
     public function profile()
     {
         $user = User::find(Auth::id());
         if (!empty($user->profile_image)) {
             $user->profile_image = $this->getImagePath() . $user->profile_image;
         }
-        if (Auth::user()->is_admin == 1) {
-            return view('admin.profile', compact('user'));
+        if (Auth::user()->is_admin == 0) {
+            return view('frontend.users.profile', compact('user'));
         } else {
-            return view('profile', compact('user'));
+            return view('admin.profile', compact('user'));
         }
     }
-
+    /**
+     * Delete profile image.
+     *
+     * @return json response
+     */
     public function profileImageDelete($id)
     {
         $user = User::find($id);
@@ -57,7 +93,11 @@ class CustomController extends Controller
 
         return response()->json(['success' => $succ, 'message' => $msg()], 200);
     }
-
+    /**
+     * Unlink image.
+     *
+     * @return json response
+     */
     public function UnlinkImage($filepath, $fileName)
     {
         $old_image = $filepath . $fileName;
@@ -67,7 +107,24 @@ class CustomController extends Controller
         }
         return false;
     }
-
+    /**
+     * Upload file.
+     *
+     * @return json response
+     */
+    public static function uploadFile($files, $directoryName, $filePath)
+    {
+        $move = $files->move($directoryName, $filePath);
+        if ($move) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Update Profile.
+     *
+     * @return \Illuminate\View\View
+     */
     public function saveProfile(Request $request)
     {
         $id = Auth::id();
@@ -95,16 +152,24 @@ class CustomController extends Controller
             return redirect()->back()->withErrors([config('constants.FAIL')]);
         }
     }
-
+    /**
+     * Change Password view.
+     *
+     * @return \Illuminate\View\View
+     */
     public function changePassword()
     {
-        if (Auth::user()->is_admin == 1) {
-            return view('admin.changePassword');
+        if (Auth::user()->is_admin == 0) {
+            return view('frontend.users.changePassword');
         } else {
-            return view('changePassword');
+            return view('admin.changePassword');
         }
     }
-
+    /**
+     * Update Password.
+     *
+     * @return \Illuminate\View\View
+     */
     public function saveChangePassword(Request $request)
     {
         $id = Auth::user()->id;
@@ -129,5 +194,30 @@ class CustomController extends Controller
                 return redirect()->back()->withErrors([config('constants . FAIL')]);
             }
         }
+    }
+
+    /**
+     * Generate Image upload View
+     *
+     * @return void
+     */
+    public function dropzone()
+    {
+        return view('dropzone');
+    }
+
+    /**
+     * Image Upload Code
+     *
+     * @return void
+     */
+    public function dropzoneStore(Request $request)
+    {
+        $image = $request->file('file');
+
+        $imageName = time() . '.' . $image->extension();
+        $image->move(public_path('images'), $imageName);
+
+        return response()->json(['success' => $imageName]);
     }
 }

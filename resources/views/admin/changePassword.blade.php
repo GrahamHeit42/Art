@@ -8,7 +8,7 @@
                     <h3 class="card-title">Change Password</h3>
                 </div>
 
-                <form class="form-horizontal" id="validateForm" method="POST" action="{{ url('changePasswordSave') }}">
+                <form class="form-horizontal" id="validateForm" method="POST" action="{{ url('change-password-save') }}">
                     @csrf
                     <div class="card-body">
                         <div class="row">
