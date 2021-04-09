@@ -54,6 +54,8 @@ Route::middleware(['auth', 'admin'])->group(
         Route::get('posts/view/{id}', [PostController::class, 'show']);
         Route::get('posts/update/{id}', [PostController::class, 'edit']);
         Route::post('posts/delete/{id}', [PostController::class, 'destroy']);
+
+        Route::get('posts/create1', [PostController::class, 'create1']);
     }
 );
 

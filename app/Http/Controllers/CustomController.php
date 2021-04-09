@@ -53,7 +53,8 @@ class CustomController extends Controller
      */
     public function getPublicImagePath()
     {
-        return public_path() . $this->getImagePath();
+        // return public_path() . $this->getImagePath();
+        return \config('app.asset_url') . $this->getImagePath(); //live
     }
     /**
      * Profile view.
@@ -64,7 +65,7 @@ class CustomController extends Controller
     {
         $user = User::find(Auth::id());
         if (!empty($user->profile_image)) {
-            $user->profile_image = $this->getImagePath() . $user->profile_image;
+            $user->profile_image = $this->getPublicImagePath() . $user->profile_image;
         }
         if (Auth::user()->is_admin == 0) {
             return view('frontend.users.profile', compact('user'));
@@ -80,8 +81,11 @@ class CustomController extends Controller
     public function profileImageDelete($id)
     {
         $user = User::find($id);
-        $delete = $this->UnlinkImage($this->getPublicImagePath(), $user->profile_image);
-        if ($delete) {
+        // $delete = $this->UnlinkImage($this->getPublicImagePath(), $user->profile_image);
+        $path = public_path() . $this->getImagePath() . $user->profile_image;
+        if (file_exists($path)) {
+            unlink($path);
+
             $user->profile_image = "";
             $user->save();
             $succ = 'success';
@@ -138,9 +142,12 @@ class CustomController extends Controller
         $user->last_name = $request->last_name;
         if ($files = $request->file('profile_image')) {
             $directoryName = $this->getPublicImagePath();
-
-            $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
-            $move = $files->move($directoryName, $filePath);
+            if (!is_dir($directoryName)) {
+                mkdir($directoryName, 0777, true);
+            }
+            $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
+            // $move = $files->move($directoryName, $filePath);
+            $move = $files->move(public_path('upload/images'), $filePath);
             if ($move) {
                 $user->profile_image = $filePath;
             }

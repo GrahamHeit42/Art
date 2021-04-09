@@ -51,6 +51,11 @@ class PostController extends Controller
         $users = User::where('id', '!=', Auth::user()->id)->get();
         return view('admin.posts.create', compact('users'));
     }
+    public function create1()
+    {
+        $users = User::where('id', '!=', Auth::user()->id)->get();
+        return view('admin.posts.create1', compact('users'));
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -63,7 +63,7 @@ class UserController extends Controller
                     mkdir($directoryName, 0777, true);
                 }
 
-                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
+                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
                 $move = $files->move($directoryName, $filePath);
                 if ($move) {
                     $imagePath = $filePath;
@@ -97,8 +97,8 @@ class UserController extends Controller
                 $customController = new CustomController;
                 $directoryName = $customController->getPublicImagePath();
 
-                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalName();
-                $move = $files->move($directoryName, $filePath);
+                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
+                $move = $files->move(public_path('upload/images'), $filePath);
                 if ($move) {
                     $imagePath = $filePath;
                 }
@@ -189,9 +189,11 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $customController = new CustomController;
-        $delete = $customController->UnlinkImage($customController->getPublicImagePath(), $user->profile_image);
 
-        if ($delete) {
+        $path = public_path() . $customController->getImagePath() . $user->profile_image;
+        if (file_exists($path)) {
+            unlink($path);
+
             $user->profile_image = "";
             $user->save();
             $succ = 'success';

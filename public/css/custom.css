@@ -14,9 +14,9 @@
 .hide{
     visibility: hidden;
 }
-.hidden{
-    display: none;
-}
+/* .hidden{ */
+    /* display: none; */
+/* } */
 .rounded2r{
         border-radius: 0px 25px 25px 0px;
     }
