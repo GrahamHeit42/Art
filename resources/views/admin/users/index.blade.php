@@ -1,71 +1,58 @@
 @extends('admin.layouts.sidebar')
 @section('title','Users')
 @section('content')
-<div class=" row">
+<!-- <div class="row"> -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
     <div class="container-fluid">
-        <div class="col-md-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">All Users Details</h3>
-                    <h3 class="card-title float-right">Total Users : {{count($users ?? '')}}</h3>
-                </div>
-
-                <div class="form-group row">
-                    <a style="margin: 10px;" href="{{url('/users/create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true" style="padding-right: 5px;"></i>New User</a>
-                </div>
-                <table id="tablelist" class="table table-bordered table-striped" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th data-orderable="false">ID</th>
-                            <th>Role</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Register At</th>
-                            <th>Last Active</th>
-                            <th>Status</th>
-                            <th data-orderable="false">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($users))
-                        @foreach($users as $user)
-                        <tr>
-                            <td>{{ $loop->index+1 }} </td>
-                            <td>@if($user->is_admin == '0') End User @else Admin @endif</td>
-                            <td><a href="{{url('users/view',$user->id)}}">{{$user->first_name}} {{$user->last_name}}</a></td>
-                            <td>{{$user->email}}</td>
-                            <td><?php echo date('M-d-Y g:i:A', strtotime($user->created_at)); ?></td>
-                            <td><?php if (!empty($user->last_login_at)) echo date('M-d-Y g:i:A', strtotime($user->last_login_at));
-                                else echo date('M-d-Y g:i:A', strtotime($user->created_at));; ?></td>
-                            <td><?php if ($user->status == 0) echo 'Pending';
-                                if ($user->status == 1) echo 'Active';
-                                if ($user->status == 2) echo 'Deleted';
-                                if ($user->status == 3) echo 'Suspended'; ?></td>
-                            <td style="padding: 0px;">
-
-                                <button class="btn open-modal dlt-btn text-danger" data-toggle="modal" data-target="#modal" data-id="{{ $user->id }}" data-url="{{ url('users/delete',['id'=>$user->id]) }}"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        @endforeach
-                        @endif
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Role</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Register At</th>
-                            <th>Last Active</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
-                </table>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Users</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Users</li>
+                </ol>
             </div>
         </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Users</h3>
+            <h3 class="card-title float-right">
+                <a href="{{url('/users/create')}}" class="btn btn-primary btn-sm" style="border-color: white;"><i class="fa fa-plus-circle" aria-hidden="true" style="padding-right: 5px;"></i>New User</a>
+            </h3>
+        </div>
+        <div class="card-body">
+            <table id="tablelist" class="table table-bordered table-striped data-table">
+                <thead>
+                    <tr>
+                        <th data-orderable="false">ID</th>
+                        <th>Role</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Register At</th>
+                        <th>Last Active</th>
+                        <th>Status</th>
+                        <th data-orderable="false" style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+</section>
+
+
+<!-- </div> -->
 <form id="userForm" action="" method="post">
     <div id="modal" class="modal fade" role='dialog'>
         <div class="modal-dialog">
@@ -77,7 +64,7 @@
                     </button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <p>Do you really want to delete this User?</p>
+                    <p>Do you really want to delete this Post?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -96,11 +83,73 @@
 </form>
 @endsection
 @section('page-script')
-<script>
+<script type="text/javascript">
     $(function() {
-        $("#tablelist").DataTable({
-            "responsive": true,
-            "autoWidth": false,
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('users.index') }}",
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'id',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'is_admin_text',
+                    name: 'role'
+                },
+                {
+                    data: 'first_name',
+                    name: 'name'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'register_at',
+                    name: 'register_at'
+                },
+                {
+                    data: 'last_active',
+                    name: 'last_active'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ],
+            columnDefs: [{
+                targets: 3,
+                render: function(data, type, row, meta) {
+                    if (type === 'display') {
+                        data = '<a href="mailto:' + data + '">' + data + '</a>';
+                    }
+                    return data;
+                }
+            }, {
+                targets: 6,
+                render: function(data, type, row, meta) {
+                    if (type === 'display') {
+                        if (data == 0)
+                            $status = '<span class="badge badge-warning">Pending</span>';
+                        if (data == 1)
+                            $status = '<span class="badge badge-success">Active</span>';
+                        if (data == 3)
+                            $status = '<span class="badge badge-danger">Suspended</span>';
+                        return $status;
+                        data = $status;
+                    }
+                    return data;
+                }
+            }]
         });
     });
 </script>
@@ -113,16 +162,4 @@
         $('#modal').modal('show');
     });
 </script>
-@if(session()->has('success'))
-<script type="text/javascript">
-    toastr.success('<?php echo session()->get('success'); ?>')
-</script>
-@endif
-@if ($errors->any())
-@foreach ($errors->all() as $error)
-<script type="text/javascript">
-    toastr.error('{{$error}}')
-</script>
-@endforeach
-@endif
 @endsection

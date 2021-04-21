@@ -1,477 +1,533 @@
 @extends('admin.layouts.sidebar')
-@section('title','New Post')
+@section('title','Post')
 @section('head-part')
 <link href="{{asset('css/rating.css')}}" rel="stylesheet" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
+<style>
+    .dropzone {
+        border: 1px transparent lightgray;
+        padding: 30px;
+        cursor: pointer;
+        border-radius: 20px;
+    }
+
+    input[type=radio] {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+</style>
 @endsection
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    @if(isset($post))
-                    <h3 class="card-title">Update Post Details</h3>
-                    @else
-                    <h3 class="card-title">Add Post Details</h3>
-                    @endif
-                </div>
-
-                <form class="form-horizontal" id="validateForm" method="POST" action="{{ url('posts/save') }}" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="id" id="id" value="{{$post->id ?? ''}}" />
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="form-group row col-md-6">
-                                <label for="user_id" class="col-sm-4 col-form-label">User</label>
-                                <div class="col-sm-8">
-                                    @if(isset($users) && !empty($users))
-                                    <select name="user_id" id="user_id" class="form-control">
-                                        @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->first_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @endif
-                                    <small class="form-text text-danger">{!! $errors->first('user_id') !!}</small>
-                                </div>
-                            </div>
-                            <div class="form-group row col-md-6">
-                                <label for="image" class="col-sm-2 col-form-label">Upload Image</label>
-                                <div class="col-sm-10">
-                                    @if(isset($post->image) && !empty($post->image))
-                                    <img src="{{$post->image}}" width="100" height="100" />
-                                    <button type="button" class="btn open-modal dlt-btn" data-id="{{$post->id}}"><i class="fas fa-trash"></i></button>
-                                    @else
-                                    <input type="file" name="image" id="image" />
-                                    @endif
-                                    <small class="form-text text-danger">{!! $errors->first('image') !!}</small>
-                                </div>
-                            </div>
-                            <div class="form-group row col-md-6">
-                                <label for="name" class="col-sm-4 col-form-label">Commissioned By / Drawn By</label>
-                                <div class="col-sm-8">
-                                    <input type="text" name="name" id="name" value="{{$post->name ?? old('name') ?? ''}}" class="form-control {{ $errors->has('name') ? 'border-danger' : ''}}" />
-                                    <small class="form-text text-danger">{!! $errors->first('name') !!}</small>
-                                </div>
-                            </div>
-                            <div class="form-group row col-md-6">
-                                <label for="title" class="col-sm-2 col-form-label">Title</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="title" id="title" value="{{$post->title ?? old('title') ?? ''}}" class="form-control {{ $errors->has('title') ? 'border-danger' : ''}}" />
-                                    <small class="form-text text-danger">{!! $errors->first('title') !!}</small>
-                                </div>
-                            </div>
-                            <div class="form-group row col-md-12">
-                                <label for="description" class="col-sm-2 col-form-label">Description</label>
-                                <div class="col-sm-10">
-                                    <textarea name="description" id="description" class="form-control {{ $errors->has('description') ? 'border-danger' : ''}}" rows="3">{{old('description') ?? ''}}</textarea> <small class="form-text text-danger">{!! $errors->first('description') !!}</small>
-                                </div>
-                            </div>
-
-                            <div class="form-group row col-md-12">
-                                <label class="col-sm-2 col-form-label">Rating as : </label>
-                                <div class="col-sm-10">
-                                    <input type="radio" name="type" id="type" value="artist" checked class="m-7p" />Artist
-                                    <input type="radio" name="type" id="type" value="buyer" class="m-7p" />Buyer
-                                </div>
-                            </div>
-
-                            <div id="getForm1" class="form-group row col-md-12 ">
-                                <div class="form-group row col-md-6">
-                                    <label for="transaction" class="col-sm-4 col-form-label">Transaction</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="transaction" id="rating1-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating1-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="transaction" id="rating1-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating1-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="transaction" id="rating1-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating1-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="transaction" id="rating1-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating1-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="transaction" id="rating1-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating1-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="transaction" id="rating1-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('transaction') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="speed_a" class="col-sm-4 col-form-label">Speed</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="speed_a" id="rating2-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating2-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_a" id="rating2-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating2-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_a" id="rating2-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating2-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_a" id="rating2-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating2-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_a" id="rating2-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating2-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_a" id="rating2-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('speed_a') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="communication_a" class="col-sm-4 col-form-label">Communication</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="communication_a" id="rating3-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating3-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_a" id="rating3-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating3-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_a" id="rating3-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating3-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_a" id="rating3-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating3-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_a" id="rating3-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating3-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_a" id="rating3-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('communication') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="prepertion" class="col-sm-4 col-form-label">Prepertion</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="prepertion" id="rating4-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating4-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="prepertion" id="rating4-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating4-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="prepertion" id="rating4-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating4-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="prepertion" id="rating4-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating4-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="prepertion" id="rating4-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating4-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="prepertion" id="rating4-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('prepertion') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="concept" class="col-sm-4 col-form-label">Concept</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="concept" id="rating5-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating5-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="concept" id="rating5-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating5-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="concept" id="rating5-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating5-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="concept" id="rating5-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating5-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="concept" id="rating5-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating5-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="concept" id="rating5-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('concept') !!}</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="getForm2" class="form-group row col-md-12 ">
-                                <div class="form-group row col-md-6">
-                                    <label for="price" class="col-sm-4 col-form-label">Price</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="price" id="rating6-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating6-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="price" id="rating6-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating6-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="price" id="rating6-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating6-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="price" id="rating6-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating6-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="price" id="rating6-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating6-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="price" id="rating6-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('price') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="speed_b" class="col-sm-4 col-form-label">Speed</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="speed_b" id="rating7-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating7-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_b" id="rating7-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating7-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_b" id="rating7-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating7-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_b" id="rating7-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating7-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_b" id="rating7-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating7-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="speed_b" id="rating7-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('speed_b') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="quality" class="col-sm-4 col-form-label">Quality</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="quality" id="rating8-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating8-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="quality" id="rating8-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating8-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="quality" id="rating8-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating8-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="quality" id="rating8-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating8-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="quality" id="rating8-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating8-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="quality" id="rating8-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('quality') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="professonalism" class="col-sm-4 col-form-label">Professonalism</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="professonalism" id="rating9-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating9-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="professonalism" id="rating9-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating9-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="professonalism" id="rating9-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating9-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="professonalism" id="rating9-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating9-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="professonalism" id="rating9-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating9-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="professonalism" id="rating9-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('professonalism') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="communication_b" class="col-sm-4 col-form-label">Communication</label>
-                                    <div class="col-sm-8">
-                                        <div id="full-stars-example-two">
-                                            <div class="rating-group">
-                                                <input disabled checked class="rating__input rating__input--none" name="communication_b" id="rating10-none" value="0" type="radio">
-                                                <label aria-label="1 star" class="rating__label" for="rating10-1">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_b" id="rating10-1" value="1" type="radio">
-                                                <label aria-label="2 stars" class="rating__label" for="rating10-2">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_b" id="rating10-2" value="2" type="radio">
-                                                <label aria-label="3 stars" class="rating__label" for="rating10-3">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_b" id="rating10-3" value="3" type="radio">
-                                                <label aria-label="4 stars" class="rating__label" for="rating10-4">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_b" id="rating10-4" value="4" type="radio">
-                                                <label aria-label="5 stars" class="rating__label" for="rating10-5">
-                                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                                </label>
-                                                <input class="rating__input" name="communication_b" id="rating10-5" value="5" type="radio">
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-danger">{!! $errors->first('communication_b') !!}</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row col-md-6">
-                                <label for="again" class="col-sm-6 col-form-label">Would you like to work again?</label>
-                                <div class="col-sm-6">
-                                    <select name="again" id="again" class="form-control">
-                                        <option value="1" <?php if (isset($post) && $post->again == '1') echo 'selected=selected'; ?>>Yes</option>
-                                        <option value="0" <?php if (isset($post) && $post->again == '0') echo 'selected=selected'; ?>>No</option>
-                                    </select>
-                                    <small class="form-text text-danger">{!! $errors->first('again') !!}</small>
-                                </div>
-                            </div>
-                            <div class="form-group row col-md-6">
-                                <label for="status" class="col-sm-2 col-form-label">Active</label>
-                                <div class="col-sm-10">
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="1" <?php if (isset($post) && $post->status == '1') echo 'selected=selected'; ?>>Active</option>
-                                        <option value="0" <?php if (isset($post) && $post->status == '0') echo 'selected=selected'; ?>>Inactive</option>
-                                    </select>
-                                    <small class="form-text text-danger">{!! $errors->first('status') !!}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="{{url('posts')}}"><input type="button" value="Back" class="btn btn-info float" /></a>
-                        <button type="submit" class="btn btn-info float-right">Save</button>
-                    </div>
-
-                </form>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Post</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{url('/posts')}}">Posts</a></li>
+                    <li class="breadcrumb-item active">Post</li>
+                </ol>
             </div>
         </div>
     </div>
-</div>
+</section>
+<section class="content">
+    <div class="card col-md-11 m-auto">
+        <div class="card-header">
+            <h3 class="card-title">Post</h3>
+        </div>
+        <div class="card-body">
+            <form class="form-horizontal" id="validateForm" method="POST" action="{{ url('posts/save') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="id" id="id" value="{{$post->id ?? ''}}" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group row col-md-6">
+                            <label class="col-sm-3 col-form-label">I am an : </label>
+                            <div class="col-sm-9 col-form-label">
+                                <input type="radio" name="user_type" id="user_type" value="1" class="m-7p" />Artist
+                                <input type="radio" name="user_type" id="user_type" value="2" class="m-7p" />Commissioner
+                            </div>
+                        </div>
+                        <div class="form-group row col-md-6" id="getArtistType">
+                            <label class="col-sm-4 col-form-label">Upload will be : </label>
+                            <div class="col-sm-8 col-form-label">
+                                <input type="radio" name="artist_type" id="artist_type" value="1" class="m-7p" />Personal
+                                <input type="radio" name="artist_type" id="artist_type" value="2" class="m-7p" />Commissioned
+                            </div>
+                        </div>
+
+                        <div id="getForm" class="form-group row col-md-12">
+                            <div id="leftPortion" class="form-group col-md-6 ">
+                                <div class="form-group col-md-12">
+                                    <div class="dropzone" id="dropzoneFileUpload">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <button type="button" id="uploadPhoto" class="col-md-12 btn btn-small btn-primary">Upload Images</button>
+                                    <small class="form-text text-danger">{!! $errors->first('images') !!}</small>
+                                </div>
+                            </div><!-- first portion -->
+                            <div class="form-group row col-md-6">
+                                <div class="form-group col-md-12">
+                                    <div id="usersPortion" class="col-md-12">
+                                        @if(isset($users) && !empty($users))
+                                        <select name="user_id" id="user_id" class="form-control ">
+                                            @foreach($users as $user)
+                                            <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
+                                            @endforeach
+                                        </select>
+                                        @endif
+                                        <small class="form-text text-danger">{!! $errors->first('user_id') !!}</small>
+                                    </div>
+                                    <div class="form-group row col-md-12">
+                                        <div id="subjectsPortion" class="col-md-6">
+                                            @if(isset($subjects) && !empty($subjects))
+                                            <select name="subject_id" id="subject_id" class="form-control ">
+                                                <option value="" disabled selected>--Select Subject--</option>
+                                                @foreach($subjects as $subject)
+                                                <option value="{{$subject->id}}">{{$subject->type}}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                            <small class="form-text text-danger">{!! $errors->first('subject_id') !!}</small>
+                                        </div>
+                                        <div id="mediumsPortion" class="col-md-6">
+                                            @if(isset($mediums) && !empty($mediums))
+                                            <select name="medium_id" id="medium_id" class="form-control ">
+                                                <option value="" disabled selected>--Select Medium--</option>
+                                                @foreach($mediums as $medium)
+                                                <option value="{{$medium->id}}">{{$medium->type}}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                            <small class="form-text text-danger">{!! $errors->first('medium_id') !!}</small>
+                                        </div>
+                                    </div>
+                                    <div id="titlePortion" class="col-md-12">
+                                        <input type="text" name="title" id="title" value="" placeholder="Title" class="form-control col-md-12 " />
+                                        <small class="form-text text-danger">{!! $errors->first('title') !!}</small>
+                                    </div>
+                                    <div id="descriptionPortion" class="col-md-12">
+                                        <textarea id="description" name="description" class="form-control col-md-12 " rows="4" placeholder="Note"></textarea>
+                                        <small class="form-text text-danger">{!! $errors->first('description') !!}</small>
+                                    </div>
+                                    <div id="keywordsPortion" class="col-md-12">
+                                        <input type="text" name="keywords" id="keywords" value="" placeholder="Keywords separated by spaces" class="form-control col-md-12 " />
+                                        <small class="form-text text-danger">{!! $errors->first('keywords') !!}</small>
+                                    </div>
+                                    <div id="a_ReviewPortion" class="col-md-12">
+                                        <div class="form-group row col-md-12">
+                                            <label for="a_transaction" class="col-sm-5 col-form-label pl-0">Transaction</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="a_transaction" id="a_transaction-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="a_transaction-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_transaction" id="a_transaction-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="a_transaction-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_transaction" id="a_transaction-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="a_transaction-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_transaction" id="a_transaction-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="a_transaction-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_transaction" id="a_transaction-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="a_transaction-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_transaction" id="a_transaction-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('a_transaction') !!}</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-md-12">
+                                            <label for="a_concept" class="col-sm-5 col-form-label pl-0">Concept</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="a_concept" id="a_concept-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="a_concept-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_concept" id="a_concept-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="a_concept-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_concept" id="a_concept-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="a_concept-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_concept" id="a_concept-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="a_concept-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_concept" id="a_concept-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="a_concept-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_concept" id="a_concept-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('a_concept') !!}</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-md-12">
+                                            <label for="a_understanding" class="col-sm-5 col-form-label pl-0">Understanding</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="a_understanding" id="a_understanding-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="a_understanding-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_understanding" id="a_understanding-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="a_understanding-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_understanding" id="a_understanding-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="a_understanding-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_understanding" id="a_understanding-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="a_understanding-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_understanding" id="a_understanding-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="a_understanding-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_understanding" id="a_understanding-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('a_understanding') !!}</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-md-12">
+                                            <label for="a_communication" class="col-sm-5 col-form-label pl-0">Communication</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="a_communication" id="a_communication-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="a_communication-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_communication" id="a_communication-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="a_communication-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_communication" id="a_communication-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="a_communication-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_communication" id="a_communication-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="a_communication-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_communication" id="a_communication-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="a_communication-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="a_communication" id="a_communication-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('a_communication') !!}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="c_ReviewPortion" class="col-md-12">
+                                        <div class="form-group row col-md-12">
+                                            <label for="c_price" class="col-sm-5 col-form-label pl-0">Price</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="c_price" id="c_price-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="c_price-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_price" id="c_price-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="c_price-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_price" id="c_price-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="c_price-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_price" id="c_price-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="c_price-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_price" id="c_price-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="c_price-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_price" id="c_price-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('c_price') !!}</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-md-12">
+                                            <label for="c_speed" class="col-sm-5 col-form-label pl-0">Speed</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="c_speed" id="c_speed-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="c_speed-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_speed" id="c_speed-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="c_speed-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_speed" id="c_speed-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="c_speed-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_speed" id="c_speed-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="c_speed-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_speed" id="c_speed-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="c_speed-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_speed" id="c_speed-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('c_speed') !!}</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-md-12">
+                                            <label for="c_quality" class="col-sm-5 col-form-label pl-0">Quality</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="c_quality" id="c_quality-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="c_quality-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_quality" id="c_quality-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="c_quality-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_quality" id="c_quality-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="c_quality-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_quality" id="c_quality-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="c_quality-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_quality" id="c_quality-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="c_quality-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_quality" id="c_quality-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('c_quality') !!}</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row col-md-12">
+                                            <label for="c_communication" class="col-sm-5 col-form-label pl-0">Communication</label>
+                                            <div class="col-sm-7">
+                                                <div id="full-stars-example-two">
+                                                    <div class="rating-group">
+                                                        <input disabled checked class="rating__input rating__input--none" name="c_communication" id="c_communication-none" value="0" type="radio">
+                                                        <label aria-label="1 star" class="rating__label" for="c_communication-1">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_communication" id="c_communication-1" value="1" type="radio">
+                                                        <label aria-label="2 stars" class="rating__label" for="c_communication-2">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_communication" id="c_communication-2" value="2" type="radio">
+                                                        <label aria-label="3 stars" class="rating__label" for="c_communication-3">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_communication" id="c_communication-3" value="3" type="radio">
+                                                        <label aria-label="4 stars" class="rating__label" for="c_communication-4">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_communication" id="c_communication-4" value="4" type="radio">
+                                                        <label aria-label="5 stars" class="rating__label" for="c_communication-5">
+                                                            <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                                        </label>
+                                                        <input class="rating__input" name="c_communication" id="c_communication-5" value="5" type="radio">
+                                                    </div>
+                                                </div>
+                                                <small class="form-text text-danger">{!! $errors->first('c_communication') !!}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="workAgainPortion" class="col-md-12 ">
+                                        <label for="work_again" class="col-form-label">
+                                            Would you like to work again with <span id="setUser"></span>?</label>
+                                        <input type="radio" name="work_again" id="work_again" value="1" />Yes
+                                        <input type="radio" name="work_again" id="work_again" value="0" />No
+                                        <small class="form-text text-danger">{!! $errors->first('work_again') !!}</small>
+                                    </div>
+                                    <input type="hidden" name="status" value="1" />
+                                </div>
+                            </div><!-- second portion -->
+                        </div><!-- getForm div -->
+
+                    </div><!-- row -->
+                </div> <!-- card-body -->
+                <div class="card-footer">
+                    <a href="{{url('posts')}}"><input type="button" value="Back" class="btn btn-info float" /></a>
+                    <button type="submit" class="btn btn-info float-right">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</section>
 @endsection
 @section('page-script')
-<script>
-    $(document).ready(function() {
+<script type="text/javascript">
+    var uploadedDocumentMap = {}
+    Dropzone.autoDiscover = false;
+    jQuery(document).ready(function() {
+        var myDropzone = new Dropzone("div#dropzoneFileUpload", {
+            url: "{{url('dropzone/store')}}",
+            maxFilesize: 5, // MB
+            maxFiles: 9,
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            params: {
+                _token: "{{csrf_token()}}"
+            },
+            success: function(file, response) {
+                uploadedDocumentMap[file.name] = response.name
+            },
+            error: function(file, response) {
+                console.log(response);
+            },
+            removedfile: function(file) {
+                file.previewElement.remove()
+                var name = ''
+                if (typeof file.file_name !== 'undefined') {
+                    name = file.file_name
+                } else {
+                    name = uploadedDocumentMap[file.name]
+                }
+                $('form').find('input[name="images[]"][value="' + name + '"]').remove()
+            },
 
-        if ($('input[type=radio][name=type]').val() == 'artist') {
-            $("#getForm1").show();
-            $("#getForm2").hide();
-        } else {
-            $("#getForm1").hide();
-            $("#getForm2").show();
-        }
-        $('input[type=radio][name=type]').change(function() {
-            if (this.value == 'artist') {
-                $("#getForm1").show();
-                $("#getForm2").hide();
-            } else if (this.value == 'buyer') {
-                $("#getForm1").hide();
-                $("#getForm2").show();
+        });
+
+        myDropzone.on("success", function(file, response) {
+            if (response.success == true) {
+                $('form').append('<input type="hidden" name="images[]" value="' + response.name + '">')
+            } else {
+                console.log("Faild to upload image! Try again");
             }
         });
-        $(".dlt-btn").click(function() {
-            var id = $(this).data("id");
 
-            $.ajax({
-                url: "/postImageDelete/" + id,
-                type: 'post',
-                data: {
-                    "id": id,
-                },
-                success: function() {
-                    window.location.reload();
-                },
-                error: function(xhr) {
-                    window.location.reload();
-                }
-            });
-
+        jQuery("button#uploadPhoto").click(function() {
+            myDropzone.processQueue();
         });
     });
 </script>
-@if(session()->has('success'))
-<script type="text/javascript">
-    toastr.success('<?php echo session()->get('success'); ?>')
+<script>
+    $(document).ready(function() {
+        $("#getArtistType").hide();
+        $("#leftPortion").hide();
+        $("#usersPortion").hide();
+        $("#subjectsPortion").hide();
+        $("#mediumsPortion").hide();
+        $("#titlePortion").hide();
+        $("#descriptionPortion").hide();
+        $("#keywordsPortion").hide();
+        $("#workAgainPortion").hide();
+        $("#a_ReviewPortion").hide();
+        $("#c_ReviewPortion").hide();
+
+        var constant_ap = "{{config('constants.AP')}}"
+        var constant_ac = "{{config('constants.AC')}}"
+        var constant_cc = "{{config('constants.CC')}}"
+
+        $('input[type=radio][name=user_type]').change(function() {
+            if (this.value == '1') { //artist
+                $("#getArtistType").show();
+                $("#leftPortion").hide();
+                $("#usersPortion").hide();
+                $("#subjectsPortion").hide();
+                $("#mediumsPortion").hide();
+                $("#titlePortion").hide();
+                $("#descriptionPortion").hide();
+                $("#keywordsPortion").hide();
+                $("#workAgainPortion").hide();
+                $("#a_ReviewPortion").hide();
+                $("#c_ReviewPortion").hide();
+            } else if (this.value == '2') { //commissioner
+                $('form').append('<input type="hidden" name="form_type" value="' + constant_cc + '">');
+
+                $("#getArtistType").hide();
+                $("#leftPortion").show();
+                $("#usersPortion").show();
+                $("#user_id option[value='']").remove();
+                $("#user_id option").eq(0).before($("<option selected disabled></option>").val("").text("--Select Drawn By--"));
+                $("#subjectsPortion").show();
+                $("#mediumsPortion").show();
+                $("#titlePortion").show();
+                $("#descriptionPortion").show();
+                $("#keywordsPortion").show();
+                $("#workAgainPortion").show();
+                $("#c_ReviewPortion").show();
+            }
+        });
+        $('input[type=radio][name=artist_type]').change(function() {
+            if (this.value == '1') { //personal
+                $('form').append('<input type="hidden" name="form_type" value="' + constant_ap + '">');
+
+                $("#leftPortion").show();
+                $("#subjectsPortion").show();
+                $("#mediumsPortion").show();
+                $("#titlePortion").show();
+                $("#descriptionPortion").show();
+                $("#keywordsPortion").show();
+                $("#a_ReviewPortion").hide();
+                $("#c_ReviewPortion").hide();
+            } else if (this.value == '2') { //commissioned
+                $('form').append('<input type="hidden" name="form_type" value="' + constant_ac + '">');
+
+                $("#leftPortion").show();
+                $("#usersPortion").show();
+                $("#user_id option[value='']").remove();
+                $("#user_id option").eq(0).before($("<option selected disabled></option>").val("").text("--Select Commissioned By--"));
+                $("#subjectsPortion").show();
+                $("#mediumsPortion").show();
+                $("#titlePortion").show();
+                $("#descriptionPortion").show();
+                $("#keywordsPortion").show();
+                $("#workAgainPortion").show();
+                $("#a_ReviewPortion").show();
+            }
+        });
+
+
+        $('#user_id').on('change', function() {
+            var selectedText = $(this).find("option:selected").text();
+            $('#setUser').html(selectedText);
+        });
+    });
 </script>
-@endif
-@if ($errors->any())
-@foreach ($errors->all() as $error)
-<script type="text/javascript">
-    toastr.error('{{$error}}')
-</script>
-@endforeach
-@endif
 @endsection

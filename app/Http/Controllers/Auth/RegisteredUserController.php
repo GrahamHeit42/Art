@@ -21,7 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        // return view('auth.register');
+        return view('frontend.auth.register');
     }
 
     /**
@@ -36,8 +37,8 @@ class RegisteredUserController extends Controller
     {
 
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'display_name' => 'required|string|max:100',
+            'username' => 'required|string|max:100|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
         ]);
@@ -50,24 +51,28 @@ class RegisteredUserController extends Controller
                 mkdir($directoryName, 0777, true);
             }
 
-            $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
+            $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
             $move = $files->move($directoryName, $filePath);
             if ($move) {
                 $imagePath = $filePath;
             }
         }
 
-        Auth::login($user = User::create([
+        $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'display_name' => $request->display_name,
             'status' => 1,
             'profile_image' => $imagePath
-        ]));
+        ]);
+
+        
+
+        Auth::login($user);
 
         event(new Registered($user));
 
-        return redirect(RouteServiceProvider::HOME);
+        // return redirect(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 }

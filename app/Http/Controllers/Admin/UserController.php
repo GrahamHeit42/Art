@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Post;
+use DataTables;
 
 class UserController extends Controller
 {
@@ -17,11 +18,39 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // view load
-        $users = User::where('id', '!=', Auth::user()->id)->orderBy('id', 'DESC')->get();
-        return view('admin.users.index', compact('users'));
+        if ($request->ajax()) {
+            $data = User::select('*')->where('id', '!=', Auth::user()->id)->orderBy('id', 'DESC')->where('status', '!=', 2)->get(); // except delete(status 2) data
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('register_at', function ($row) {
+                    $register_at = date('M-d-Y g:i:A', strtotime($row->created_at));
+                    return $register_at;
+                })
+                ->addColumn('last_active', function ($row) {
+                    if (!empty($row->last_login_at)) {
+                        $register_at = date('M-d-Y g:i:A', strtotime($row->last_login_at));
+                    } else {
+                        $register_at = date('M-d-Y g:i:A', strtotime($row->created_at));
+                    }
+                    return $register_at;
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btn = '<a href="' . url("users/view", $row->id) . '" class="btn text-info p-2"><i class="fas fa-eye"></i></a>
+                    
+                    <a href="' . url("users/update", $row->id) . '" class="btn text-primary p-2"><i class="fas fa-edit"></i></a>
+
+                            <button class="btn open-modal dlt-btn text-danger p-2" data-toggle="modal" data-target="#modal" data-id="$row->id" data-url="' . url("users/delete", $row->id) . '"><i class="fas fa-trash-alt"></i></button>';
+
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('admin.users.index');
     }
 
     /**
@@ -63,7 +92,7 @@ class UserController extends Controller
                     mkdir($directoryName, 0777, true);
                 }
 
-                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
+                $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
                 $move = $files->move($directoryName, $filePath);
                 if ($move) {
                     $imagePath = $filePath;
@@ -94,10 +123,8 @@ class UserController extends Controller
             }
             $imagePath = "";
             if ($files = $request->file('profile_image')) {
-                $customController = new CustomController;
-                $directoryName = $customController->getPublicImagePath();
 
-                $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
+                $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
                 $move = $files->move(public_path('upload/images'), $filePath);
                 if ($move) {
                     $imagePath = $filePath;
@@ -134,7 +161,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::select('*')->where('id', $id)->first();
+        if (!empty($user->profile_image)) {
+            $customController = new CustomController;
+            $user->profile_image = $customController->getPublicImagePath() . $user->profile_image;
+        }
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -148,7 +180,7 @@ class UserController extends Controller
         $user = User::select('*')->where('id', $id)->first();
         if (!empty($user->profile_image)) {
             $customController = new CustomController;
-            $user->profile_image = $customController->getImagePath() . $user->profile_image;
+            $user->profile_image = $customController->getPublicImagePath() . $user->profile_image;
         }
         return view('admin.users.create', compact('user'));
     }
@@ -203,6 +235,6 @@ class UserController extends Controller
             $msg = "fail";
         }
 
-        return response()->json(['success' => $succ, 'message' => $msg()], 200);
+        return response()->json(['success' => $succ, 'message' => $msg], 200);
     }
 }

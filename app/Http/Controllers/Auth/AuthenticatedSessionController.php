@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        return view('frontend.auth.login');
     }
 
     /**
@@ -38,7 +38,8 @@ class AuthenticatedSessionController extends Controller
         $user->last_login_at = Date('Y-m-d H:i:s');
         $user->save();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 
     /**

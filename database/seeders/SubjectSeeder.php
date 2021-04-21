@@ -16,7 +16,7 @@ class SubjectSeeder extends Seeder
     {
         $subjects = ['Abstract', 'Anime/Manga', 'Character Design', 'Comic', 'Concept Art', 'Cosplay', 'Emoji/Emoticon', 'Fanart', 'Fantasy', 'Horror', 'Landscape', 'Mecha', 'Pixel', 'Portrait', 'Prop', 'Realism', 'Sketch', 'Stock', 'Storyboard', 'Still Life', 'Tutorial'];
         foreach ($subjects as $subject) {
-            // $subject = Subject::create(['type' => $subject]);
+            $subject = Subject::create(['type' => $subject]);
         }
     }
 }

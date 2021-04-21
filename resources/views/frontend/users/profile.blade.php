@@ -1,119 +1,111 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('frontend.layouts.sidebar')
+@section('title','Profile')
+@section('content')
+<div id="main">
+    <div class="profile-setting">
+        <div class="profile-area">
+            <div class="container">
+                <div class="row">
+                    <div class="ml-auto mr-auto col-lg-9">
+                        <div class="profile-wrapper">
+                            <div id="faq" class="profile-group">
+                                <div class="profile profile-default profile-my-account">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    @if(isset($user))
-                    <form method="post" enctype="multipart/form-data" action="{{url('profile')}}">
-                        @csrf
-                        <div class="container">
-                            <div class="row col-md-12">
-                                @if(!empty($user->profile_image))
-                                <div class="form-group row col-md-12">
-                                    <img src="{{$user->profile_image}}" class="m-auto br-50p" width="100" height="100" />
+                                    <div class="profile-heading">
+                                        <h3 class="profile-title">
+                                            <span>1 .</span>
+                                            <a data-toggle="collapse" data-parent="#faq" href="#my-account-1" aria-expanded="false" class="collapsed">Edit your account information </a>
+                                        </h3>
+                                    </div>
+                                    <div id="my-account-1" class="profile-collapse collapse show">
+                                        <form action="{{url('profile')}}" method="POST">
+                                            @csrf
+                                            <div class="profile-body">
+                                                <div class="profile-info-wrapper">
+                                                    <div class="account-wrapper">
+                                                        <h4>My Account Information</h4>
+                                                        <h5>Your Personal Details</h5>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <div class="change-info">
+                                                                <label>First Name</label>
+                                                                <input id="first_name" class="clr-grey" type="text" name="first_name" value="{{$user->first_name}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <div class="change-info">
+                                                                <label>Last Name</label>
+                                                                <input id="last_name" class="clr-grey" type="text" name="last_name" value="{{$user->last_name}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <div class="change-info">
+                                                                <label>Email Address</label>
+                                                                <input id="email" class="clr-grey no-cursor" type="email" name="email" value="{{$user->email}}" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="change-back-btn">
+                                                        <div class="profile-btn">
+                                                            <button type="submit" class="btn gallery-btn-dark-yellow">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="form-group row col-md-12">
-
-                                    <button type="button" class="open-modal m-auto btn btn-sm btn-danger" id="dlt-btn" data-id="{{$user->id}}">Remove Image</button>
-
+                                <div class=" profile profile-default profile-my-account">
+                                    <div class="profile-heading">
+                                        <h3 class="profile-title"><span>2 .</span> <a data-toggle="collapse" data-parent="#faq" href="#my-account-2" class="collapsed" aria-expanded="false">Change your password </a></h3>
+                                    </div>
+                                    <div id="my-account-2" class="profile-collapse collapse">
+                                        <form action="{{url('change-password')}}" method="POST">
+                                            @csrf
+                                            <div class="profile-body">
+                                                <div class="profile-info-wrapper">
+                                                    <div class="account-wrapper">
+                                                        <h4>Change Password</h4>
+                                                        <h5>Your Password</h5>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <div class="change-info">
+                                                                <label>Old Password</label>
+                                                                <input id="old_password" class="" type="password" name="old_password" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <div class="change-info">
+                                                                <label>New Password</label>
+                                                                <input id="password" class="" type="password" name="password" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <div class="change-info">
+                                                                <label>Password Confirm</label>
+                                                                <input type="password" id="confirm_password" class="" type="password" name="confirm_password" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="change-back-btn">
+                                                        <div class="profile-btn">
+                                                            <button type="submit" class="btn gallery-btn-dark-yellow">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                @endif
                             </div>
-                            <div class="row col-md-12">
 
-                                <div class="form-group row col-md-6">
-                                    <label for="first_name" class="col-sm-4 col-form-label">First Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="first_name" value="{{$user->first_name ??  ''}}" class="form-control {{ $errors->has('first_name') ? 'border-danger' : ''}}" />
-                                        <small class="form-text text-danger">{!! $errors->first('first_name') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="last_name" class="col-sm-4 col-form-label">Last Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="last_name" value="{{$user->last_name ??  ''}}" class="form-control {{ $errors->has('last_name') ? 'border-danger' : ''}}" />
-                                        <small class="form-text text-danger">{!! $errors->first('last_name') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="email" class="col-sm-4 col-form-label">Email</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="email" value="{{$user->email ?? ''}}" class="form-control {{ $errors->has('email') ? 'border-danger' : ''}}" readonly />
-                                        <small class="form-text text-danger">{!! $errors->first('email') !!}</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-6">
-                                    <label for="email" class="col-sm-4 col-form-label">Upload</label>
-                                    <div class="col-sm-8">
-                                        <input type="file" class="custom-file-input cursor-pointer" id="profile_image" name="profile_image" />
-                                        <label for="profile_image" class="custom-file-label cursor-pointer col-sm-11 m-auto">
-                                            <span class="rounded2r">Upload Profile Image</span>
-                                        </label>
-                                        <span id="filename" class="col-md-12 txt-centre"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row col-md-12">
-                                    <button class="btn btn-sm btn-primary m-auto" type="submit">Update</button>
-                                </div>
-                            </div>
-                    </form>
-                    @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
-<script>
-    $(document).ready(function() {
-        $("#dlt-btn").click(function() {
-            var id = $(this).data("id");
-
-            $.ajax({
-                url: "/profile-image-delete/" + id,
-                type: 'post',
-                data: {
-                    "id": id,
-                },
-                success: function(result) {
-                    window.location.reload();
-                },
-                error: function(xhr) {
-                    window.location.reload();
-                }
-            });
-
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $('input[type=file]').change(function() {
-            checkImage(this);
-        });
-    });
-
-    function checkImage(input) {
-        if (input.files && input.files[0]) {
-            var filename = $('input[type=file]').val().split('\\').pop();
-            $("#filename").html(filename);
-        }
-    }
-</script>
-@if(session()->has('success'))
-<script type="text/javascript">
-    toastr.success('<?php echo session()->get('success'); ?>')
-</script>
-@endif
-@if ($errors->any())
-@foreach ($errors->all() as $error)
-<script type="text/javascript">
-    toastr.error('{{$error}}')
-</script>
-@endforeach
-@endif
+</div>
+@endsection

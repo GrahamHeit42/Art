@@ -9,5 +9,7 @@ class Medium extends Model
 {
     use HasFactory;
 
+    protected $table = 'mediums';
+
     protected $fillable = ['id', 'type', 'is_active'];
 }

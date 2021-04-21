@@ -2,21 +2,52 @@
 @section('title','Show Post')
 @section('head-part')
 <link href="{{asset('css/rating.css')}}" rel="stylesheet" />
+<style>
+    .showImagesDiv {
+        overflow: scroll;
+        padding: 2%;
+        border: 1px solid lightblue;
+    }
+</style>
 @endsection
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Show Post Details</h3>
-                </div>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Post</h1>
             </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{url('/posts')}}">Posts</a></li>
+                    <li class="breadcrumb-item active">Post</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post</h3>
+            <h3 class="card-title float-right">
+                @if(isset($post))
+                <a href="{{url('/posts/update',$post->id)}}" class="btn btn-primary btn-sm" style="border-color: white;"><i class="fa fa-plus-circle" aria-hidden="true" style="padding-right: 5px;"></i>Edit Post</a>
+                @endif
+            </h3>
+        </div>
+        <div class="card-body">
             <div class="card-body m-auto" style="background-color: white;">
+                @if(isset($post))
                 <div class="row">
-                    <div class="form-group row col-md-12">
-                        <img src="{{$post->image}}" width="100" height="100" class="m-auto" />
+                    @if(isset($post->images))
+                    <div class="form-group row col-md-12 showImagesDiv">
+                        @foreach($post->images as $image)
+                        <img src="{{$image->name}}" width="100" height="100" class="m-auto" />
+                        @endforeach
                     </div>
+                    @endif
                     <div class=" form-group row col-md-6">
                         <label for="" class="col-sm-5 col-form-label">User Name</label>
                         <div class="col-sm-7">
@@ -31,20 +62,42 @@
                         </div>
                     </div>
                     <div class="form-group row col-md-6">
-                        <label for="" class="col-sm-5 col-form-label">Commisioned By</label>
+                        <label for="" class="col-sm-5 col-form-label">Subject</label>
                         <div class="col-sm-7">
                             <label for="" class="col-sm-12 col-form-label fw-normal">
-                                {{$post->name}}</label>
+                                {{$post->subject->type}}</label>
                         </div>
                     </div>
                     <div class="form-group row col-md-6">
-                        <label for="" class="col-sm-5 col-form-label">Status</label>
+                        <label for="" class="col-sm-5 col-form-label">Medium</label>
                         <div class="col-sm-7">
                             <label for="" class="col-sm-12 col-form-label fw-normal">
-                                @if($post->status == 0) Inactive @endif
-                                @if($post->status == 1) Active @endif
-                                @if($post->status == 2) Delete @endif
-                            </label>
+                                {{$post->medium->type}}</label>
+                        </div>
+                    </div>
+                    @if(isset($post->drawnBy->first_name))
+                    <div class="form-group row col-md-6">
+                        <label for="" class="col-sm-5 col-form-label">Drawn By</label>
+                        <div class="col-sm-7">
+                            <label for="" class="col-sm-12 col-form-label fw-normal">
+                                {{$post->drawnBy->first_name ?? ''}}</label>
+                        </div>
+                    </div>
+                    @endif
+                    @if(isset($post->commisionedBy->first_name))
+                    <div class="form-group row col-md-6">
+                        <label for="" class="col-sm-5 col-form-label">Commisioned By</label>
+                        <div class="col-sm-7">
+                            <label for="" class="col-sm-12 col-form-label fw-normal">
+                                {{$post->commisionedBy->first_name ?? ''}}</label>
+                        </div>
+                    </div>
+                    @endif
+                    <div class="form-group row col-md-6">
+                        <label for="" class="col-sm-5 col-form-label">keywords</label>
+                        <div class="col-sm-7">
+                            <label for="" class="col-sm-12 col-form-label fw-normal">
+                                <?php echo str_replace(',', ' ', $post->keywords); ?></label>
                         </div>
                     </div>
                     <div class="form-group row col-md-12">
@@ -54,11 +107,11 @@
                                 {{$post->description}}</label>
                         </div>
                     </div>
-                    @if(isset($post->transaction) && !empty($post->transaction))
+                    @if(isset($post->a_transaction) && !empty($post->a_transaction))
                     <div class="form-group row col-md-6">
                         <label for="transaction" class="col-sm-4 col-form-label">Transaction</label>
                         <div class="col-sm-8">
-                            <input type="hidden" value="{{$post->transaction}}" id="getTransaction" />
+                            <input type="hidden" value="{{$post->a_transaction}}" id="getTransaction" />
                             <div id="full-stars-example-two">
                                 <div class="rating-group">
                                     <input disabled checked class="rating__input rating__input--none" name="transaction" id="transaction-none" value="0" type="radio">
@@ -317,60 +370,60 @@
                             </div>
                         </div>
                         @endif
-
+                        <div class="form-group row col-md-6">
+                            <label for="" class="col-sm-5 col-form-label">Status</label>
+                            <div class="col-sm-7">
+                                <label for="" class="col-sm-12 col-form-label fw-normal">
+                                    @if($post->status == 0) Inactive @endif
+                                    @if($post->status == 1) Active @endif
+                                    @if($post->status == 2) Delete @endif
+                                </label>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
+                @endif
             </div>
             <div class="card-footer col-md-12">
                 <a href="{{url('posts')}}"><input type="button" value="Back" class="btn btn-info float" /></a>
             </div>
         </div>
     </div>
-    @endsection
-    @section('page-script')
-    <script>
-        $(document).ready(function() {
-            var transaction_id = $("#getTransaction").val();
-            if (transaction_id !== "") {
-                $("#transaction-" + transaction_id).prop('checked', true);
-            }
-            var speed_id = $("#getSpeed").val();
-            if (speed_id !== "") {
-                $("#speed-" + speed_id).prop('checked', true);
-            }
-            var communication_id = $("#getCommunication").val();
-            if (communication_id !== "") {
-                $("#communication-" + communication_id).prop('checked', true);
-            }
-            var concept_id = $("#getConcept").val();
-            if (concept_id !== "") {
-                $("#concept-" + concept_id).prop('checked', true);
-            }
-            var price_id = $("#getPrice").val();
-            if (price_id !== "") {
-                $("#price-" + price_id).prop('checked', true);
-            }
-            var quality_id = $("#getQuality").val();
-            if (quality_id !== "") {
-                $("#quality-" + quality_id).prop('checked', true);
-            }
-            var professonalism_id = $("#getProfessonalism").val();
-            if (professonalism_id !== "") {
-                $("#professonalism-" + professonalism_id).prop('checked', true);
-            }
-        });
-    </script>
-    @if(session()->has('success'))
-    <script type="text/javascript">
-        toastr.success('<?php echo session()->get('success'); ?>')
-    </script>
-    @endif
-    @if ($errors->any())
-    @foreach ($errors->all() as $error)
-    <script type="text/javascript">
-        toastr.error('{{$error}}')
-    </script>
-    @endforeach
-    @endif
-    @endsection
+
+</section>
+@endsection
+@section('page-script')
+<script>
+    $(document).ready(function() {
+        var transaction_id = $("#getTransaction").val();
+        if (transaction_id !== "") {
+            $("#transaction-" + transaction_id).prop('checked', true);
+        }
+        var speed_id = $("#getSpeed").val();
+        if (speed_id !== "") {
+            $("#speed-" + speed_id).prop('checked', true);
+        }
+        var communication_id = $("#getCommunication").val();
+        if (communication_id !== "") {
+            $("#communication-" + communication_id).prop('checked', true);
+        }
+        var concept_id = $("#getConcept").val();
+        if (concept_id !== "") {
+            $("#concept-" + concept_id).prop('checked', true);
+        }
+        var price_id = $("#getPrice").val();
+        if (price_id !== "") {
+            $("#price-" + price_id).prop('checked', true);
+        }
+        var quality_id = $("#getQuality").val();
+        if (quality_id !== "") {
+            $("#quality-" + quality_id).prop('checked', true);
+        }
+        var professonalism_id = $("#getProfessonalism").val();
+        if (professonalism_id !== "") {
+            $("#professonalism-" + professonalism_id).prop('checked', true);
+        }
+    });
+</script>
+@endsection

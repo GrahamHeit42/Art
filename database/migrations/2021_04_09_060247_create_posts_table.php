@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->tinyInteger('user_type')->default(0);
             $table->tinyInteger('artist_type')->nullable();
-            $table->foreignId('drawnBy')->constrained('users')->cascadeOnDelete()->nullable();
+            $table->foreignId('drawn_by')->constrained('users')->cascadeOnDelete()->nullable();
             $table->foreignId('commisioned_by')->constrained('users')->cascadeOnDelete()->nullable();
             $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->foreignId('medium_id')->constrained('mediums')->cascadeOnDelete();

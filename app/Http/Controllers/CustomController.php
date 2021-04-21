@@ -11,12 +11,28 @@ use Illuminate\Support\Facades\Hash;
 class CustomController extends Controller
 {
     /**
+     * Welcome Page view.
+     *
+     * @return \Illuminate\View\View
+     */
+    /* public function welcome()
+    {
+        if (Auth::user()->id == 0) {
+            return redirect('welcome');
+        } else {
+            return redirect('admin.dashboard');
+        }
+    } */
+    /**
      * Dashboard view.
      *
      * @return \Illuminate\View\View
      */
     public function getDashboard()
     {
+        if (!Auth::check()) {
+            return view('welcome');
+        }
         if (Auth::user()->is_admin == 2) {
             $users = User::where(function ($query) {
                 $query->where('is_admin', 0)
@@ -34,7 +50,7 @@ class CustomController extends Controller
             $activeUsers = User::where('is_admin', 0)->where('status', 1)->count();
             return view('admin.dashboard', compact('users', 'activeUsers'));
         } else {
-            return view('frontend.dashboard');
+            return view('welcome');
         }
     }
     /**
@@ -53,8 +69,7 @@ class CustomController extends Controller
      */
     public function getPublicImagePath()
     {
-        // return public_path() . $this->getImagePath();
-        return \config('app.asset_url') . $this->getImagePath(); //live
+        return \config('app.asset_url') . $this->getImagePath();
     }
     /**
      * Profile view.
@@ -95,7 +110,7 @@ class CustomController extends Controller
             $msg = "fail";
         }
 
-        return response()->json(['success' => $succ, 'message' => $msg()], 200);
+        return response()->json(['success' => $succ, 'message' => $msg], 200);
     }
     /**
      * Unlink image.
@@ -145,7 +160,7 @@ class CustomController extends Controller
             if (!is_dir($directoryName)) {
                 mkdir($directoryName, 0777, true);
             }
-            $filePath = $request->input('first_name') . '_' . time() . $files->getClientOriginalExtension();
+            $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
             // $move = $files->move($directoryName, $filePath);
             $move = $files->move(public_path('upload/images'), $filePath);
             if ($move) {
@@ -222,9 +237,14 @@ class CustomController extends Controller
     {
         $image = $request->file('file');
 
-        $imageName = time() . '.' . $image->extension();
-        $image->move(public_path('images'), $imageName);
+        $imageName = time() . uniqid() . '.' . $image->extension();
 
-        return response()->json(['success' => $imageName]);
+        $directoryName = public_path('/upload/posts');
+        if (!is_dir($directoryName)) {
+            mkdir($directoryName, 0777, true);
+        }
+        $image->move($directoryName, $imageName);
+
+        return response()->json(['success' => true, 'name' => $imageName]);
     }
 }

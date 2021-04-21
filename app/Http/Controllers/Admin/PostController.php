@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CustomController;
+use App\Models\Image;
+use App\Models\Subject;
+use App\Models\Medium;
+use DataTables;
 
 class PostController extends Controller
 {
@@ -30,15 +34,35 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with('userDetails')->get();
-        foreach ($posts as $post) {
-            if (!empty($post->image)) {
-                $post->image = $this->getImagePath() . $post->image;
-            }
+        if ($request->ajax()) {
+            $data = Post::with('drawnBy')->where('status', 1)->get();
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('image', function ($row) {
+                    $image = "";
+                    $img = Image::select('name')->where('post_id', $row->id)->first();
+                    if (!empty($img)) {
+                        $image = \config('app.asset_url') . $this->getPostImagePath() . $img->name;
+                    }
+                    return $image;
+                })
+                ->addColumn('action', function ($row) {
+
+                    $btn = '<a href="' . url("posts/view", $row->id) . '" class="btn text-info p-2"><i class="fas fa-eye"></i></a>
+                    
+                    <a href="' . url("posts/update", $row->id) . '" class="btn text-primary p-2"><i class="fas fa-edit"></i></a>
+
+                            <button class="btn open-modal dlt-btn text-danger p-2" data-toggle="modal" data-target="#modal" data-id="$row->id" data-url="' . url("posts/delete", $row->id) . '"><i class="fas fa-trash-alt"></i></button>';
+
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.posts.index');
     }
 
     /**
@@ -48,13 +72,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        $users = User::where('id', '!=', Auth::user()->id)->get();
-        return view('admin.posts.create', compact('users'));
-    }
-    public function create1()
-    {
-        $users = User::where('id', '!=', Auth::user()->id)->get();
-        return view('admin.posts.create1', compact('users'));
+        $users = User::where('id', '!=', Auth::user()->id)->where('status', 1)->get();
+        $subjects = Subject::all();
+        $mediums = Medium::all();
+        return view('admin.posts.create', compact('users', 'subjects', 'mediums'));
     }
 
     /**
@@ -65,73 +86,82 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $customController = new CustomController;
         $id = $request->id;
-        $imagePath = "";
 
         if (empty($id)) {
+
             $request->validate([
-                "image" => 'required',
-                "name" => 'required|string|max:255',
+                "images" => 'required',
+                "user_type" => 'required',
+                "user_id" => 'required',
+                "subject_id" => 'required',
+                "medium_id" => 'required',
                 "title" => 'required|string|max:255',
-                "description" => 'required|string',
-                "again" => 'required',
-                "status" => 'required',
+                "description" => 'required',
+
             ]);
-            if ($request->type == 'artist') {
+
+            if ($request->user_type == 1) {
                 $request->validate([
-                    "transaction" => "required",
-                    "speed_a" => "required",
-                    "communication_a" => "required",
-                    "prepertion" => "required",
-                    "concept" => "required",
-                ]);
-            }
-            if ($request->type == 'buyer') {
-                $request->validate([
-                    "price" => 'required',
-                    "speed_b" => "required",
-                    "communication_b" => "required",
-                    "quality" => 'required',
-                    "professonalism" => 'required',
+                    "artist_type" => 'required',
                 ]);
             }
 
-            if ($files = $request->file('image')) {
-                $directoryName = $customController->getPublicImagePath();
-
-                $filePath = $request->input('name') . '_' . time() . '.' . $files->getClientOriginalExtension();
-                $move = $files->move($directoryName, $filePath);
-                if ($move) {
-                    $imagePath = $filePath;
-                }
+            if ($request->form_type == config('constants.AC') || $request->form_type == config('constants.CC')) {
+                $request->validate([
+                    "work_again" => 'required',
+                ]);
             }
+            if (!empty($request->keywords)) {
+                $keywords = str_replace(' ', ',', $request->keywords);
+            }
+
 
             $post = new Post;
-            $post->image = $imagePath;
-            $post->user_id = $request->user_id;
-            $post->name = $request->name;
+            $post->user_type = $request->user_type;
+            $post->user_id = Auth::user()->id;
+
+            $post->artist_type = $request->artist_type;
+            $post->subject_id = $request->subject_id;
+            $post->medium_id = $request->medium_id;
             $post->title = $request->title;
             $post->description = $request->description;
-            $post->again = $request->again;
+            $post->keywords = $keywords;
             $post->status = $request->status;
+            $name = $request->user_id;
 
-            if ($request->type == 'artist') {
-                $post->transaction = $request->transaction;
-                $post->speed = $request->speed_a;
-                $post->communication = $request->communication_a;
-                $post->prepertion = $request->prepertion;
-                $post->concept = $request->concept;
+            if ($request->form_type == config('constants.AC')) {
+                $post->a_transaction = $request->a_transaction;
+                $post->a_concept = $request->a_concept;
+                $post->a_understanding = $request->a_understanding;
+                $post->a_communication = $request->a_communication;
+                $a_work_again = $request->work_again;
+                $post->commisioned_by = $name;
             }
-            if ($request->type == 'buyer') {
-                $post->price = $request->price;
-                $post->quality = $request->quality;
-                $post->professonalism = $request->professonalism;
-                $post->speed = $request->speed_b;
-                $post->communication = $request->communication_b;
+            if ($request->form_type == config('constants.CC')) {
+                $post->c_price = $request->c_price;
+                $post->c_speed = $request->c_speed;
+                $post->c_quality = $request->c_quality;
+                $post->c_communication = $request->c_communication;
+                $c_work_again = $request->work_again;
+                $post->drawn_by = $name;
             }
+            $post->a_work_again = $a_work_again ?? null;
+            $post->c_work_again = $c_work_again ?? null;
+
 
             $save = $post->save();
+            if ($save) {
+                if (!empty($request->images)) {
+                    $images = $request->images;
+                    foreach ($images as $image) {
+                        Image::create([
+                            'post_id' => $post->id,
+                            'name' => $image
+                        ]);
+                    }
+                }
+            }
 
             $succ = config('constants.INSERT_MSG');
         } else {
@@ -151,18 +181,8 @@ class PostController extends Controller
                 "status" => 'required',
             ]);
 
-            if ($files = $request->file('image')) {
-                $directoryName = $customController->getPublicImagePath();
-
-                $filePath = $request->input('name') . '_' . time() . '.' . $files->getClientOriginalExtension();
-                $move = $files->move($directoryName, $filePath);
-                if ($move) {
-                    $imagePath = $filePath;
-                }
-            }
 
             $post = Post::find($id);
-            $post->image = $imagePath;
             $post->user_id = Auth::user()->id;
             $post->name = $request->name;
             $post->title = $request->title;
@@ -195,11 +215,16 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::select('*')->with('userDetails')->where('id', $id)->first();
-        // dd($post);
-        if (!empty($post->image)) {
-            $post->image = $this->getImagePath() . $post->image;
+        $post = Post::select('*')->with('userDetails')->with('drawnBy')->with('commisionedBy')->with('subject')->with('medium')->where('id', $id)->first();
+        $images = Image::select('name')->where('post_id', $id)->get();
+
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                $image->name = \config('app.asset_url') . $this->getPostImagePath() . $image->name;
+            }
+            $post->images = $images;
         }
+        // dd($post->drawnBy->first_name);
         return view('admin.posts.show', compact('post'));
     }
 
@@ -211,7 +236,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.posts.update');
+        return view('admin.posts.show');
     }
 
     /**

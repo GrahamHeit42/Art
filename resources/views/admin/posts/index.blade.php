@@ -1,63 +1,78 @@
 @extends('admin.layouts.sidebar')
 @section('title','Posts')
 @section('content')
-<div class=" row">
+<!-- <div class="row"> -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
     <div class="container-fluid">
-        <div class="col-md-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">All Posts Details</h3>
-                    <h3 class="card-title float-right">Total Posts : {{count($posts ?? '')}}</h3>
-                </div>
-
-                <div class="form-group row">
-                    <a style="margin: 10px;" href="{{url('/posts/create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true" style="padding-right: 5px;"></i>New Post</a>
-                </div>
-                <table id="tablelist" class="table table-bordered table-striped" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th data-orderable="false">ID</th>
-                            <th>User Name</th>
-                            <th>Title</th>
-                            <th>Image</th>
-                            <th>Status</th>
-                            <th data-orderable="false">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($posts))
-                        @foreach($posts as $post)
-                        <tr>
-                            <td>{{ $loop->index+1 }} </td>
-                            <td>{{$post->userDetails->first_name}}</td>
-                            <td><a href="{{url('posts/view',$post->id)}}">{{$post->title}}</a></td>
-                            <td><img src="{{$post->image}}" width="50" height="50" /></td>
-                            <td><?php if ($post->status == 0) echo 'Inactive';
-                                if ($post->status == 1) echo 'Active';
-                                if ($post->status == 2) echo 'Delete'; ?></td>
-                            <td style="padding: 0px;">
-
-                                <button class="btn open-modal dlt-btn text-danger" data-toggle="modal" data-target="#modal" data-id="{{ $post->id }}" data-url="{{ url('posts/delete',['id'=>$post->id]) }}"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        @endforeach
-                        @endif
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th data-orderable="false">ID</th>
-                            <th>User Name</th>
-                            <th>Title</th>
-                            <th>Image</th>
-                            <th>Status</th>
-                            <th data-orderable="false">Action</th>
-                        </tr>
-                    </tfoot>
-                </table>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Posts</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Posts</li>
+                </ol>
             </div>
         </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Posts</h3>
+            <h3 class="card-title float-right">
+                <a href="{{url('/posts/create')}}" class="btn btn-primary btn-sm" style="border-color: white;"><i class="fa fa-plus-circle" aria-hidden="true" style="padding-right: 5px;"></i>New Post</a>
+            </h3>
+        </div>
+        <div class="card-body">
+            <table id="tablelist" class="table table-bordered table-striped data-table">
+                <thead>
+                    <tr>
+                        <th data-orderable="false">ID</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th data-orderable="false" style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(isset($posts))
+                    @foreach($posts as $post)
+                    <tr>
+                        <td>{{ $loop->index+1 }} </td>
+                        <td>@if(!empty($post->image))<img src="{{$post->image}}" width="50" height="50" />@endif</td>
+                        <td>{{$post->title}}</td>
+                        <td>
+                            <span class="badge badge-success">
+                                <?php
+                                if ($post->status == 0) echo '<span class="badge badge-danger">Inactive</span>';
+                                if ($post->status == 1) echo '<span class="badge badge-success">Active</span>';
+                                if ($post->status == 2) echo '<span class="badge badge-danger">Deleted</span>';;
+                                ?> </span>
+                        </td>
+                        <td>
+                            <a href="{{url('posts/view',$post->id)}}" class="btn text-info p-2"><i class="fas fa-eye"></i></a>
+
+                            <a href="{{url('posts/update',$post->id)}}" class="btn text-primary p-2"><i class="fas fa-edit"></i></a>
+
+                            <button class="btn open-modal dlt-btn text-danger p-2" data-toggle="modal" data-target="#modal" data-id="{{ $post->id }}" data-url="{{ url('posts/delete',['id'=>$post->id]) }}"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+</section>
+
+
+<!-- </div> -->
 <form id="postForm" action="" method="post">
     <div id="modal" class="modal fade" role='dialog'>
         <div class="modal-dialog">
@@ -88,11 +103,57 @@
 </form>
 @endsection
 @section('page-script')
-<script>
+<script type="text/javascript">
     $(function() {
-        $("#tablelist").DataTable({
-            "responsive": true,
-            "autoWidth": false,
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('posts.index') }}",
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'id',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'image',
+                    name: 'image'
+                },
+                {
+                    data: 'title',
+                    name: 'title'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ],
+            columnDefs: [{
+                targets: 1,
+                render: function(data, type, row, meta) {
+                    if (type === 'display') {
+                        data = '<img src="' + data + '" width="50" height="50" />';
+                    }
+                    return data;
+                }
+            }, {
+                targets: 3,
+                render: function(data, type, row, meta) {
+                    if (type === 'display') {
+                        if (data == 1)
+                            $status = '<span class="badge badge-success">Active</span>';
+                        return $status;
+                        data = $status;
+                    }
+                    return data;
+                }
+            }]
         });
     });
 </script>
@@ -105,16 +166,4 @@
         $('#modal').modal('show');
     });
 </script>
-@if(session()->has('success'))
-<script type="text/javascript">
-    toastr.success('<?php echo session()->get('success'); ?>')
-</script>
-@endif
-@if ($errors->any())
-@foreach ($errors->all() as $error)
-<script type="text/javascript">
-    toastr.error('{{$error}}')
-</script>
-@endforeach
-@endif
 @endsection

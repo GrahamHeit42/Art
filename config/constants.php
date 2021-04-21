@@ -1,11 +1,14 @@
 <?php
 
 return [
+    'ACCESS_DENIED' => 'Access Denied!',
     'USER_ID_REQUIRED' => 'User Id Required.',
     'PROFILE_SUCCESS' => 'Profile Updated Successfully!',
     'FAIL' => 'There is some problem.',
     'PASSWORD_SUCCESS' => 'Password Updated Successfully!',
     'IMAGE_DELETE_SUCCESS' => 'Image Deleted Successfully!',
+    'OLD_PASSWORD_NOT_MATCH' => 'Old Password does not Match.',
+    'IMAGE_REQUIRED' => 'Image required.',
 
     'INSERT_MSG' => 'Record Inserted Successfully.',
     'UPDATE_MSG' => 'Record Updated Successfully.',
@@ -20,4 +23,8 @@ return [
     'SIGNUP_SUCCESS' => 'User Signup Successfully.',
     'PROFILE_DETAILS' => 'User detail get successfully.!',
     'NODATA' => 'No data found.!',
+
+    'AP' => 'ArtistPersonal',
+    'AC' => 'ArtistCommisioned',
+    'CC' => 'Commissioner',
 ];

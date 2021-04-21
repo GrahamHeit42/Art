@@ -32,6 +32,25 @@
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
         @if(Auth::check())
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
@@ -42,7 +61,7 @@
                     <div class="image">
 
                         @if (!empty(Auth::user()->profile_image))
-                        <?php $path = '/upload/images/' . Auth::user()->profile_image; ?>
+                        <?php $path = \config('app.asset_url') . '/upload/images/' . Auth::user()->profile_image; ?>
                         <img src="{{$path}}" class="img-circle elevation-2" alt="User Image">
                         @else
                         <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
@@ -84,27 +103,33 @@
                                 </p>
                             </a>
                         </li>
-
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('admin/contact-us')}}" class="nav-link">
+                                <i class="nav-icon far fa-address-card"></i>
+                                <p>
+                                    Contact Us
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-cog fa-fw" aria-hidden="true"></i>
+                                <i class="nav-icon fa fa-cog fa-fw"></i>
                                 <p>
                                     My Settings
-                                    <i class=" fas fa-angle-left right"></i>
+                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-
                                 <li class="nav-item">
                                     <a href="{{url('change-password')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Change Password</p>
                                     </a>
                                 </li>
-
                                 <li class="nav-item">
                                     <a href="{{url('profile')}}" class="nav-link">
-                                        <i class="fas fa-user-tie nav-icon" aria-hidden="true"></i>
+                                        <i class="fas fa-user-tie nav-icon"></i>
                                         <p>Profile</p>
                                     </a>
                                 </li>
@@ -129,7 +154,7 @@
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="margin-top: 0px;">
+        <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             @yield('content')
             <!-- /.content -->
@@ -143,12 +168,17 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2019-2020.</strong>
+            <strong>Copyright &copy; 2020-2021.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b><a href="https://v-nerds.com/">V-nerds.com</a></b>
+                <b><a href="{{url('/')}}">Arts</a></b>
             </div>
         </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
         @else
         @yield('content')
         @endif
@@ -205,6 +235,18 @@
             });
         });
     </script>
+    @if(session()->has('success'))
+    <script type="text/javascript">
+        toastr.success('<?php echo session()->get('success'); ?>')
+    </script>
+    @endif
+    @if ($errors->any())
+    @foreach ($errors->all() as $error)
+    <script type="text/javascript">
+        toastr.error('{{$error}}')
+    </script>
+    @endforeach
+    @endif
     @yield('page-script')
 
 </body>
