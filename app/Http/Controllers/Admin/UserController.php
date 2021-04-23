@@ -13,11 +13,6 @@ use DataTables;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -27,20 +22,23 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('register_at', function ($row) {
                     $register_at = date('M-d-Y g:i:A', strtotime($row->created_at));
+
                     return $register_at;
                 })
                 ->addColumn('last_active', function ($row) {
-                    if (!empty($row->last_login_at)) {
+                    if (! empty($row->last_login_at)) {
                         $register_at = date('M-d-Y g:i:A', strtotime($row->last_login_at));
-                    } else {
+                    }
+                    else {
                         $register_at = date('M-d-Y g:i:A', strtotime($row->created_at));
                     }
+
                     return $register_at;
                 })
                 ->addColumn('action', function ($row) {
 
                     $btn = '<a href="' . url("users/view", $row->id) . '" class="btn text-info p-2"><i class="fas fa-eye"></i></a>
-                    
+
                     <a href="' . url("users/update", $row->id) . '" class="btn text-primary p-2"><i class="fas fa-edit"></i></a>
 
                             <button class="btn open-modal dlt-btn text-danger p-2" data-toggle="modal" data-target="#modal" data-id="$row->id" data-url="' . url("users/delete", $row->id) . '"><i class="fas fa-trash-alt"></i></button>';
@@ -48,28 +46,18 @@ class UserController extends Controller
                     return $btn;
                 })
                 ->rawColumns(['action'])
-                ->make(true);
+                ->make(TRUE);
         }
+
         return view('admin.users.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         // creaete view
         return view('admin.users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $id = $request->id;
@@ -88,8 +76,8 @@ class UserController extends Controller
             if ($files = $request->file('profile_image')) {
                 $customController = new CustomController;
                 $directoryName = $customController->getPublicImagePath();
-                if (!is_dir($directoryName)) {
-                    mkdir($directoryName, 0777, true);
+                if (! is_dir($directoryName)) {
+                    mkdir($directoryName, 0777, TRUE);
                 }
 
                 $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
@@ -108,7 +96,8 @@ class UserController extends Controller
                 'profile_image' => $imagePath,
             ]);
             $succ = config('constants.INSERT_MSG');
-        } else {
+        }
+        else {
             $request->validate([
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
@@ -116,7 +105,7 @@ class UserController extends Controller
                 'status' => 'required',
                 'email' => "required|string|email|max:255|unique:users,email," . $id,
             ]);
-            if (!empty($request->password)) {
+            if (! empty($request->password)) {
                 $request->validate([
                     'password' => 'required|string|min:8',
                 ]);
@@ -138,7 +127,7 @@ class UserController extends Controller
             if ($request->file('profile_image')) {
                 $user->profile_image = $imagePath;
             }
-            if (!empty($password)) {
+            if (! empty($password)) {
                 $user->password = Hash::make($request->password);
             }
             $user->status = $request->status;
@@ -148,75 +137,49 @@ class UserController extends Controller
 
         if ($save) {
             return redirect('users')->with('success', $succ);
-        } else {
+        }
+        else {
             return redirect()->back()->with('errors', config('constants.FAIL'));
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $user = User::select('*')->where('id', $id)->first();
-        if (!empty($user->profile_image)) {
+        if (! empty($user->profile_image)) {
             $customController = new CustomController;
             $user->profile_image = $customController->getPublicImagePath() . $user->profile_image;
         }
+
         return view('admin.users.show', compact('user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $user = User::select('*')->where('id', $id)->first();
-        if (!empty($user->profile_image)) {
+        if (! empty($user->profile_image)) {
             $customController = new CustomController;
             $user->profile_image = $customController->getPublicImagePath() . $user->profile_image;
         }
+
         return view('admin.users.create', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $user = User::find($id);
         $user->status = 2;
         $user->deleted_at = Date('Y-m-d H:i:s');
         $user->save();
+
         return redirect('users')->with('success', config('constants.DELETE_MSG'));
     }
-    /**
-     * Delete user profile image
-     *
-     * @param  \App\Models\User  $id
-     * @return json response
-     */
+
     public function userImageDelete($id)
     {
         $user = User::find($id);
@@ -230,7 +193,8 @@ class UserController extends Controller
             $user->save();
             $succ = 'success';
             $msg = "success";
-        } else {
+        }
+        else {
             $succ = 'errors';
             $msg = "fail";
         }

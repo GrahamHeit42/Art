@@ -32,7 +32,8 @@
 
             <div class="form-group mt-4 imgDiv">
                 <div class="custom-file mb-4">
-                    <input type="file" class="custom-file-input cursor-pointer" id="profile_image" name="profile_image" />
+                    <input type="file" class="custom-file-input cursor-pointer" id="profile_image"
+                           name="profile_image" />
                     <label for="profile_image" class="file-upload custom-file-label cursor-pointer">
                         <span class="rounded2r">Upload Profile Image</span>
                     </label>
@@ -41,32 +42,37 @@
             </div>
 
             <div class="mt-4">
-                <x-label for="first_name" :value="__('First Name')" />
+                <x-label for="display_name" :value="__('Display Name')" />
 
-                <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required />
+                <x-input id="display_name" class="block mt-1 w-full" type="text" name="display_name"
+                         :value="old('display_name')" required />
             </div>
             <div class="mt-4">
-                <x-label for="last_name" :value="__('Last Name')" />
+                <x-label for="username" :value="__('User Name')" />
 
-                <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required />
+                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
+                         required />
             </div>
 
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                         required />
             </div>
 
             <div class="mt-4">
                 <x-label for="password" :value="__('Password')" />
 
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
+                         autocomplete="new-password" />
             </div>
 
             <div class="mt-4">
                 <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required />
+                <x-input id="password_confirmation" class="block mt-1 w-full" type="password"
+                         name="password_confirmation" required />
             </div>
 
             <div class="flex items-center justify-end mt-4">
@@ -81,17 +87,23 @@
         </form>
         <div class="form-group">
             <div class="col-md-6" style="text-align: center;">
-                <a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook"><button class="btn-fb"><img src="{{asset('/images/fb_icon1.png')}}" alt="Facebook Login" width="50" height="50" /></button></a>
+                <a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook">
+                    <button class="btn-fb"><img src="{{asset('/images/fb_icon1.png')}}" alt="Facebook Login" width="50"
+                                                height="50" /></button>
+                </a>
 
-                <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus"><button class="btn-g"><img src="{{asset('/images/google_icon1.png')}}" alt="Google Login" width="50" height="50" /></button></a>
+                <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus">
+                    <button class="btn-g"><img src="{{asset('/images/google_icon1.png')}}" alt="Google Login" width="50"
+                                               height="50" /></button>
+                </a>
 
             </div>
         </div>
     </x-auth-card>
 </x-guest-layout>
 <script>
-    $(document).ready(function() {
-        $('input[type=file]').change(function() {
+    $(document).ready(function () {
+        $('input[type=file]').change(function () {
             checkImage(this);
         });
     });

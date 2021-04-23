@@ -11,7 +11,7 @@ use App\Http\Controllers\CustomController;
 use App\Models\Image;
 use App\Models\Subject;
 use App\Models\Medium;
-use DataTables;
+use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
@@ -19,40 +19,41 @@ class PostController extends Controller
     {
         return '/upload/posts/';
     }
+
     public function getImagePath()
     {
         $customController = new CustomController;
+
         return $customController->getImagePath();
     }
+
     public function getPublicImagePath()
     {
         $customController = new CustomController;
+
         return $customController->getPublicImagePath();
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
             $data = Post::with('drawnBy')->where('status', 1)->get();
 
-            return Datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('image', function ($row) {
                     $image = "";
                     $img = Image::select('name')->where('post_id', $row->id)->first();
-                    if (!empty($img)) {
+                    if (! empty($img)) {
                         $image = \config('app.asset_url') . $this->getPostImagePath() . $img->name;
                     }
+
                     return $image;
                 })
                 ->addColumn('action', function ($row) {
 
                     $btn = '<a href="' . url("posts/view", $row->id) . '" class="btn text-info p-2"><i class="fas fa-eye"></i></a>
-                    
+
                     <a href="' . url("posts/update", $row->id) . '" class="btn text-primary p-2"><i class="fas fa-edit"></i></a>
 
                             <button class="btn open-modal dlt-btn text-danger p-2" data-toggle="modal" data-target="#modal" data-id="$row->id" data-url="' . url("posts/delete", $row->id) . '"><i class="fas fa-trash-alt"></i></button>';
@@ -60,30 +61,21 @@ class PostController extends Controller
                     return $btn;
                 })
                 ->rawColumns(['action'])
-                ->make(true);
+                ->make(TRUE);
         }
+
         return view('admin.posts.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $users = User::where('id', '!=', Auth::user()->id)->where('status', 1)->get();
         $subjects = Subject::all();
         $mediums = Medium::all();
+
         return view('admin.posts.create', compact('users', 'subjects', 'mediums'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $id = $request->id;
@@ -112,10 +104,9 @@ class PostController extends Controller
                     "work_again" => 'required',
                 ]);
             }
-            if (!empty($request->keywords)) {
+            if (! empty($request->keywords)) {
                 $keywords = str_replace(' ', ',', $request->keywords);
             }
-
 
             $post = new Post;
             $post->user_type = $request->user_type;
@@ -146,13 +137,12 @@ class PostController extends Controller
                 $c_work_again = $request->work_again;
                 $post->drawn_by = $name;
             }
-            $post->a_work_again = $a_work_again ?? null;
-            $post->c_work_again = $c_work_again ?? null;
-
+            $post->a_work_again = $a_work_again ?? NULL;
+            $post->c_work_again = $c_work_again ?? NULL;
 
             $save = $post->save();
             if ($save) {
-                if (!empty($request->images)) {
+                if (! empty($request->images)) {
                     $images = $request->images;
                     foreach ($images as $image) {
                         Image::create([
@@ -164,7 +154,8 @@ class PostController extends Controller
             }
 
             $succ = config('constants.INSERT_MSG');
-        } else {
+        }
+        else {
             $request->validate([
                 "image" => 'required',
                 "name" => 'required|string|max:255',
@@ -180,7 +171,6 @@ class PostController extends Controller
                 "again" => 'required',
                 "status" => 'required',
             ]);
-
 
             $post = Post::find($id);
             $post->user_id = Auth::user()->id;
@@ -202,67 +192,45 @@ class PostController extends Controller
 
         if ($save) {
             return redirect('posts')->with('success', $succ);
-        } else {
+        }
+        else {
             return redirect()->back()->with('errors', config('constants.FAIL'));
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $post = Post::select('*')->with('userDetails')->with('drawnBy')->with('commisionedBy')->with('subject')->with('medium')->where('id', $id)->first();
         $images = Image::select('name')->where('post_id', $id)->get();
 
-        if (!empty($images)) {
+        if (! empty($images)) {
             foreach ($images as $image) {
                 $image->name = \config('app.asset_url') . $this->getPostImagePath() . $image->name;
             }
             $post->images = $images;
         }
+
         // dd($post->drawnBy->first_name);
         return view('admin.posts.show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         return view('admin.posts.show');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $post = Post::find($id);
         $post->status = 2;
         $post->deleted_at = Date('Y-m-d H:i:s');
         $post->save();
+
         return redirect('posts')->with('success', config('constants.DELETE_MSG'));
     }
 }

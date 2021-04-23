@@ -31,10 +31,10 @@
                                 </div>
                             </div>
                             <div class="form-group row col-md-12">
-                                <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
+                                <label for="display_name" class="col-sm-2 col-form-label">First Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="first_name" id="first_name" value="{{$user->first_name ?? old('first_name') ?? ''}}" class="form-control {{ $errors->has('first_name') ? 'border-danger' : ''}}" />
-                                    <small class="form-text text-danger">{!! $errors->first('first_name') !!}</small>
+                                    <input type="text" name="display_name" id="display_name" value="{{$user->display_name ?? old('display_name') ?? ''}}" class="form-control {{ $errors->has('display_name') ? 'border-danger' : ''}}" />
+                                    <small class="form-text text-danger">{!! $errors->first('display_name') !!}</small>
                                 </div>
                             </div>
                             <div class="form-group row col-md-12">
