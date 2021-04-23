@@ -148,19 +148,19 @@ class CustomController extends Controller
     {
         $id = Auth::id();
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'display_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
         ]);
 
         $user = User::find($id);
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+        $user->display_name = $request->display_name;
+        $user->username = $request->username;
         if ($files = $request->file('profile_image')) {
             $directoryName = $this->getPublicImagePath();
             if (!is_dir($directoryName)) {
                 mkdir($directoryName, 0777, true);
             }
-            $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
+            $filePath = $request->input('display_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
             // $move = $files->move($directoryName, $filePath);
             $move = $files->move(public_path('upload/images'), $filePath);
             if ($move) {

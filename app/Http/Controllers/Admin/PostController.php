@@ -210,7 +210,7 @@ class PostController extends Controller
             $post->images = $images;
         }
 
-        // dd($post->drawnBy->first_name);
+        // dd($post->drawnBy->display_name);
         return view('admin.posts.show', compact('post'));
     }
 

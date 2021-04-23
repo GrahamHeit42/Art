@@ -29,8 +29,8 @@ class SocialiteController extends Controller
             $userSocial = Socialite::driver($social)->stateless()->user();
 
             $updateData = [
-                'first_name' => $userSocial->getName(),
-                'last_name' => $userSocial->getName(),
+                'display_name' => $userSocial->getName(),
+                'username' => $userSocial->getName(),
                 $social . '_id' => $userSocial->id,
                 'is_admin' => 0,
                 'role_id' => 2,

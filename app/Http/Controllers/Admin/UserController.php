@@ -64,8 +64,8 @@ class UserController extends Controller
 
         if (empty($id)) {
             $request->validate([
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
+                'display_name' => 'required|string|max:255',
+                'username' => 'required|string|max:255',
                 'email' => "required|string|email|max:255|unique:users,email",
                 'password' => 'required|string|min:8',
                 'is_admin' => 'required',
@@ -80,15 +80,15 @@ class UserController extends Controller
                     mkdir($directoryName, 0777, TRUE);
                 }
 
-                $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
+                $filePath = $request->input('display_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
                 $move = $files->move($directoryName, $filePath);
                 if ($move) {
                     $imagePath = $filePath;
                 }
             }
             $save = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
+                'display_name' => $request->display_name,
+                'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'is_admin' => $request->is_admin,
@@ -99,8 +99,8 @@ class UserController extends Controller
         }
         else {
             $request->validate([
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
+                'display_name' => 'required|string|max:255',
+                'username' => 'required|string|max:255',
                 'is_admin' => 'required',
                 'status' => 'required',
                 'email' => "required|string|email|max:255|unique:users,email," . $id,
@@ -113,7 +113,7 @@ class UserController extends Controller
             $imagePath = "";
             if ($files = $request->file('profile_image')) {
 
-                $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
+                $filePath = $request->input('display_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
                 $move = $files->move(public_path('upload/images'), $filePath);
                 if ($move) {
                     $imagePath = $filePath;
@@ -121,8 +121,8 @@ class UserController extends Controller
             }
 
             $user = User::find($id);
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
+            $user->display_name = $request->display_name;
+            $user->username = $request->username;
             $user->is_admin = $request->is_admin;
             if ($request->file('profile_image')) {
                 $user->profile_image = $imagePath;

@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
                 mkdir($directoryName, 0777, true);
             }
 
-            $filePath = $request->input('first_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
+            $filePath = $request->input('display_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
             $move = $files->move($directoryName, $filePath);
             if ($move) {
                 $imagePath = $filePath;
