@@ -59,8 +59,10 @@ class User extends Authenticatable
         else if ($value === 2) {
             $is_admin_text = 'Super Admin';
         }
+
         return $this->attributes['is_admin_text'] = $is_admin_text;
     }
+
     public function getStatusTextAttribute()
     {
         $value = $this->attributes['status'] ?? 0;
@@ -74,6 +76,7 @@ class User extends Authenticatable
         else if ($value === 3) {
             $status_text = 'Suspended';
         }
+
         return $this->attributes['status_text'] = $status_text;
     }
 }

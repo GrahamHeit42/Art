@@ -9,5 +9,8 @@ class Subject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'type', 'is_active'];
+    protected $fillable = [
+        'type',
+        'is_active'
+    ];
 }

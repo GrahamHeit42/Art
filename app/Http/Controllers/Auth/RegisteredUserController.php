@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Username;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -35,7 +36,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'display_name' => 'required|string|max:100',
             'username' => 'required|string|max:100|unique:users',
@@ -66,7 +66,17 @@ class RegisteredUserController extends Controller
             'profile_image' => $imagePath
         ]);
 
-        
+        try {
+            Username::create([
+                'user_id' => $user->id,
+                'username' => $request->username ?? NULL,
+                'created_by' => $user->id,
+                'status' => 1
+            ]);
+        }
+        catch (\Exception $e) {
+            info('User register error: ' . $e->getMessage());
+        }
 
         Auth::login($user);
 
