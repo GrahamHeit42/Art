@@ -80,7 +80,7 @@
                                         @if(isset($users) && !empty($users))
                                         <select name="user_id" id="user_id" class="form-control ">
                                             @foreach($users as $user)
-                                            <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
+                                            <option value="{{$user->id}}">{{$user->display_name}} {{$user->username}}</option>
                                             @endforeach
                                         </select>
                                         @endif

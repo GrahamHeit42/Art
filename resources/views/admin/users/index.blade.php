@@ -100,7 +100,7 @@
                     name: 'role'
                 },
                 {
-                    data: 'first_name',
+                    data: 'display_name',
                     name: 'name'
                 },
                 {

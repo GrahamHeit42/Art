@@ -51,7 +51,7 @@
                     <div class=" form-group row col-md-6">
                         <label for="" class="col-sm-5 col-form-label">User Name</label>
                         <div class="col-sm-7">
-                            <label for="" class="col-sm-12 col-form-label fw-normal">{{$post->userDetails->first_name}}</label>
+                            <label for="" class="col-sm-12 col-form-label fw-normal">{{$post->userDetails->display_name}}</label>
                         </div>
                     </div>
                     <div class="form-group row col-md-6">
@@ -75,21 +75,21 @@
                                 {{$post->medium->type}}</label>
                         </div>
                     </div>
-                    @if(isset($post->drawnBy->first_name))
+                    @if(isset($post->drawnBy->display_name))
                     <div class="form-group row col-md-6">
                         <label for="" class="col-sm-5 col-form-label">Drawn By</label>
                         <div class="col-sm-7">
                             <label for="" class="col-sm-12 col-form-label fw-normal">
-                                {{$post->drawnBy->first_name ?? ''}}</label>
+                                {{$post->drawnBy->display_name ?? ''}}</label>
                         </div>
                     </div>
                     @endif
-                    @if(isset($post->commisionedBy->first_name))
+                    @if(isset($post->commisionedBy->display_name))
                     <div class="form-group row col-md-6">
                         <label for="" class="col-sm-5 col-form-label">Commisioned By</label>
                         <div class="col-sm-7">
                             <label for="" class="col-sm-12 col-form-label fw-normal">
-                                {{$post->commisionedBy->first_name ?? ''}}</label>
+                                {{$post->commisionedBy->display_name ?? ''}}</label>
                         </div>
                     </div>
                     @endif

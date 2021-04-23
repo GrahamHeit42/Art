@@ -54,7 +54,7 @@
                 </div>
                 <div class="form-group row col-md-6">
                     <label class="col-sm-4">Name</label>
-                    <div class="col-sm-8">{{$user->first_name}} {{$user->last_name}}</div>
+                    <div class="col-sm-8">{{$user->display_name}} {{$user->username}}</div>
                 </div>
                 <div class="form-group row col-md-6">
                     <label class="col-sm-4">Email</label>

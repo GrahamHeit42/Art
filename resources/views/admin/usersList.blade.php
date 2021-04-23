@@ -32,7 +32,7 @@
                         <tr>
                             <td>{{ $loop->index+1 }} </td>
                             <td>@if($user->is_admin == '0') End User @else Admin @endif</td>
-                            <td><a href="{{url('userView',$user->id)}}">{{$user->first_name}} {{$user->last_name}}</a></td>
+                            <td><a href="{{url('userView',$user->id)}}">{{$user->display_name}} {{$user->username}}</a></td>
                             <td>{{$user->email}}</td>
                             <td><?php echo date('M-d-Y g:i:A', strtotime($user->created_at)); ?></td>
                             <td><?php if (!empty($user->last_login_at)) echo date('M-d-Y g:i:A', strtotime($user->last_login_at));

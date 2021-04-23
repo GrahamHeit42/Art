@@ -31,17 +31,17 @@
                                 </div>
                             </div>
                             <div class="form-group row col-md-12">
-                                <label for="display_name" class="col-sm-2 col-form-label">First Name</label>
+                                <label for="display_name" class="col-sm-2 col-form-label">Display Name</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="display_name" id="display_name" value="{{$user->display_name ?? old('display_name') ?? ''}}" class="form-control {{ $errors->has('display_name') ? 'border-danger' : ''}}" />
                                     <small class="form-text text-danger">{!! $errors->first('display_name') !!}</small>
                                 </div>
                             </div>
                             <div class="form-group row col-md-12">
-                                <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
+                                <label for="username" class="col-sm-2 col-form-label">User Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="last_name" id="last_name" value="{{$user->last_name ?? old('last_name') ?? ''}}" class="form-control {{ $errors->has('last_name') ? 'border-danger' : ''}}" />
-                                    <small class="form-text text-danger">{!! $errors->first('last_name') !!}</small>
+                                    <input type="text" name="username" id="username" value="{{$user->username ?? old('username') ?? ''}}" class="form-control {{ $errors->has('username') ? 'border-danger' : ''}}" />
+                                    <small class="form-text text-danger">{!! $errors->first('username') !!}</small>
                                 </div>
                             </div>
 

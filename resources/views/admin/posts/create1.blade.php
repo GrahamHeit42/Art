@@ -27,7 +27,7 @@
                                     @if(isset($users) && !empty($users))
                                     <select name="user_id" id="user_id" class="form-control">
                                         @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->first_name}}</option>
+                                        <option value="{{$user->id}}">{{$user->display_name}}</option>
                                         @endforeach
                                     </select>
                                     @endif

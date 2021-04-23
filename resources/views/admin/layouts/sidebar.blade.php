@@ -69,7 +69,7 @@
 
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{Auth::user()->first_name}}</a>
+                        <a href="#" class="d-block">{{Auth::user()->display_name}}</a>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        <!-- Control Sidebar 
+        <!-- Control Sidebar
     <aside class="control-sidebar control-sidebar-dark">
        Control sidebar content goes here
     </aside>
