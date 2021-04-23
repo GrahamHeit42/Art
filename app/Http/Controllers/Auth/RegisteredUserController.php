@@ -29,7 +29,8 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -47,8 +48,8 @@ class RegisteredUserController extends Controller
         if ($files = $request->file('profile_image')) {
             $customController = new CustomController;
             $directoryName = $customController->getPublicImagePath();
-            if (!is_dir($directoryName)) {
-                mkdir($directoryName, 0777, true);
+            if (! is_dir($directoryName)) {
+                mkdir($directoryName, 0777, TRUE);
             }
 
             $filePath = $request->input('display_name') . '_' . time() . '.' . $files->getClientOriginalExtension();
@@ -62,7 +63,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'display_name' => $request->display_name,
-            'status' => 1,
+            'status' => 0,
             'profile_image' => $imagePath
         ]);
 

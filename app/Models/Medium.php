@@ -11,5 +11,7 @@ class Medium extends Model
 
     protected $table = 'mediums';
 
-    protected $fillable = ['id', 'type', 'is_active'];
+    protected $fillable = [
+        'type', 'is_active'
+    ];
 }
