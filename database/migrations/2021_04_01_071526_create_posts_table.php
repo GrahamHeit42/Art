@@ -34,7 +34,7 @@ class CreatePostsTable extends Migration
             $table->double('understanding', 10, 2)->default(0);
             $table->boolean('want_work_again')->default(0)->comment('0-No, 1-Yes');
             $table->boolean('status')->default(0)->comment('0-Inactive, 1-Active');
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

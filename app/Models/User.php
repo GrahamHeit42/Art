@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -17,12 +18,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'google_id', 'facebook_id',
         'display_name', 'username',
         'email', 'password',
         'profile_image',
-        'google_id', 'facebook_id',
         'status', 'is_admin',
-        'last_login_at', 'deleted_at'
+        'last_login_at'
     ];
 
     /**
@@ -42,6 +43,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
 
     protected $appends = [
@@ -52,12 +54,12 @@ class User extends Authenticatable
     public function getIsAdminTextAttribute()
     {
         $value = $this->attributes['is_admin'] ?? 0;
-        $is_admin_text = 'End User';
+        $is_admin_text = 'User';
         if ($value === 1) {
-            $is_admin_text = 'Admin';
+            $is_admin_text = 'Super Admin';
         }
         else if ($value === 2) {
-            $is_admin_text = 'Super Admin';
+            $is_admin_text = 'Admin';
         }
 
         return $this->attributes['is_admin_text'] = $is_admin_text;

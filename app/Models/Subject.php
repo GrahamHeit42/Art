@@ -13,7 +13,7 @@ class Subject extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type',
-        'is_active'
+        'title',
+        'status'
     ];
 }

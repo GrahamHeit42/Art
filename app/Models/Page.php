@@ -11,7 +11,8 @@ class Page extends Model
 
     protected $fillable = [
         'type',
-        'title', 'content',
+        'title',
+        'content',
         'status'
     ];
 }

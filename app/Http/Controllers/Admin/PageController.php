@@ -3,88 +3,77 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class PageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return view('admin.pages.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getPages(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $pages = Page::all();
+
+            return DataTables::of($pages)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '<a href="' . url("pages/" . $row->id) . '" class="btn btn-warning text-warning p-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btm-danger text-danger p-2 delete" data-id="' . $row->id . '">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>';
+                })
+                ->rawColumns(['action'])
+                ->make(TRUE);
+        }
+
+        return response()->json([
+            'status' => FALSE,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function show($id = NULL)
+    {
+        $page = Page::find($id);
+
+        return view('admin.pages.show', compact('page'));
+    }
+
     public function store(Request $request)
     {
-        //
-    }
+        $pageId = $request->post('id') ?? NULL;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $request->validate([
+            'type' => 'required',
+            'title' => 'required',
+            'content' => 'required',
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $page = Page::updateOrCreate(
+            [
+                'id' => $pageId
+            ],
+            [
+                'type' => $request->post('type'),
+                'title' => $request->post('title'),
+                'content' => $request->post('content'),
+                'status' => $request->post('status')
+            ]
+        );
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if($page) {
+            session()->flash('success', 'Page details updated successfully.');
+            return redirect(url('pages/') . $page->id);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        session()->flash('error', 'Something went wrong, Please try again.');
+        return redirect()->back();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,9 @@ class SocialiteController extends Controller
             $userSocial = Socialite::driver($social)->stateless()->user();
 
             $updateData = [
-                'display_name' => $userSocial->getName(),
-                'username' => $userSocial->getName(),
                 $social . '_id' => $userSocial->id,
-                'is_admin' => 0,
-                'role_id' => 2,
+                'display_name' => $userSocial->getName(),
+                'username' => Str::replaceFirst(' ', '-', Str::lower($userSocial->getName())),
                 'status' => 1
             ];
             $user = User::updateOrCreate(
@@ -34,18 +33,16 @@ class SocialiteController extends Controller
             if ($user) {
                 Auth::loginUsingId($user->id);
 
-                return redirect('dashboard');
+                return redirect(url('/'));
             }
             session()->flash('error', 'Something went wrong, PLease try again');
 
-            return redirect('login');
+            return redirect(route('login'));
         }
-        catch (Exception $e) {
-            // dd($e->getMessage());
-            // return view('auth.register', ['errors' => $e->getMessage()->getName()]);
+        catch (\Exception $e) {
             session()->flash('error', 'Something went wrong, PLease try again');
 
-            return redirect('login');
+            return redirect(route('login'));
         }
     }
 }

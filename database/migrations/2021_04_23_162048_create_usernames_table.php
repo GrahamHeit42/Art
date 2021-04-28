@@ -18,7 +18,6 @@ class CreateUsernamesTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('username', 100)->unique();
             $table->foreignId('created_by')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->tinyInteger('status')->default(0)->comment('0-Inactive, 1-Active');
             $table->timestamps();
         });
     }

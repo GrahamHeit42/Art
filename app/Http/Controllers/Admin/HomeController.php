@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Medium;
+use App\Models\Post;
+use App\Models\Subject;
+use App\Models\User;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $summary = [
+            'subjects' => Subject::count(),
+            'mediums' => Medium::count(),
+            'users' => User::count(),
+            'posts' => Post::count()
+        ];
+        return view('admin.dashboard', compact('summary'));
     }
 }

@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class IsUser
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +17,12 @@ class IsUser
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->is_admin == 0) {
-            return $next($request);
+        $user = auth()->user();
+        if ($user->is_admin !== 1) {
+            auth()->logout();
+            session()->flash('error', 'You don"t have permission to access this content');
+            return redirect(route('login'));
         }
-        return redirect()->back()->withErrors(config('constant.ACCESS_DENIED'));
+        return $next($request);
     }
 }
