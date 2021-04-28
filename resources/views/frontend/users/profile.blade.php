@@ -1,4 +1,4 @@
-@extends('frontend.layouts.sidebar')
+@extends('layouts.app')
 @section('title','Profile')
 @section('content')
     <div id="main">
@@ -20,7 +20,7 @@
                                             </h3>
                                         </div>
                                         <div id="my-account-1" class="profile-collapse collapse show">
-                                            <form action="{{url('profile')}}" method="POST">
+                                            <form action="{{ url('profile') }}" method="POST">
                                                 @csrf
                                                 <div class="profile-body">
                                                     <div class="profile-info-wrapper">
@@ -74,7 +74,7 @@
                                             </h3>
                                         </div>
                                         <div id="my-account-2" class="profile-collapse collapse">
-                                            <form action="{{url('change-password')}}" method="POST">
+                                            <form action="{{ url('change-password') }}" method="POST">
                                                 @csrf
                                                 <div class="profile-body">
                                                     <div class="profile-info-wrapper">
@@ -86,14 +86,14 @@
                                                             <div class="col-lg-12 col-md-12">
                                                                 <div class="change-info">
                                                                     <label>Old Password</label>
-                                                                    <input id="old_password" class="" type="password"
+                                                                    <input id="old_password" type="password"
                                                                            name="old_password" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-12 col-md-12">
                                                                 <div class="change-info">
                                                                     <label>New Password</label>
-                                                                    <input id="password" class="" type="password"
+                                                                    <input id="password" type="password"
                                                                            name="password" />
                                                                 </div>
                                                             </div>
@@ -119,7 +119,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

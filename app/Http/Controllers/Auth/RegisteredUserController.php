@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
             'password' => 'required|string|confirmed|min:8',
         ]);
 
-        $imagePath = "";
+        /*$imagePath = NULL;
         if ($files = $request->file('profile_image')) {
             $customController = new CustomController;
             $directoryName = $customController->getPublicImagePath();
@@ -57,14 +57,15 @@ class RegisteredUserController extends Controller
             if ($move) {
                 $imagePath = $filePath;
             }
-        }
+        }*/
 
         $user = User::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'display_name' => $request->display_name,
+            'display_name' => $request->post('display_name'),
+            'username' => $request->post('email'),
+            'email' => $request->post('email'),
+            'password' => Hash::make($request->post('password')),
             'status' => 0,
-            'profile_image' => $imagePath
+            'profile_image' => NULL, // $imagePath
         ]);
 
         try {
@@ -83,7 +84,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // return redirect(RouteServiceProvider::HOME);
-        return redirect('/');
+        return redirect(RouteServiceProvider::HOME);
     }
 }
