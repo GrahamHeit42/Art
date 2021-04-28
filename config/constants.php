@@ -27,4 +27,15 @@ return [
     'AP' => 'ArtistPersonal',
     'AC' => 'ArtistCommisioned',
     'CC' => 'Commissioner',
+
+    'admin' => [
+        'display_name' => env('ADMIN_NAME'),
+        'username' => env('ADMIN_USERNAME'),
+        'email' => env('ADMIN_EMAIL'),
+        'password' => env('ADMIN_PASSWORD'),
+    ],
+
+    'app' => [
+        'version' => env('APP_VERSION', '1.0.0')
+    ]
 ];

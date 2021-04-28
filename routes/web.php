@@ -1,13 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CustomController;
-use App\Http\Controllers\SocialiteController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\Admin\ContactDetailController;
+use App\Http\Controllers\Admin\MediumController;
 use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\ContactUsController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PageController;
+use App\Http\Controllers\Frontend\UserController as FrontUserController;
 use App\Http\Controllers\Frontend\PostController as FrontPostController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,60 +24,103 @@ use App\Http\Controllers\Frontend\PostController as FrontPostController;
 |
 */
 
-Route::get('dropzone', [CustomController::class, 'dropzone']);
-Route::post('dropzone/store', [CustomController::class, 'dropzoneStore'])->name('dropzone.store');
+//Route::get('dropzone', [CustomController::class, 'dropzone']);
+//Route::post('dropzone/store', [CustomController::class, 'dropzoneStore'])->name('dropzone.store');
 
-Route::get('/', [CustomController::class, 'getDashboard']);
-Route::get('/faq', function () {
-    return view('frontend.pages.faq');
-});
-Route::get('/terms-and-conditions', function () {
-    return view('frontend.pages.terms-and-conditions');
-});
+// Authentication
+// Route::get('/login/{social}', [SocialiteController::class, 'login']);
+// Route::get('/login/{social}/callback', [SocialiteController::class, 'callback']);
 
-Route::get('/login/{social}', [SocialiteController::class, 'socialLogin']);
-Route::get('/login/{social}/callback', [SocialiteController::class, 'handleProviderCallback']);
+// Home Page
+Route::get('/', [HomeController::class, 'index']);
+Route::post('/mediums', [HomeController::class, 'mediums']);
+Route::post('/subjects', [HomeController::class, 'subjects']);
 
-//user
+// Posts
+Route::post('/posts', [FrontPostController::class, 'index']);
+Route::get('/posts/{id}', [FrontPostController::class, 'show']);
+
+// Pages
+Route::get('contact-us', [PageController::class, 'contactUs']);
+Route::get('about-us', [PageController::class, 'aboutUs']);
+Route::get('terms-and-conditions', [PageController::class, 'termsConditions']);
+Route::get('help-and-faqs', [PageController::class, 'helpFaqs']);
+
+// Authentication Routes
 Route::middleware(['auth'])->group(function () {
+    Route::match(['get', 'post'], 'profile', [FrontUserController::class, 'profile']);
+    Route::match(['get', 'post'], 'change-password', [FrontUserController::class, 'changePassword']);
 
-    Route::get('/dashboard', [CustomController::class, 'getDashboard'])->name('dashboard');
+    Route::prefix('posts')->group(function () {
+        Route::get('create', [FrontPostController::class, 'create']);
+        Route::get('store', [FrontPostController::class, 'store']);
+    });
 
-    Route::get('profile', [CustomController::class, 'profile'])->name('profile');
-    Route::post('profile', [CustomController::class, 'saveProfile']);
-    Route::post('/profile-image-delete/{id}', [CustomController::class, 'profileImageDelete']);
-    Route::get('change-password', [CustomController::class, 'changePassword'])->name('change-password');
-    Route::post('/change-password', [CustomController::class, 'saveChangePassword']);
-
-    Route::get('artist-personal/create', [FrontPostController::class, 'artistPersonalCreate'])->name('artist-personal');
-    Route::get('artist-commissioned/create', [FrontPostController::class, 'artistCommissionedCreate'])->name('artist-commissioned');
-    Route::get('commissioner/create', [FrontPostController::class, 'commissionerCreate'])->name('commissioner');
-
-    Route::post('frontside/posts/save', [FrontPostController::class, 'savePost']);
+//    Route::get('artist-personal/create', [FrontPostController::class, 'artistPersonalCreate'])->name('artist-personal');
+//    Route::get('artist-commissioned/create', [FrontPostController::class, 'artistCommissionedCreate'])->name('artist-commissioned');
+//    Route::get('commissioner/create', [FrontPostController::class, 'commissionerCreate'])->name('commissioner');
+//    Route::post('frontside/posts/save', [FrontPostController::class, 'savePost']);
 });
 
-//Admin
-Route::middleware(['auth', 'admin'])->group(
-    function () {
-        //users
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::get('users/create', [UserController::class, 'create']);
-        Route::post('users/save', [UserController::class, 'store']);
-        Route::get('users/view/{id}', [UserController::class, 'show']);
-        Route::get('users/update/{id}', [UserController::class, 'edit']);
-        Route::post('users/delete/{id}', [UserController::class, 'destroy']);
-        Route::post('/user-image-delete/{id}', [UserController::class, 'userImageDelete']);
-        //posts
-        Route::get('posts', [PostController::class, 'index'])->name('posts.index');
-        Route::get('posts/create', [PostController::class, 'create']);
-        Route::post('posts/save', [PostController::class, 'store']);
-        Route::get('posts/view/{id}', [PostController::class, 'show']);
-        Route::get('posts/update/{id}', [PostController::class, 'edit']);
-        Route::post('posts/delete/{id}', [PostController::class, 'destroy']);
+// Admin
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
-        Route::get('admin/contact-us', [ContactUsController::class, 'index'])->name('admin.contact-us.index');
-        Route::post('admin/contact-us/delete/{id}', [ContactUsController::class, 'destroy'])->name('admin.contact-us.delete');
-    }
-);
+    Route::get('/', [AdminHomeController::class, 'index']);
+
+    Route::prefix('mediums')->group(function () {
+        Route::get('/', [MediumController::class, 'index']);
+        Route::post('/', [MediumController::class, 'getMediums']);
+        Route::get('create', [MediumController::class, 'create']);
+        Route::get('/{id}', [MediumController::class, 'show']);
+        Route::post('store', [MediumController::class, 'store']);
+        Route::post('delete', [MediumController::class, 'destroy']);
+    });
+
+    Route::prefix('subjects')->group(function () {
+        Route::get('/', [SubjectController::class, 'index']);
+        Route::post('/', [SubjectController::class, 'getSubjects']);
+        Route::get('create', [SubjectController::class, 'create']);
+        Route::get('/{id}', [SubjectController::class, 'show']);
+        Route::post('store', [SubjectController::class, 'store']);
+        Route::post('delete', [SubjectController::class, 'destroy']);
+    });
+
+    Route::prefix('pages')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'getPages']);
+        Route::get('create', [UserController::class, 'create']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('store', [UserController::class, 'store']);
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'getUsers']);
+        Route::get('create', [UserController::class, 'create']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('store', [UserController::class, 'store']);
+    });
+
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [PostController::class, 'index']);
+        Route::post('/', [PostController::class, 'getPosts']);
+        Route::get('create', [PostController::class, 'create']);
+        Route::get('/{id}', [PostController::class, 'show']);
+        Route::post('store', [PostController::class, 'store']);
+        Route::post('delete', [PostController::class, 'destroy']);
+    });
+
+    Route::prefix('contact-details')->group(function () {
+        Route::get('/', [ContactDetailController::class, 'index']);
+        Route::post('/', [ContactDetailController::class, 'getList']);
+        Route::get('/{id}', [ContactDetailController::class, 'show']);
+        Route::post('store', [ContactDetailController::class, 'store']);
+    });
+
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [SettingController::class, 'index']);
+        Route::post('store', [SettingController::class, 'store']);
+    });
+});
 
 require __DIR__ . '/auth.php';

@@ -14,9 +14,21 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
-        $subjects = ['Abstract', 'Anime/Manga', 'Character Design', 'Comic', 'Concept Art', 'Cosplay', 'Emoji/Emoticon', 'Fanart', 'Fantasy', 'Horror', 'Landscape', 'Mecha', 'Pixel', 'Portrait', 'Prop', 'Realism', 'Sketch', 'Stock', 'Storyboard', 'Still Life', 'Tutorial'];
-        foreach ($subjects as $subject) {
-            $subject = Subject::create(['type' => $subject]);
+        if (Subject::count() === 0) {
+            $subjects = [
+                'Abstract', 'Anime/Manga',
+                'Character Design', 'Comic', 'Concept Art', 'Cosplay',
+                'Emoji/Emoticon', 'Fanart', 'Fantasy',
+                'Horror', 'Landscape', 'Mecha',
+                'Pixel', 'Portrait', 'Prop', 'Realism',
+                'Sketch', 'Stock', 'Storyboard', 'Still Life', 'Tutorial'
+            ];
+            foreach ($subjects as $subject) {
+                Subject::create([
+                    'title' => $subject,
+                    'status' => 1
+                ]);
+            }
         }
     }
 }

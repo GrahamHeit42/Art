@@ -14,9 +14,18 @@ class MediumSeeder extends Seeder
      */
     public function run()
     {
-        $mediums = ['Digital 2D', 'Digital 3D', 'Traditional Paint', 'Traditional Illustration', 'Traditional Sculpture', 'Mixed Media', 'Animation', 'Photography'];
-        foreach ($mediums as $medium) {
-            $medium = Medium::create(['type' => $medium]);
+        if (Medium::count() === 0) {
+            $mediums = [
+                'Digital 2D', 'Digital 3D',
+                'Traditional Paint', 'Traditional Illustration', 'Traditional Sculpture',
+                'Mixed Media', 'Animation', 'Photography'
+            ];
+            foreach ($mediums as $medium) {
+                Medium::create([
+                    'title' => $medium,
+                    'status' => 1
+                ]);
+            }
         }
     }
 }

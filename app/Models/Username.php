@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Username extends Model
 {
@@ -16,13 +17,13 @@ class Username extends Model
         'status'
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function createdBy()
+    /*public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
+    }*/
 }

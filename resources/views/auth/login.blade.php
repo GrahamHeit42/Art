@@ -1,77 +1,75 @@
-<style>
-    /* .btn-fb {
-        background-color: #3578e5;
-        color: white;
-        padding: 10px;
-        border-radius: 10px;
-    }
+@extends('layouts.app')
 
-    .btn-g {
-        background-color: brown;
-        color: white;
-        padding: 10px;
-        border-radius: 10px;
-    } */
-</style>
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <!-- <a href="/"> -->
-            <!-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> -->
-            <!-- </a> -->
-        </x-slot>
+@section('title','Login')
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+@section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+@endsection
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+@section('content')
+    <div class="login-register">
+        <div class="container">
+            <div class="row">
+                <div class="login-register-area">
+                    <div class="col-md-12">
+                        <div class="login-register-wrapper">
+                            <div class="login-register-tab-list nav" id="login-register" role="tablist">
+                                <a class="active" id="login-tab" data-toggle="tab" href="#login" role="tab"
+                                   aria-controls="login" aria-selected="true">
+                                    <h4>Login</h4>
+                                </a>
+                            </div>
+                            <div class="tab-content" id="login-registerContent">
+                                <div class="tab-pane fade show active" id="login" role="tabpanel"
+                                     aria-labelledby="login-tab">
+                                    <div class="login-form-container">
+                                        <div class="login-register-form">
+                                            <form action="{{ route('login') }}" method="post">
+                                                @csrf
+                                                <input id="email" title="Email Address" type="email" name="email"
+                                                       value="{{ old('email') ?? NULL }}" placeholder="Email"
+                                                       autofocus />
+                                                <input id="password" title="Password" type="password" name="password"
+                                                       placeholder="Password" />
+                                                <div class="button-box">
+                                                    <div class="login-toggle-btn">
+                                                        <div class="login-option">
+                                                            <label>
+                                                                <input title="Remember Me" type="checkbox" />
+                                                                <a class="flote-none" href="javascript:void(0)">Remember
+                                                                    me
+                                                                </a>
+                                                            </label>
+                                                        </div>
+                                                        <a href="{{ route('password.request') }}">Forgot Password?</a>
+                                                    </div>
+                                                    <div class="button-box">
+                                                        <button type="submit" class="btn gallery-btn-green">
+                                                            <span>Login</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-
-                @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-                @endif
-
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-        <div class="form-group">
-            <div class="col-md-6" style="text-align: center;">
-                <a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook"><button class="btn-fb"><img src="{{asset('/images/fb_icon1.png')}}" alt="Facebook Login" width="50" height="50" /></button></a>
-
-                <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus"><button class="btn-g"><img src="{{asset('/images/google_icon1.png')}}" alt="Google Login" width="50" height="50" /></button></a>
-
+                                        {{-- <div class="form-group row col-md-12 mt-4">
+                                            <div class="col-md-6" style="text-align: right;">
+                                                <a href="{{ url('login/facebook') }}" class="fb btn">
+                                                    <i class="fa fa-facebook fa-fw"></i> Facebook </a>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: left;">
+                                                <a href="{{ url('login/google') }}" class="google btn"><i class="fa fa-google fa-fw">
+                                                    </i> Google
+                                                </a>
+                                            </div>
+                                        </div> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </x-auth-card>
-</x-guest-layout>
+    </div>
+@endsection

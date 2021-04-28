@@ -2,28 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class SocialiteController extends Controller
 {
-    /**
-     * Handle Social login request
-     *
-     * @return response
-     */
-    public function socialLogin($social)
+    public function login($social)
     {
         return Socialite::driver($social)->redirect();
     }
-    /**
-     * Obtain the user information from Social Logged in.
-     * @param $social
-     * @return Response
-     */
-    public function handleProviderCallback($social)
+
+    public function callback($social)
     {
         try {
             $userSocial = Socialite::driver($social)->stateless()->user();
@@ -43,14 +33,18 @@ class SocialiteController extends Controller
 
             if ($user) {
                 Auth::loginUsingId($user->id);
+
                 return redirect('dashboard');
             }
             session()->flash('error', 'Something went wrong, PLease try again');
+
             return redirect('login');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             // dd($e->getMessage());
             // return view('auth.register', ['errors' => $e->getMessage()->getName()]);
             session()->flash('error', 'Something went wrong, PLease try again');
+
             return redirect('login');
         }
     }

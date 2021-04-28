@@ -15,7 +15,7 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('type')->default(0)->comment('1-about us,2-contact us,3-terms and condition,4-help and faq');
+            $table->tinyInteger('type')->default(0)->comment('1-About US, 2-Contact US, 3-Terms & Conditions, 4-Help & FAQ');
             $table->string('title', 50);
             $table->text('content');
             $table->tinyInteger('status')->default(0);

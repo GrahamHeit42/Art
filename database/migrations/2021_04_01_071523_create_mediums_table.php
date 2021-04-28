@@ -15,8 +15,8 @@ class CreateMediumsTable extends Migration
     {
         Schema::create('mediums', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->tinyInteger('is_active')->default(1);
+            $table->string('title', 255);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

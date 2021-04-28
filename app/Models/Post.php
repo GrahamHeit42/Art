@@ -8,6 +8,10 @@ use App\Models\User;
 use App\Models\Subject;
 use App\Models\Medium;
 
+/**
+ * @method static find( $id )
+ * @method static latest()
+ */
 class Post extends Model
 {
     use HasFactory;

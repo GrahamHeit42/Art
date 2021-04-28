@@ -1,117 +1,64 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<style>
-    .rounded2r {
-        border-radius: 0px 25px 25px 0px;
-    }
+@extends('layouts.app')
 
-    input[type=file] {
-        display: none;
-    }
+@section('title', 'Register')
 
-    .file-upload {
-        margin: 1rem;
-        background-color: grey;
-        color: #fff;
-        padding: 0.5rem;
-        cursor: pointer;
-    }
+@section('styles')
+    <style rel="text/css">
+        .login-form-container {
+            padding: 40px !important;
+        }
+    </style>
+@endsection
 
-    .imgDiv {
-        margin: auto;
-        text-align: center;
-    }
-</style>
-
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo"></x-slot>
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" enctype="multipart/form-data" action="{{ route('register') }}">
-            @csrf
-
-            <div class="form-group mt-4 imgDiv">
-                <div class="custom-file mb-4">
-                    <input type="file" class="custom-file-input cursor-pointer" id="profile_image"
-                           name="profile_image" />
-                    <label for="profile_image" class="file-upload custom-file-label cursor-pointer">
-                        <span class="rounded2r">Upload Profile Image</span>
-                    </label>
+@section('content')
+    <div class="login-register">
+        <div class="container">
+            <div class="row">
+                <div class="login-register-area">
+                    <div class="col-md-12">
+                        <div class="login-register-wrapper">
+                            <div class="login-register-tab-list nav" id="login-register" role="tablist">
+                                <a class="active" id="register-tab" data-toggle="tab" href="#register" role="tab"
+                                   aria-controls="register" aria-selected="false">
+                                    <h4>Register</h4>
+                                </a>
+                            </div>
+                            <div class="tab-content" id="login-registerContent">
+                                <div class="tab-pane fade show active" id="register" role="tabpanel"
+                                     aria-labelledby="register-tab">
+                                    <div class="login-form-container">
+                                        <div class="login-register-form">
+                                            <form action="{{ route('register') }}" method="post">
+                                                @csrf
+                                                <input title="Display Name" id="display_name" type="text"
+                                                       name="display_name"
+                                                       value="{{ old('display_name') ?? NULL }}"
+                                                       placeholder="Display Name" autofocus />
+                                                <input title="Username" id="username" type="text"
+                                                       name="username"
+                                                       value="{{ old('username') ?? NULL }}" placeholder="User Name" />
+                                                <input title="Email" id="email" type="email" name="email"
+                                                       value="{{ old('email') ?? NULL }}" placeholder="Email" />
+                                                <input title="Password" id="password" type="password"
+                                                       name="password"
+                                                       placeholder="Password" />
+                                                <input title="Confirm Password" type="password"
+                                                       id="password_confirmation" name="password_confirmation"
+                                                       placeholder="Confirm Password" />
+                                                <div class="button-box">
+                                                    <button type="submit" class="btn gallery-btn-dark-yellow">
+                                                        <span>Register</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <span id="filename"></span>
-            </div>
-
-            <div class="mt-4">
-                <x-label for="display_name" :value="__('Display Name')" />
-
-                <x-input id="display_name" class="block mt-1 w-full" type="text" name="display_name"
-                         :value="old('display_name')" required />
-            </div>
-            <div class="mt-4">
-                <x-label for="username" :value="__('User Name')" />
-
-                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
-                         required />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                         required />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                         autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                         name="password_confirmation" required />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
-        <div class="form-group">
-            <div class="col-md-6" style="text-align: center;">
-                <a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook">
-                    <button class="btn-fb"><img src="{{asset('/images/fb_icon1.png')}}" alt="Facebook Login" width="50"
-                                                height="50" /></button>
-                </a>
-
-                <a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus">
-                    <button class="btn-g"><img src="{{asset('/images/google_icon1.png')}}" alt="Google Login" width="50"
-                                               height="50" /></button>
-                </a>
-
             </div>
         </div>
-    </x-auth-card>
-</x-guest-layout>
-<script>
-    $(document).ready(function () {
-        $('input[type=file]').change(function () {
-            checkImage(this);
-        });
-    });
-
-    function checkImage(input) {
-        if (input.files && input.files[0]) {
-            var filename = $('input[type=file]').val().split('\\').pop();
-            $("#filename").html(filename);
-        }
-    }
-</script>
+    </div>
+@endsection

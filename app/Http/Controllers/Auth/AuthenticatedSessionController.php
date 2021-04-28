@@ -19,13 +19,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('frontend.auth.login');
+        return view('auth.login');
     }
 
     /**
      * Handle an incoming authentication request.
      *
-     * @param  \App\Http\Requests\Auth\LoginRequest  $request
+     * @param \App\Http\Requests\Auth\LoginRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LoginRequest $request)
@@ -38,14 +39,18 @@ class AuthenticatedSessionController extends Controller
         $user->last_login_at = Date('Y-m-d H:i:s');
         $user->save();
 
-        // return redirect()->intended(RouteServiceProvider::HOME);
-        return redirect('/');
+        if ($user->is_admin === 1) {
+            return redirect(url('admin'));
+        }
+
+        return redirect(url('/'));
     }
 
     /**
      * Destroy an authenticated session.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
