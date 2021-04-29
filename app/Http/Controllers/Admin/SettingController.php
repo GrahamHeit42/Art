@@ -12,6 +12,7 @@ class SettingController extends Controller
     {
         $settings = Setting::all()->pluck('value', 'key');
 
+        view()->share('page_title', 'Settings');
         return view('admin.settings.index', compact('settings'));
     }
 

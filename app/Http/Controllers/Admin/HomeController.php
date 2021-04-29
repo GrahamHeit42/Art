@@ -18,6 +18,7 @@ class HomeController extends Controller
             'users' => User::count(),
             'posts' => Post::count()
         ];
+        view()->share('page_title', 'Dashboard');
         return view('admin.dashboard', compact('summary'));
     }
 }

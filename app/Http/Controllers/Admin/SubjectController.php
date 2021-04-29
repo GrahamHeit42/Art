@@ -11,21 +11,23 @@ class SubjectController extends Controller
 {
     public function index()
     {
+        view()->share('page_title', 'Subjects');
+
         return view('admin.subjects.index');
     }
 
     public function getSubjects(Request $request)
     {
         if ($request->ajax()) {
-            $subjects = Subject::all();
+            $subjects = Subject::latest()->get();
 
             return DataTables::of($subjects)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("subjects/" . $row->id) . '" class="btn btn-warning text-warning p-2">
+                    return '<a href="' . url("admin/subjects/" . $row->id) . '" class="btn text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button class="btn btm-danger text-danger p-2 delete" data-id="' . $row->id . '">
+                            <button type="button" class="btn text-danger p-2 delete" data-id="' . $row->id . '">
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
@@ -43,48 +45,52 @@ class SubjectController extends Controller
     {
         $subject = Subject::find($id);
 
+        view()->share('page_title', ( ! empty($id) ? 'Update' : 'Create' ) . ' Subject');
+
         return view('admin.subjects.show', compact('subject'));
     }
 
     public function store(Request $request)
     {
-        $subjectId = $request->post('subject_id') ?? NULL;
+        $subjectId = $request->post('id') ?? NULL;
 
         $request->validate([
-            'title' => 'required|max:255|unique:subjects,' . $subjectId
+            'title' => 'required|max:255|unique:subjects,title,' . $subjectId
         ]);
 
         $subject = Subject::updateOrCreate(
             [
-                'title' => $request->post('title')
+                'id' => $subjectId
             ],
             [
+                'title' => $request->post('title'),
                 'status' => $request->post('status')
             ]
         );
 
-        if($subject) {
+        if ($subject) {
             session()->flash('success', 'Subject details updated successfully.');
-            return redirect(url('subjects/') . $subject->id);
+
+            return redirect(url('admin/subjects') . '/' . $subject->id);
         }
 
         session()->flash('error', 'Something went wrong, Please try again.');
+
         return redirect()->back();
     }
 
     public function destroy(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $delete = Subject::destroy($request->post('id'));
-            if($delete)
-            {
+            if ($delete) {
                 return response()->json([
                     'status' => TRUE,
                     'message' => 'Subject deleted successfully.'
                 ]);
             }
         }
+
         return response()->json([
             'status' => FALSE,
             'message' => 'Something went wrong, Please try again.'

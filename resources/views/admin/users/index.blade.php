@@ -1,165 +1,133 @@
-@extends('admin.layouts.sidebar')
-@section('title','Users')
+@extends('admin.layouts.app')
+
+@push('stylesheets')
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+@endpush
+
 @section('content')
-<!-- <div class="row"> -->
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Users</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Users</li>
-                </ol>
-            </div>
+    <div class="row justify-content-end">
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+            <a type="button" href="{{ url('admin/users/create') }}" class="btn btn-primary float-right mb-3"
+               title="Add User">
+                <i class="fas fa-plus"></i> Add User
+            </a>
         </div>
-    </div><!-- /.container-fluid -->
-</section>
-<!-- Main content -->
-<section class="content">
-    <!-- Default box -->
+    </div>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Users</h3>
-            <h3 class="card-title float-right">
-                <a href="{{url('/users/create')}}" class="btn btn-primary btn-sm" style="border-color: white;"><i class="fa fa-plus-circle" aria-hidden="true" style="padding-right: 5px;"></i>New User</a>
-            </h3>
+            <h3 class="card-title">List Users</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
-        <div class="card-body">
-            <table id="tablelist" class="table table-bordered table-striped data-table">
+        <div class="card-body p-2">
+            <table class="table table-bordered table-striped" id="users-table">
                 <thead>
                     <tr>
-                        <th data-orderable="false">ID</th>
-                        <th>Role</th>
-                        <th>Name</th>
+                        <th>#</th>
+                        <th>Profile Image</th>
+                        <th>Display Name</th>
+                        <th>Username</th>
                         <th>Email</th>
-                        <th>Register At</th>
-                        <th>Last Active</th>
                         <th>Status</th>
-                        <th data-orderable="false" style="width: 15%;">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </div>
-
-</section>
-
-
-<!-- </div> -->
-<form id="userForm" action="" method="post">
-    <div id="modal" class="modal fade" role='dialog'>
-        <div class="modal-dialog">
-            <div class="modal-content bg-default">
-                <div class="modal-header">
-                    <h4 class="modal-title">Are you sure?</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    <p>Do you really want to delete this Post?</p>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-
-                    @csrf
-                    <button class="btn btn-danger" value="submit" type="submit">Confirm</button>
-
-
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-</form>
 @endsection
-@section('page-script')
-<script type="text/javascript">
-    $(function() {
-        var table = $('.data-table').DataTable({
+
+@push('scripts')
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    <script type="text/javascript">
+        let usersTable = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('users.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'id',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'is_admin_text',
-                    name: 'role'
-                },
-                {
-                    data: 'display_name',
-                    name: 'name'
-                },
-                {
-                    data: 'email',
-                    name: 'email'
-                },
-                {
-                    data: 'register_at',
-                    name: 'register_at'
-                },
-                {
-                    data: 'last_active',
-                    name: 'last_active'
-                },
-                {
-                    data: 'status',
-                    name: 'status'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
+            order: [],
+            ajax: {
+                url: "{{ url('admin/users') }}",
+                type: 'post'
+            },
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'profile_image', name: 'profile_image', orderable: false, searchable: false},
+                {data: 'display_name', name: 'display_name'},
+                {data: 'username', name: 'username'},
+                {data: 'email', name: 'email'},
+                {data: 'status_text', name: 'status_text'},
+                {data: 'action', name: 'action', orderable: true, searchable: true },
             ],
-            columnDefs: [{
-                targets: 3,
-                render: function(data, type, row, meta) {
-                    if (type === 'display') {
-                        data = '<a href="mailto:' + data + '">' + data + '</a>';
-                    }
-                    return data;
-                }
-            }, {
-                targets: 6,
-                render: function(data, type, row, meta) {
-                    if (type === 'display') {
-                        if (data == 0)
-                            $status = '<span class="badge badge-warning">Pending</span>';
-                        if (data == 1)
-                            $status = '<span class="badge badge-success">Active</span>';
-                        if (data == 3)
-                            $status = '<span class="badge badge-danger">Suspended</span>';
-                        return $status;
-                        data = $status;
-                    }
-                    return data;
-                }
-            }]
+            drawCallback: function () {
+                setDeleteEvent();
+            }
         });
-    });
-</script>
-<script type="text/javascript">
-    $(document).on("click", ".open-modal", function() {
 
-        var id = $(this).data('id');
-        var url = $(this).data('url');
-        $('#userForm').attr("action", url);
-        $('#modal').modal('show');
-    });
-</script>
-@endsection
+        function setDeleteEvent() {
+            $(".delete").click(function () {
+                let userId = $(this).data('id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to recover this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085D6',
+                    cancelButtonColor: '#DD3333',
+                    confirmButtonText: 'Yes, delete it!'
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            let formData = new FormData();
+                            formData.append('id', userId);
+
+                            $.ajax({
+                                url: BASE_URL + '/users/delete',
+                                type: 'post',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (response) {
+                                    if (response.status === true) {
+                                        Swal.fire(
+                                            'Deleted!',
+                                            response.message,
+                                            'success'
+                                        );
+                                        usersTable.ajax.reload();
+                                    } else {
+                                        Swal.fire(
+                                            'Error',
+                                            response.message,
+                                            'error'
+                                        );
+                                    }
+                                }
+                            });
+                        }
+                    })
+            });
+        }
+    </script>
+@endpush

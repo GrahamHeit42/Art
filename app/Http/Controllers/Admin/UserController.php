@@ -12,6 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        view()->share('page_title', 'Users');
         return view('admin.users.index');
     }
 
@@ -22,18 +23,21 @@ class UserController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('profile_image', function($row) {
+                    return '<img alt="'.$row->display_name.'" src="'.asset($row->profile_image).'" class="img-thumbnail"/>';
+                })
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("users/" . $row->id) . '" class="btn btn-info text-info p-2">
+                    return '<a href="' . url("admin/users/" . $row->id) . '" class="btn text-info p-2">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="' . url("users/edit" . $row->id) . '" class="btn btn-warning text-warning p-2">
+                            <a href="' . url("admin/users/edit/" . $row->id) . '" class="btn text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button class="btn btn-danger text-danger p-2" data-id="' . $row->id . '">
+                            <button class="btn text-danger p-2" data-id="' . $row->id . '">
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['profile_image', 'action'])
                 ->make(TRUE);
         }
 
@@ -43,14 +47,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
+    public function createUpdate($id = NULL)
     {
-        return view('admin.users.create');
+        $user = User::find($id);
+
+        view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . 'User');
+
+        return view('admin.users.create-update', compact('user'));
     }
 
     public function show($id = NULL)
     {
         $user = User::find($id);
+
+        view()->share('page_title', 'User Details');
 
         return view('admin.users.show', compact('user'));
     }
@@ -70,7 +80,7 @@ class UserController extends Controller
 
         if ($request->hasFile('profile_image')) {
             $profileImage = $request->file('profile_image');
-            $fileName = time() . $profileImage->getClientOriginalExtension();
+            $fileName = time() .'.'. $profileImage->getClientOriginalExtension();
             $profileImage->storeAs('users', $fileName);
             $data['profile_image'] = 'storage/users/' . $fileName;
         }
@@ -87,11 +97,11 @@ class UserController extends Controller
         if ($user) {
             session()->flash('success', 'User details saved successfully.');
 
-            return redirect(url('users/' . $user->id));
+            return redirect(url('admin/users/' . $user->id));
         }
         session()->flash('error', 'Something went wrong, Please try again.');
 
-        return redirect(url('users/' . $user->id));
+        return redirect(url('admin/users/' . $user->id));
     }
 
     public function destroy(Request $request)

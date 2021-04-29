@@ -16,4 +16,13 @@ class Subject extends Model
         'title',
         'status'
     ];
+
+    protected $appends = [
+        'status_text'
+    ];
+
+    public function getStatusTextAttribute()
+    {
+        return $this->attributes['status'] === 1 ? 'Active' : 'Inactive';
+    }
 }

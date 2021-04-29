@@ -11,21 +11,23 @@ class MediumController extends Controller
 {
     public function index()
     {
+        view()->share('page_title', 'Mediums');
+
         return view('admin.mediums.index');
     }
 
     public function getMediums(Request $request)
     {
         if ($request->ajax()) {
-            $mediums = Medium::all();
+            $mediums = Medium::latest()->get();
 
             return DataTables::of($mediums)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("mediums/" . $row->id) . '" class="btn btn-warning text-warning p-2">
+                    return '<a href="' . url("admin/mediums/" . $row->id) . '" class="btn text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button class="btn btm-danger text-danger p-2 delete" data-id="' . $row->id . '">
+                            <button class="btn text-danger p-2 delete" data-id="' . $row->id . '">
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
@@ -43,6 +45,8 @@ class MediumController extends Controller
     {
         $medium = Medium::find($id);
 
+        view()->share('page_title', ( ! empty($id) ? 'Update' : 'Create' ) . ' Medium');
+
         return view('admin.mediums.show', compact('medium'));
     }
 
@@ -51,40 +55,42 @@ class MediumController extends Controller
         $mediumId = $request->post('id') ?? NULL;
 
         $request->validate([
-            'title' => 'required|max:255|unique:mediums,' . $mediumId
+            'title' => 'required|max:255|unique:mediums,title,' . $mediumId
         ]);
 
         $medium = Medium::updateOrCreate(
             [
-                'title' => $request->post('title')
+                'id' => $mediumId
             ],
             [
+                'title' => $request->post('title'),
                 'status' => $request->post('status')
             ]
         );
 
-        if($medium) {
+        if ($medium) {
             session()->flash('success', 'Medium details updated successfully.');
-            return redirect(url('mediums/') . $medium->id);
+
+            return redirect(url('admin/mediums') .'/'. $medium->id);
         }
 
         session()->flash('error', 'Something went wrong, Please try again.');
+
         return redirect()->back();
     }
 
     public function destroy(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $delete = Medium::destroy($request->post('id'));
-            if($delete)
-            {
+            if ($delete) {
                 return response()->json([
                     'status' => TRUE,
                     'message' => 'Medium deleted successfully.'
                 ]);
             }
         }
+
         return response()->json([
             'status' => FALSE,
             'message' => 'Something went wrong, Please try again.'

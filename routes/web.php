@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/login/{social}', [SocialiteController::class, 'login']);
 // Route::get('/login/{social}/callback', [SocialiteController::class, 'callback']);
 
+Route::view('test', 'admin.layouts.app');
+
 // Home Page
 Route::get('/', [HomeController::class, 'index']);
 Route::post('/mediums', [HomeController::class, 'mediums']);
@@ -67,22 +69,22 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/', [AdminHomeController::class, 'index']);
 
-    Route::prefix('mediums')->group(function () {
-        Route::get('/', [MediumController::class, 'index']);
-        Route::post('/', [MediumController::class, 'getMediums']);
-        Route::get('create', [MediumController::class, 'create']);
-        Route::get('/{id}', [MediumController::class, 'show']);
-        Route::post('store', [MediumController::class, 'store']);
-        Route::post('delete', [MediumController::class, 'destroy']);
-    });
-
     Route::prefix('subjects')->group(function () {
         Route::get('/', [SubjectController::class, 'index']);
         Route::post('/', [SubjectController::class, 'getSubjects']);
-        Route::get('create', [SubjectController::class, 'create']);
+        Route::get('create', [SubjectController::class, 'show']);
         Route::get('/{id}', [SubjectController::class, 'show']);
         Route::post('store', [SubjectController::class, 'store']);
         Route::post('delete', [SubjectController::class, 'destroy']);
+    });
+
+    Route::prefix('mediums')->group(function () {
+        Route::get('/', [MediumController::class, 'index']);
+        Route::post('/', [MediumController::class, 'getMediums']);
+        Route::get('/create', [MediumController::class, 'show']);
+        Route::get('/{id}', [MediumController::class, 'show']);
+        Route::post('store', [MediumController::class, 'store']);
+        Route::post('delete', [MediumController::class, 'destroy']);
     });
 
     Route::prefix('pages')->group(function () {
@@ -96,8 +98,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'getUsers']);
-        Route::get('create', [UserController::class, 'create']);
+        Route::get('create', [UserController::class, 'createUpdate']);
         Route::get('/{id}', [UserController::class, 'show']);
+        Route::get('/edit/{id}', [UserController::class, 'createUpdate']);
         Route::post('store', [UserController::class, 'store']);
     });
 

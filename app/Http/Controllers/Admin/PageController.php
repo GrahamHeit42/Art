@@ -11,6 +11,7 @@ class PageController extends Controller
 {
     public function index()
     {
+        view()->share('page_title', 'Pages');
         return view('admin.pages.index');
     }
 
@@ -42,6 +43,7 @@ class PageController extends Controller
     public function show($id = NULL)
     {
         $page = Page::find($id);
+        view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . ' Page');
 
         return view('admin.pages.show', compact('page'));
     }
