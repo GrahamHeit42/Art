@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
 class PageController extends Controller
@@ -22,13 +23,13 @@ class PageController extends Controller
 
             return DataTables::of($pages)
                 ->addIndexColumn()
+                ->editColumn('content', function($row) {
+                    return Str::limit($row->content, 250);
+                })
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("pages/" . $row->id) . '" class="btn btn-warning text-warning p-2">
+                    return '<a href="' . url("admin/pages/" . $row->id) . '" class="btn text-warning p-2">
                                 <i class="fas fa-edit"></i>
-                            </a>
-                            <button class="btn btm-danger text-danger p-2 delete" data-id="' . $row->id . '">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>';
+                            </a>';
                 })
                 ->rawColumns(['action'])
                 ->make(TRUE);
@@ -53,7 +54,7 @@ class PageController extends Controller
         $pageId = $request->post('id') ?? NULL;
 
         $request->validate([
-            'type' => 'required',
+            // 'type' => 'required',
             'title' => 'required',
             'content' => 'required',
         ]);
@@ -63,7 +64,7 @@ class PageController extends Controller
                 'id' => $pageId
             ],
             [
-                'type' => $request->post('type'),
+                // 'type' => $request->post('type'),
                 'title' => $request->post('title'),
                 'content' => $request->post('content'),
                 'status' => $request->post('status')
@@ -72,7 +73,7 @@ class PageController extends Controller
 
         if($page) {
             session()->flash('success', 'Page details updated successfully.');
-            return redirect(url('pages/') . $page->id);
+            return redirect(url('admin/pages/' . $page->id));
         }
 
         session()->flash('error', 'Something went wrong, Please try again.');

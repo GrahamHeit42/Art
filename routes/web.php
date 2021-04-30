@@ -87,14 +87,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('delete', [MediumController::class, 'destroy']);
     });
 
-    Route::prefix('pages')->group(function () {
-        Route::get('/', [UserController::class, 'index']);
-        Route::post('/', [UserController::class, 'getPages']);
-        Route::get('create', [UserController::class, 'create']);
-        Route::get('/{id}', [UserController::class, 'show']);
-        Route::post('store', [UserController::class, 'store']);
-    });
-
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'getUsers']);
@@ -113,11 +105,19 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('delete', [PostController::class, 'destroy']);
     });
 
-    Route::prefix('contact-details')->group(function () {
+    /*Route::prefix('contact-details')->group(function () {
         Route::get('/', [ContactDetailController::class, 'index']);
         Route::post('/', [ContactDetailController::class, 'getList']);
         Route::get('/{id}', [ContactDetailController::class, 'show']);
         Route::post('store', [ContactDetailController::class, 'store']);
+    });*/
+
+    Route::prefix('pages')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\PageController::class, 'index']);
+        Route::post('/', [\App\Http\Controllers\Admin\PageController::class, 'getPages']);
+        // Route::get('create', [\App\Http\Controllers\Admin\PageController::class, 'create']);
+        Route::get('/{id}', [\App\Http\Controllers\Admin\PageController::class, 'show']);
+        Route::post('store', [\App\Http\Controllers\Admin\PageController::class, 'store']);
     });
 
     Route::prefix('settings')->group(function () {

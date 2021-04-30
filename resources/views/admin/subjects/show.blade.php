@@ -30,7 +30,7 @@
                                 <input type="radio" id="status-active" name="status" value="1" {{ ($subject->status ?? 0) === 1 ? 'checked' : '' }}> Active
                             </label>
                         </div>
-                        <a type="button" href="{{ url('admin/mediums') }}" class="btn btn-secondary">Cancel</a>
+                        <a type="button" href="{{ url('admin/subjects') }}" class="btn btn-secondary">Cancel</a>
                         <button type="submit" class="btn btn-success ml-3">Save</button>
                     </form>
                 </div>

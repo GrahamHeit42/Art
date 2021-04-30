@@ -11,6 +11,7 @@ class SettingController extends Controller
     public function index()
     {
         $settings = Setting::all()->pluck('value', 'key');
+        $settings = $settings->toArray();
 
         view()->share('page_title', 'Settings');
         return view('admin.settings.index', compact('settings'));
@@ -18,20 +19,12 @@ class SettingController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->ajax()) {
-            $settings = array_filter($request->all());
-            foreach ($settings as $key => $value) {
-                Setting::where('key', $key)->update(['value' => $value]);
-            }
-            return response()->json([
-                'status' => TRUE,
-                'message' => 'Settings updated successfully.'
-            ]);
+        $settings = array_filter($request->all());
+        foreach ($settings as $key => $value) {
+            Setting::where('key', $key)->update(['value' => $value]);
         }
 
-        return response()->json([
-            'status' => FALSE,
-            'message' => 'Something went wrong, Please try again.'
-        ]);
+        session()->flash('success', 'Settings updated successfully.');
+        return redirect(url('admin/settings'));
     }
 }

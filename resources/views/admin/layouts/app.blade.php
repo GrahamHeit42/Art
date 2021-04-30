@@ -49,7 +49,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ url('admin') }}" class="nav-link {{ request()->path() === 'admin' ? 'active' : NULL }}">
+                            <a href="{{ url('admin') }}" class="nav-link {{ request()->is('admin') ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -57,8 +57,8 @@
                             </a>
                         </li>
                         <li class="nav-header">MASTERS</li>
-                        <li class="nav-item has-treeview {{ (request()->path() === 'admin/subjects' || request()->path() === 'admin/mediums') ? 'active menu-is-opening menu-open' : NULL }}">
-                            <a href="#" class="nav-link {{ (request()->path() === 'admin/subjects' || request()->path() === 'admin/mediums') ? 'active' : NULL }}">
+                        <li class="nav-item has-treeview {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active menu-is-opening menu-open' : NULL }}">
+                            <a href="#" class="nav-link {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-chart-pie text-info"></i>
                                 <p>
                                     Masters
@@ -67,13 +67,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/subjects') }}" class="nav-link {{ request()->path() === 'admin/subjects' ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/subjects') }}" class="nav-link {{ request()->is('admin/subjects*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Subjects</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/mediums') }}" class="nav-link {{ request()->path() === 'admin/mediums' ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/mediums') }}" class="nav-link {{ request()->is('admin/mediums*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Mediums</p>
                                     </a>
@@ -82,8 +82,8 @@
                         </li>
 
                         <li class="nav-header">MODULES</li>
-                        <li class="nav-item has-treeview {{ (request()->path() === 'admin/users' || request()->path() === 'admin/posts') ? 'active menu-is-opening menu-open' : NULL }}">
-                            <a href="#" class="nav-link {{ (request()->path() === 'admin/users' || request()->path() === 'admin/posts') ? 'active' : NULL }}">
+                        <li class="nav-item has-treeview {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active menu-is-opening menu-open' : NULL }}">
+                            <a href="#" class="nav-link {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-chart-pie text-success"></i>
                                 <p>
                                     Modules
@@ -92,13 +92,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/users') }}" class="nav-link {{ request()->path() === 'admin/users' ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/users') }}" class="nav-link {{ request()->is('admin/users*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Users</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/posts') }}" class="nav-link {{ request()->path() === 'admin/posts' ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/posts') }}" class="nav-link {{ request()->is('admin/posts*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Posts</p>
                                     </a>
@@ -107,8 +107,8 @@
                         </li>
 
                         <li class="nav-header">OTHER</li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item has-treeview {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active menu-is-opening menu-open' : NULL }}">
+                            <a href="#" class="nav-link {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-chart-pie text-danger"></i>
                                 <p>
                                     OTHERS
@@ -117,13 +117,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/pages') }}" class="nav-link">
+                                    <a href="{{ url('admin/pages') }}" class="nav-link {{ request()->is('admin/pages*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Pages</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/settings') }}" class="nav-link">
+                                    <a href="{{ url('admin/settings') }}" class="nav-link {{ request()->is('admin/settings*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Settings</p>
                                     </a>

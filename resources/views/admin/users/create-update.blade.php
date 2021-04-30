@@ -17,15 +17,7 @@
                     <form name="user-form" id="user-form" action="{{ url('admin/users/store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input hidden id="user_id" name="id" value="{{ $user->id ?? NULL }}" />
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="profile_image">Profile Image</label>
-                                    <input type="file" id="profile_image" name="profile_image" class="form-control" accept="image/*"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"></div>
-                        </div>
+
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-group">
@@ -49,6 +41,12 @@
                                     <label for="email">Email</label>
                                     <input type="text" id="email" name="email" class="form-control"
                                            value="{{ $user->email ?? NULL }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="profile_image">Profile Image</label>
+                                    <input type="file" id="profile_image" name="profile_image" class="form-control" accept="image/*"/>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">

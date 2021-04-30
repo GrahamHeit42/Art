@@ -24,7 +24,7 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('profile_image', function($row) {
-                    return '<img alt="'.$row->display_name.'" src="'.asset($row->profile_image).'" class="img-thumbnail"/>';
+                    return '<img alt="'.$row->display_name.'" src="'.asset($row->profile_image).'" class="img-thumbnail" style="width: auto; height: 100px;"/>';
                 })
                 ->addColumn('action', function ($row) {
                     return '<a href="' . url("admin/users/" . $row->id) . '" class="btn text-info p-2">

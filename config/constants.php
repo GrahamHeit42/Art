@@ -36,6 +36,7 @@ return [
     ],
 
     'app' => [
-        'version' => env('APP_VERSION', '1.0.0')
+        'version' => env('APP_VERSION', '1.0.0'),
+        'contact_email' => env('CONTACT_EMAIL')
     ]
 ];

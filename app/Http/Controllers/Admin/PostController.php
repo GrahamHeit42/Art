@@ -15,6 +15,12 @@ use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        die('working');
+    }
+
     public function getPostImagePath()
     {
         return '/upload/posts/';

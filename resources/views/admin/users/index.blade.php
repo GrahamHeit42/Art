@@ -78,7 +78,7 @@
                 {data: 'username', name: 'username'},
                 {data: 'email', name: 'email'},
                 {data: 'status_text', name: 'status_text'},
-                {data: 'action', name: 'action', orderable: true, searchable: true },
+                {data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             drawCallback: function () {
                 setDeleteEvent();
