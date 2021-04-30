@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 @section('title','Profile')
 @section('content')
     <div id="main">

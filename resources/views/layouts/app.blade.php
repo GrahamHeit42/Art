@@ -5,21 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }} - {{ $page_title ?? NULL }}</title>
+
     <!-- favicon  -->
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
         rel="stylesheet">
+
     <!-- plugins  -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    @stack('styles')
+
     <!-- main css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
-    @yield('styles')
 </head>
 <body>
     <div id="wrapper">
@@ -40,7 +45,8 @@
                                 <div class="form-group row">
                                     <i class="fa fa-search col-sm-2" aria-hidden="true"></i>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="search" placeholder="Search here...">
+                                        <input type="text" class="form-control" id="search"
+                                               placeholder="Search here...">
                                     </div>
                                 </div>
                             </form>
@@ -83,7 +89,8 @@
                                 </div>
                             </div>
                             <div class="message">
-                                <a href="" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="" id="message" data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
                                     <img src="{{ asset('assets/icon/message.svg') }}" alt="">
                                 </a>
                                 <div class="dropdown-menu message_dropdown" aria-labelledby="message">
@@ -222,6 +229,7 @@
     <script src="{{ asset('assets/plugins/jquery/jquery-3.5.1.slim.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/pooper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    @stack('scripts')
     <script src="{{ asset('assets/js/general.js') }}"></script>
 </body>
 </html>

@@ -59,7 +59,7 @@
                         <li class="nav-header">MASTERS</li>
                         <li class="nav-item has-treeview {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active menu-is-opening menu-open' : NULL }}">
                             <a href="#" class="nav-link {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active' : NULL }}">
-                                <i class="nav-icon fas fa-chart-pie text-info"></i>
+                                <i class="nav-icon fas fa-coins text-info"></i>
                                 <p>
                                     Masters
                                     <i class="right fas fa-angle-left"></i>
@@ -84,7 +84,7 @@
                         <li class="nav-header">MODULES</li>
                         <li class="nav-item has-treeview {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active menu-is-opening menu-open' : NULL }}">
                             <a href="#" class="nav-link {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active' : NULL }}">
-                                <i class="nav-icon fas fa-chart-pie text-success"></i>
+                                <i class="nav-icon fas fa-cubes text-success"></i>
                                 <p>
                                     Modules
                                     <i class="right fas fa-angle-left"></i>
@@ -109,7 +109,7 @@
                         <li class="nav-header">OTHER</li>
                         <li class="nav-item has-treeview {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active menu-is-opening menu-open' : NULL }}">
                             <a href="#" class="nav-link {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active' : NULL }}">
-                                <i class="nav-icon fas fa-chart-pie text-danger"></i>
+                                <i class="nav-icon fas fa-list text-danger"></i>
                                 <p>
                                     OTHERS
                                     <i class="right fas fa-angle-left"></i>
@@ -132,13 +132,13 @@
                         </li>
 
                         <li class="nav-item" style="position: fixed; bottom: 0;">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Logout
-                                    {{-- <span class="right badge badge-danger">New</span>--}}
-                                </p>
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                                    <i class="fas fa-sign-out-alt nav-icon" aria-hidden="true"></i>
+                                    <p>Logout</p>
+                                </a>
+                            </form>
                         </li>
                     </ul>
                 </nav>
@@ -189,9 +189,9 @@
     <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/dist/js/adminlte.js') }}"></script>
 
-    <script src="{{ asset('admin/plugins/chart.js/Chart.min.js') }}"></script>
+    {{--<script src="{{ asset('admin/plugins/chart.js/Chart.min.js') }}"></script>--}}
     <script src="{{ asset('admin/dist/js/demo.js') }}"></script>
-    <script src="{{ asset('admin/dist/js/pages/dashboard3.js') }}"></script>
+    {{--<script src="{{ asset('admin/dist/js/pages/dashboard3.js') }}"></script>--}}
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 

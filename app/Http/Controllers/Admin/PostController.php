@@ -4,24 +4,110 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CustomController;
-use App\Models\Image;
-use App\Models\Subject;
-use App\Models\Medium;
 use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
-
-    public function __construct()
+    public function index()
     {
-        die('working');
+        view()->share('page_title', 'Posts');
+
+        return view('admin.posts.index');
     }
 
-    public function getPostImagePath()
+    public function getPosts(Request $request)
+    {
+        if ($request->ajax()) {
+            $posts = Post::latest()->with(['user', 'subject', 'medium'])->get();
+
+            return DataTables::of($posts)
+                ->addIndexColumn()
+                ->addColumn('display_name', function ($row) {
+                    return $row->user->display_name ?? NULL;
+                })
+                ->addColumn('subject_title', function ($row) {
+                    return $row->subject->title ?? NULL;
+                })
+                ->addColumn('medium_title', function ($row) {
+                    return $row->medium->title ?? NULL;
+                })
+                ->addColumn('action', function ($row) {
+                    return '<a href="' . url("admin/posts/" . $row->id) . '" class="btn text-warning p-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn text-danger p-2 delete" data-id="' . $row->id . '">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>';
+                })
+                ->rawColumns(['action'])
+                ->makeHidden(['user', 'subject', 'medium'])
+                ->make(TRUE);
+        }
+
+        return response()->json([
+            'status' => FALSE,
+            'message' => 'Something went wrong, Please try again'
+        ]);
+    }
+
+    public function show($id = NULL)
+    {
+        $post = Post::find($id);
+
+        view()->share('page_title', ( ! empty($id) ? 'Update' : 'Create' ) . ' Post');
+
+        return view('admin.posts.show', compact('post'));
+    }
+
+    public function store(Request $request)
+    {
+        $postId = $request->post('id') ?? NULL;
+
+        $request->validate([
+            'title' => 'required|max:255|unique:posts,title,' . $postId
+        ]);
+
+        $post = Post::updateOrCreate(
+            [
+                'id' => $postId
+            ],
+            [
+                'title' => $request->post('title'),
+                'status' => $request->post('status')
+            ]
+        );
+
+        if ($post) {
+            session()->flash('success', 'Post details updated successfully.');
+
+            return redirect(url('admin/posts') .'/'. $post->id);
+        }
+
+        session()->flash('error', 'Something went wrong, Please try again.');
+
+        return redirect()->back();
+    }
+
+    public function destroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $delete = Post::destroy($request->post('id'));
+            if ($delete) {
+                return response()->json([
+                    'status' => TRUE,
+                    'message' => 'Post deleted successfully.'
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => FALSE,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
+    }
+
+    /*public function getPostImagePath()
     {
         return '/upload/posts/';
     }
@@ -77,9 +163,9 @@ class PostController extends Controller
     {
         $users = User::where('id', '!=', Auth::user()->id)->where('status', 1)->get();
         $subjects = Subject::all();
-        $mediums = Medium::all();
+        $posts = Post::all();
 
-        return view('admin.posts.create', compact('users', 'subjects', 'mediums'));
+        return view('admin.posts.create', compact('users', 'subjects', 'posts'));
     }
 
     public function store(Request $request)
@@ -93,7 +179,7 @@ class PostController extends Controller
                 "user_type" => 'required',
                 "user_id" => 'required',
                 "subject_id" => 'required',
-                "medium_id" => 'required',
+                "post_id" => 'required',
                 "title" => 'required|string|max:255',
                 "description" => 'required',
 
@@ -120,7 +206,7 @@ class PostController extends Controller
 
             $post->artist_type = $request->artist_type;
             $post->subject_id = $request->subject_id;
-            $post->medium_id = $request->medium_id;
+            $post->post_id = $request->post_id;
             $post->title = $request->title;
             $post->description = $request->description;
             $post->keywords = $keywords;
@@ -206,7 +292,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Post::select('*')->with('userDetails')->with('drawnBy')->with('commisionedBy')->with('subject')->with('medium')->where('id', $id)->first();
+        $post = Post::select('*')->with('userDetails')->with('drawnBy')->with('commisionedBy')->with('subject')->with('post')->where('id', $id)->first();
         $images = Image::select('name')->where('post_id', $id)->get();
 
         if (! empty($images)) {
@@ -238,5 +324,5 @@ class PostController extends Controller
         $post->save();
 
         return redirect('posts')->with('success', config('constants.DELETE_MSG'));
-    }
+    }*/
 }

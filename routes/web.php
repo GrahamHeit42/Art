@@ -40,6 +40,7 @@ Route::post('/subjects', [HomeController::class, 'subjects']);
 
 // Posts
 Route::post('/posts', [FrontPostController::class, 'index']);
+Route::get('/posts/create/{type?}', [FrontPostController::class, 'create']);
 Route::get('/posts/{id}', [FrontPostController::class, 'show']);
 
 // Pages

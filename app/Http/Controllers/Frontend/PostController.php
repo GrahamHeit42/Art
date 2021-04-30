@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Medium;
 use App\Models\Post;
+use App\Models\Subject;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
@@ -17,9 +19,11 @@ class PostController extends Controller
         ]);
     }
 
-    public function create()
+    public function create($type=null)
     {
-        return view('frontend.posts.create');
+        $subjects = Subject::whereStatus(1)->get();
+        $mediums = Medium::whereStatus(1)->get();
+        return view('frontend.posts.create', compact('type', 'subjects', 'mediums'));
     }
 
     public function store()

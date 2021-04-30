@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     @stack('stylesheets')
+    @stack('styles')
 
     <!-- main css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -69,17 +70,32 @@
                                 <ul>
                                     <li class="profile_li">
                                         <a class="" href="{{ url('profile') }}">
-                                 <span class="">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                </span>Profile
+                                            <span class="">
+                                                <i class="fa fa-user" aria-hidden="true"></i>
+                                            </span>
+                                            Profile
                                         </a>
                                     </li>
                                     <li class="profile_li">
                                         <a class="" href="#">
-                                 <span class="">
-                                    <i class="fa fa-cog" aria-hidden="true"></i>
-                                </span>Setting
+                                            <span class="">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                            </span>
+                                            Setting
                                         </a>
+                                    </li>
+
+                                    <li class="profile_li">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                                <span class="">
+                                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                                </span>
+                                                Logout
+                                            </a>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -225,7 +241,7 @@
     <script src="{{ asset('assets/plugins/pooper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="{{ asset('assets/js/general.js') }}"></script>
     @stack('scripts')
+    <script src="{{ asset('assets/js/general.js') }}"></script>
 </body>
 </html>
