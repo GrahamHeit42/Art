@@ -104,11 +104,41 @@
 }
 @media only screen and (min-width: 991px){
     .post-description{
-        height: 125vh;
+        height: 150vh;
     }
 }
 @media only screen and (max-width: 991px){
     .post-description{
        margin-top: 30px;
+    }
+}
+
+
+
+
+
+
+@media only screen and (max-width: 480px){
+    .filter{
+        flex-direction: column;
+    }
+    .post-btn{
+        order: 2;
+    }
+    .filter .dropdown{
+        order: 1;
+        text-align: center;
+        margin-bottom: 10px;
+    }  
+    .mediums-dropdown {
+        transform: translate3d(70px, 38px, 0px) !important;
+    }   
+}
+@media only screen and (max-width: 575px) {
+    .gallery-tab .slick-next {
+        right: -10px;
+    }
+    .gallery-tab .slick-prev {
+        left: -16px;
     }
 }

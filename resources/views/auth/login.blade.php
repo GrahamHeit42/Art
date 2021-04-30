@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="login-register-area">
-                    <div class="col-md-12">
+                    <div class="col-md-12 no-spacing">
                         <div class="login-register-wrapper">
                             <div class="login-register-tab-list nav" id="login-register" role="tablist">
                                 <a class="active" id="login-tab" data-toggle="tab" href="#login" role="tab"
