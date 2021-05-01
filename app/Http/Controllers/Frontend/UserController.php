@@ -10,8 +10,16 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function profile(Request $request)
+    public function profile()
     {
+        view()->share('page_title', 'User Profile');
+
+        return view('frontend.users.profile');
+    }
+
+    public function settings(Request $request)
+    {
+        view()->share('page_title', 'User Settings');
         $user = User::find(auth()->id());
         if (Str::lower($request->method()) === 'post') {
             $request->validate([
@@ -23,14 +31,15 @@ class UserController extends Controller
             $user->save();
             session()->flash('success', 'User details updated successfully');
 
-            return redirect(url('profile'));
+            return redirect(url('settings'));
         }
 
-        return view('frontend.users.profile', compact('user'));
+        return view('frontend.users.settings', compact('user'));
     }
 
     public function changePassword(Request $request)
     {
+        view()->share('page_title', 'Change Password');
         $request->validate([
             'old_password' => 'required',
             'password' => 'required|confirmed'
@@ -44,7 +53,7 @@ class UserController extends Controller
 
             return redirect(url('profile'));
         }
-        session()->flash('error', 'Current password is invalid');
+        session()->flash('error', 'Current password is invalid.');
 
         return redirect(url('profile'));
     }

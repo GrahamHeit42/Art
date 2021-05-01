@@ -13,6 +13,7 @@ class PageController extends Controller
     public function index()
     {
         view()->share('page_title', 'Pages');
+
         return view('admin.pages.index');
     }
 
@@ -23,7 +24,7 @@ class PageController extends Controller
 
             return DataTables::of($pages)
                 ->addIndexColumn()
-                ->editColumn('content', function($row) {
+                ->editColumn('content', function ($row) {
                     return Str::limit($row->content, 250);
                 })
                 ->addColumn('action', function ($row) {
@@ -44,7 +45,7 @@ class PageController extends Controller
     public function show($id = NULL)
     {
         $page = Page::find($id);
-        view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . ' Page');
+        view()->share('page_title', ( ! empty($id) ? 'Update' : 'Create' ) . ' Page');
 
         return view('admin.pages.show', compact('page'));
     }
@@ -54,7 +55,6 @@ class PageController extends Controller
         $pageId = $request->post('id') ?? NULL;
 
         $request->validate([
-            // 'type' => 'required',
             'title' => 'required',
             'content' => 'required',
         ]);
@@ -64,19 +64,20 @@ class PageController extends Controller
                 'id' => $pageId
             ],
             [
-                // 'type' => $request->post('type'),
                 'title' => $request->post('title'),
                 'content' => $request->post('content'),
                 'status' => $request->post('status')
             ]
         );
 
-        if($page) {
+        if ($page) {
             session()->flash('success', 'Page details updated successfully.');
+
             return redirect(url('admin/pages/' . $page->id));
         }
 
         session()->flash('error', 'Something went wrong, Please try again.');
+
         return redirect()->back();
     }
 }

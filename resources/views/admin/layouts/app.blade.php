@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>{{ config('app.name') }}</title>
 
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link href="{{ asset('css/toastr.css') }}" rel="stylesheet" />
 
     @stack('stylesheets')
 </head>
@@ -41,7 +42,7 @@
                              class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ auth()->user()->display_name ?? null }}</a>
+                        <a href="#" class="d-block">{{ auth()->user()->display_name ?? NULL }}</a>
                     </div>
                 </div>
 
@@ -49,7 +50,8 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ url('admin') }}" class="nav-link {{ request()->is('admin') ? 'active' : NULL }}">
+                            <a href="{{ url('admin') }}"
+                               class="nav-link {{ request()->is('admin') ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -58,7 +60,8 @@
                         </li>
                         <li class="nav-header">MASTERS</li>
                         <li class="nav-item has-treeview {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active menu-is-opening menu-open' : NULL }}">
-                            <a href="#" class="nav-link {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active' : NULL }}">
+                            <a href="#"
+                               class="nav-link {{ (request()->is('admin/subjects*') || request()->is('admin/mediums*')) ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-coins text-info"></i>
                                 <p>
                                     Masters
@@ -67,13 +70,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/subjects') }}" class="nav-link {{ request()->is('admin/subjects*') ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/subjects') }}"
+                                       class="nav-link {{ request()->is('admin/subjects*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Subjects</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/mediums') }}" class="nav-link {{ request()->is('admin/mediums*') ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/mediums') }}"
+                                       class="nav-link {{ request()->is('admin/mediums*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Mediums</p>
                                     </a>
@@ -83,7 +88,8 @@
 
                         <li class="nav-header">MODULES</li>
                         <li class="nav-item has-treeview {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active menu-is-opening menu-open' : NULL }}">
-                            <a href="#" class="nav-link {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active' : NULL }}">
+                            <a href="#"
+                               class="nav-link {{ (request()->is('admin/users*') || request()->is('admin/posts*')) ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-cubes text-success"></i>
                                 <p>
                                     Modules
@@ -92,13 +98,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/users') }}" class="nav-link {{ request()->is('admin/users*') ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/users') }}"
+                                       class="nav-link {{ request()->is('admin/users*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Users</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/posts') }}" class="nav-link {{ request()->is('admin/posts*') ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/posts') }}"
+                                       class="nav-link {{ request()->is('admin/posts*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Posts</p>
                                     </a>
@@ -108,7 +116,8 @@
 
                         <li class="nav-header">OTHER</li>
                         <li class="nav-item has-treeview {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active menu-is-opening menu-open' : NULL }}">
-                            <a href="#" class="nav-link {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active' : NULL }}">
+                            <a href="#"
+                               class="nav-link {{ (request()->is('admin/pages*') || request()->is('admin/settings*')) ? 'active' : NULL }}">
                                 <i class="nav-icon fas fa-list text-danger"></i>
                                 <p>
                                     OTHERS
@@ -117,13 +126,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/pages') }}" class="nav-link {{ request()->is('admin/pages*') ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/pages') }}"
+                                       class="nav-link {{ request()->is('admin/pages*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Pages</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('admin/settings') }}" class="nav-link {{ request()->is('admin/settings*') ? 'active' : NULL }}">
+                                    <a href="{{ url('admin/settings') }}"
+                                       class="nav-link {{ request()->is('admin/settings*') ? 'active' : NULL }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Settings</p>
                                     </a>
@@ -134,7 +145,8 @@
                         <li class="nav-item" style="position: fixed; bottom: 0;">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                                <a class="nav-link" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); this.closest('form').submit();">
                                     <i class="fas fa-sign-out-alt nav-icon" aria-hidden="true"></i>
                                     <p>Logout</p>
                                 </a>
@@ -188,11 +200,9 @@
     <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/dist/js/adminlte.js') }}"></script>
-
-    {{--<script src="{{ asset('admin/plugins/chart.js/Chart.min.js') }}"></script>--}}
     <script src="{{ asset('admin/dist/js/demo.js') }}"></script>
-    {{--<script src="{{ asset('admin/dist/js/pages/dashboard3.js') }}"></script>--}}
 
+    <script src="{{ asset('js/toastr.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script type="text/javascript">
@@ -204,6 +214,29 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        let toastrOptions = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        @if(session()->has('success'))
+        toastr.success("{{ session()->get('success') }}", 'Success', toastrOptions);
+        @elseif(session()->has('error'))
+        toastr.error('{{ session()->get('error') }}', 'Error', toastrOptions);
+        @endif
     </script>
 
     @stack('scripts')

@@ -520,7 +520,7 @@ h1, h2, h3, h4, h5, h6 {
     color: rgb(0, 0, 0);
     font-size: 14px;
     height: 45px;
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
     padding: 0 15px;
     width: 100%;
     outline: none;
@@ -692,7 +692,7 @@ h1, h2, h3, h4, h5, h6 {
     clear: both;
     margin: 0 auto;
     width: 100%;
-    max-width: 600px;
+    /*max-width: 600px;*/
 }
 
 .upload-post label {

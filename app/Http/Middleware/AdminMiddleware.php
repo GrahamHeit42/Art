@@ -18,7 +18,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         $user = auth()->user();
-        if ($user->is_admin !== 1) {
+        if (!empty($user) && $user->is_admin !== 1) {
             auth()->logout();
             session()->flash('error', 'You don"t have permission to access this content');
             return redirect(route('login'));

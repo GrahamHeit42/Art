@@ -19,6 +19,9 @@ class HomeController extends Controller
             'posts' => Post::count()
         ];
         view()->share('page_title', 'Dashboard');
+
+        session()->flash('success', 'Login successfully.');
+
         return view('admin.dashboard', compact('summary'));
     }
 }

@@ -33,20 +33,34 @@ class PageSeeder extends Seeder
             $termsConditionsPage = [
                 'type' => 3,
                 'title' => 'Terms & Conditions',
-                'content' => 'Terms & Conditions
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem.
-                                1. Artist
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                2. Buyer
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book . It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged .
-                                            3. Post
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                4. Work
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book . It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged .
-                                            5. Lorem
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                6. Lorem
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book . It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged . '
+                'content' => "<h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+                                molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+                                numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+                                optio, eaque rerum! Provident similique accusantium nemo autem.</h6>
+                            <h4>
+                                <strong>1. Artist</strong>
+                            </h4>
+                            <h6>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h6>
+                            <h4>
+                                <strong>2. Buyer</strong>
+                            </h4>
+                            <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</h6>
+                            <h4>
+                                <strong>3. Post</strong>
+                            </h4>
+                            <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</h6>
+                            <h4>
+                                <strong>4. Work</strong>
+                            </h4>
+                            <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</h6>
+                            <h4>
+                                <strong>5. Lorem</strong>
+                            </h4>
+                            <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</h6>
+                            <h4>
+                                <strong>6. Lorem</strong>
+                            </h4>
+                            <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</h6>"
             ];
 
             Page::create($termsConditionsPage);
@@ -54,20 +68,55 @@ class PageSeeder extends Seeder
             $helpFaqsPage = [
                 'type' => 4,
                 'title' => 'Help & FAQs',
-                'content' => 'Help & FAQ
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit . Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem .
-                                            Q1 . Artist ?
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry .
-                                            Q2 . Buyer ?
-                                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                            Q3. Post ?
-                                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                Q4. Work ?
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                            Q5. Lorem ?
-                                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-                                Q6. Lorem ?
-                                Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+                'content' => "<h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+                                    molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+                                    numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+                                    optio, eaque rerum! Provident similique accusantium nemo autem.
+                                </h6>
+                                <h4>
+                                    <strong>Q1. Artist ?</strong>
+                                </h4>
+                                <h6>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h6>
+                                <h4>
+                                    <strong>Q2. Buyer ?</strong>
+                                </h4>
+                                <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when
+                                    an unknown printer took a galley of type and scrambled it to make a type specimen
+                                    book. It has survived not only five centuries, but also the leap into electronic
+                                    typesetting, remaining essentially unchanged.
+                                </h6>
+                                <h4>
+                                    <strong>Q3. Post ?</strong>
+                                </h4>
+                                <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when
+                                    an unknown printer took a galley of type and scrambled it to make a type specimen
+                                    book. It has survived not only five centuries, but also the leap into electronic
+                                    typesetting, remaining essentially unchanged.
+                                </h6>
+                                <h4>
+                                    <strong>Q4. Work ?</strong>
+                                </h4>
+                                <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when
+                                    an unknown printer took a galley of type and scrambled it to make a type specimen
+                                    book. It has survived not only five centuries, but also the leap into electronic
+                                    typesetting, remaining essentially unchanged.
+                                </h6>
+                                <h4>
+                                    <strong>Q5. Lorem ?</strong>
+                                </h4>
+                                <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when
+                                    an unknown printer took a galley of type and scrambled it to make a type specimen
+                                    book. It has survived not only five centuries, but also the leap into electronic
+                                    typesetting, remaining essentially unchanged.
+                                </h6>
+                                <h4>
+                                    <strong>Q6. Lorem ?</strong>
+                                </h4>
+                                <h6>Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when
+                                    an unknown printer took a galley of type and scrambled it to make a type specimen
+                                    book. It has survived not only five centuries, but also the leap into electronic
+                                    typesetting, remaining essentially unchanged.
+                                </h6>"
             ];
 
             Page::create($helpFaqsPage);

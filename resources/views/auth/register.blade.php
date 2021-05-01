@@ -33,19 +33,35 @@
                                                 <input title="Display Name" id="display_name" type="text"
                                                        name="display_name"
                                                        value="{{ old('display_name') ?? NULL }}"
-                                                       placeholder="Display Name" autofocus />
+                                                       placeholder="Display Name" autofocus @error('display_name') border-danger @enderror/>
+                                                @error('display_name')
+                                                    <span class="text-danger small">{{ $message }}</span>
+                                                @enderror
+
                                                 <input title="Username" id="username" type="text"
-                                                       name="username"
-                                                       value="{{ old('username') ?? NULL }}" placeholder="User Name" />
+                                                       name="username" class="mt-4"
+                                                       value="{{ old('username') ?? NULL }}" placeholder="User Name" @error('username') border-danger @enderror/>
+                                                @error('username')
+                                                    <span class="text-danger small">{{ $message }}</span>
+                                                @enderror
+
                                                 <input title="Email" id="email" type="email" name="email"
-                                                       value="{{ old('email') ?? NULL }}" placeholder="Email" />
+                                                       value="{{ old('email') ?? NULL }}" placeholder="Email" class="mt-4" @error('email') border-danger @enderror/>
+                                                @error('email')
+                                                    <span class="text-danger small">{{ $message }}</span>
+                                                @enderror
+
                                                 <input title="Password" id="password" type="password"
                                                        name="password"
-                                                       placeholder="Password" />
+                                                       placeholder="Password" class="mt-4" @error('password') border-danger @enderror/>
+                                                @error('password')
+                                                    <span class="text-danger small">{{ $message }}</span>
+                                                @enderror
+
                                                 <input title="Confirm Password" type="password"
                                                        id="password_confirmation" name="password_confirmation"
-                                                       placeholder="Confirm Password" />
-                                                <div class="button-box">
+                                                       placeholder="Confirm Password" class="mt-4"/>
+                                                <div class="button-box mt-4">
                                                     <button type="submit" class="btn gallery-btn-dark-yellow">
                                                         <span>Register</span>
                                                     </button>

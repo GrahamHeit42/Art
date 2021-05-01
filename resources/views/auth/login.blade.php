@@ -28,9 +28,13 @@
                                                 @csrf
                                                 <input id="email" title="Email Address" type="email" name="email"
                                                        value="{{ old('email') ?? NULL }}" placeholder="Email"
-                                                       autofocus />
+                                                       class="@error('email') border-danger @enderror" autofocus />
+                                                @error('email')
+                                                    <span class="small text-danger">{{ $message }}</span>
+                                                @enderror
+
                                                 <input id="password" title="Password" type="password" name="password"
-                                                       placeholder="Password" />
+                                                       placeholder="Password" class="mt-4"/>
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <div class="login-option">

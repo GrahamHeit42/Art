@@ -10,6 +10,7 @@ class SettingController extends Controller
 {
     public function index()
     {
+        view()->share('page_title', 'Settings');
         $settings = Setting::all()->pluck('value', 'key');
         return response()->json([
             'status' => TRUE,

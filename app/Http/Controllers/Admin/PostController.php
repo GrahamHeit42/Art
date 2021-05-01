@@ -81,7 +81,7 @@ class PostController extends Controller
         if ($post) {
             session()->flash('success', 'Post details updated successfully.');
 
-            return redirect(url('admin/posts') .'/'. $post->id);
+            return redirect(url('admin/posts') . '/' . $post->id);
         }
 
         session()->flash('error', 'Something went wrong, Please try again.');

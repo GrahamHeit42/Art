@@ -136,7 +136,9 @@ function ekUpload() {
     }
 }
 
-ekUpload();
+if (document.getElementById('file-upload') !== null && document.getElementById('file-upload').length > 0) {
+    ekUpload();
+}
 
 /*================= Pop up option js =================*/
 function myFunction() {
@@ -147,18 +149,3 @@ function myFunction() {
         x.style.display = "none";
     }
 }
-
-
-/*================= artist-commissoner dropdown js =================*/
-
-$(document).ready(function () {
-    $('.subject-matter-dropdown').select2();
-});
-
-$(document).ready(function () {
-    $('.medium-matter-dropdown').select2();
-});
-
-$(document).ready(function () {
-    $('.js-example-basic-multiple').select2();
-});

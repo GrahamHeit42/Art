@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
-use App\Http\Controllers\Admin\ContactDetailController;
 use App\Http\Controllers\Admin\MediumController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SettingController;
@@ -31,8 +30,6 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/login/{social}', [SocialiteController::class, 'login']);
 // Route::get('/login/{social}/callback', [SocialiteController::class, 'callback']);
 
-Route::view('test', 'admin.layouts.app');
-
 // Home Page
 Route::get('/', [HomeController::class, 'index']);
 Route::post('/mediums', [HomeController::class, 'mediums']);
@@ -40,23 +37,26 @@ Route::post('/subjects', [HomeController::class, 'subjects']);
 
 // Posts
 Route::post('/posts', [FrontPostController::class, 'index']);
-Route::get('/posts/create/{type?}', [FrontPostController::class, 'create']);
 Route::get('/posts/{id}', [FrontPostController::class, 'show']);
 
 // Pages
-Route::get('contact-us', [PageController::class, 'contactUs']);
+Route::match(['get', 'post'], 'contact-us', [PageController::class, 'contactUs']);
 Route::get('about-us', [PageController::class, 'aboutUs']);
 Route::get('terms-and-conditions', [PageController::class, 'termsConditions']);
 Route::get('help-and-faqs', [PageController::class, 'helpFaqs']);
 
 // Authentication Routes
 Route::middleware(['auth'])->group(function () {
+
     Route::match(['get', 'post'], 'profile', [FrontUserController::class, 'profile']);
+
+    Route::match(['get', 'post'], 'settings', [FrontUserController::class, 'settings']);
     Route::match(['get', 'post'], 'change-password', [FrontUserController::class, 'changePassword']);
 
     Route::prefix('posts')->group(function () {
-        Route::get('create', [FrontPostController::class, 'create']);
-        Route::get('store', [FrontPostController::class, 'store']);
+        Route::get('/create/{type?}', [FrontPostController::class, 'create']);
+        // Route::get('create', [FrontPostController::class, 'create']);
+        Route::post('store', [FrontPostController::class, 'store']);
     });
 
 //    Route::get('artist-personal/create', [FrontPostController::class, 'artistPersonalCreate'])->name('artist-personal');

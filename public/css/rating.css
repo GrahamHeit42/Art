@@ -1,30 +1,38 @@
 #full-stars-example-two .rating-group {
-display: inline-flex;
+    display: inline-flex;
 }
+
 #full-stars-example-two .rating__icon {
-pointer-events: none;
+    pointer-events: none;
 }
+
 #full-stars-example-two .rating__input {
-position: absolute !important;
-left: -9999px !important;
+    position: absolute !important;
+    left: -9999px !important;
 }
+
 #full-stars-example-two .rating__input--none {
-display: none;
+    display: none;
 }
+
 #full-stars-example-two .rating__label {
-cursor: pointer;
-padding: 0 0.1em;
-font-size: 25px;
+    cursor: pointer;
+    padding: 0 0.1em;
+    font-size: 25px;
 }
+
 #full-stars-example-two .rating__icon--star {
-color: orange;
+    color: orange;
 }
+
 #full-stars-example-two .rating__input:checked ~ .rating__label .rating__icon--star {
-color: #ddd;
+    color: #DDDDDD;
 }
+
 #full-stars-example-two .rating-group:hover .rating__label .rating__icon--star {
-color: orange;
+    color: orange;
 }
+
 #full-stars-example-two .rating__input:hover ~ .rating__label .rating__icon--star {
-color: #ddd;
+    color: #DDDDDD;
 }

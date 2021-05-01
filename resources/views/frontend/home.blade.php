@@ -27,16 +27,14 @@
         <div class="filter">
             <div class="post-btn nav" id="nav-tab" role="tablist">
                 <a class="btn gallery-btn-green" id="nav-filter-latest-tab" data-toggle="tab" href="#nav-filter-latest"
-                   role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest
-                </a>
+                   role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
                 <a class="btn gallery-btn-dark-yellow" id="filter-popular-tab" data-toggle="tab"
-                   href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular" aria-selected="false">
-                    Popular
-                </a>
-                <a href="#" class="btn gallery-btn-yellow">Trending</a>
+                   href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
+                <a class="btn gallery-btn-yellow" id="filter-trending-tab" data-toggle="tab"
+                   href="#nav-filter-trending" role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
             </div>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="mediumsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="mediums-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Mediums
                 </button>
                 <div class="dropdown-menu mediums-dropdown" aria-labelledby="mediums-dropdown">
@@ -53,9 +51,398 @@
         </div>
 
         <div class="tab-content" id="nav-tabContent">
+            {{--<div class="post tab-pane fade show active" id="nav-2d" role="tabpanel" aria-labelledby="nav-2d-tab">
+                <div class="page-type">
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-39.jpg') }}" />
+                    </a>
 
-            <div class="post tab-pane fade show active" id="nav-lllustration" role="tabpanel"
-                 aria-labelledby="nav-lllustration-tab">
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-40.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-41.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-42.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-43.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-44.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-45.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-46.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-47.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-48.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-49.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-50.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-51.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-52.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-53.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-54.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-55.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
+                    </a>
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
+                    </a>
+                </div>
+            </div>
+            <div class="post tab-pane fade" id="nav-3d" role="tabpanel" aria-labelledby="nav-3d-tab">
+                <div class="page-type">
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-58.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-59.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-60.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-61.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-62.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-63.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-64.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-65.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-66.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-67.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-68.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-69.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-1.png') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-2.png') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-3.png') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-4.png') }}" />
+                    </a>
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-5.png') }}" />
+                    </a>
+                </div>
+            </div>--}}
+            <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel"
+                 aria-labelledby="nav-filter-latest-tab">
+                <div class="page-type">
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-58.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-59.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-60.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-61.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-62.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-63.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-64.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-65.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-66.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-67.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-68.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-69.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-1.png') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-2.png') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-3.png') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-4.png') }}" />
+                    </a>
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-5.png') }}" />
+                    </a>
+                </div>
+            </div>
+            <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel"
+                 aria-labelledby="nav-filter-popular-tab">
+                <div class="page-type">
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-39.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-40.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-41.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-42.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-43.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-44.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-45.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-46.jpg') }}" />
+                    </a>
+
+                    <a href="{{ url('posts/1') }}" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-47.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-48.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-49.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-50.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-51.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-52.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-53.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-54.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-55.jpg') }}" />
+                    </a>
+
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
+                    </a>
+                    <a href="#" class="vertical">
+                        <img class="animate__animated animate__zoomIn" alt="Post"
+                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
+                    </a>
+                </div>
+            </div>
+            <div class="post tab-pane fade" id="nav-filter-trending" role="tabpanel"
+                 aria-labelledby="nav-filter-trending-tab">
                 <div class="page-type">
                     <a href="{{ url('posts/1') }}" class="vertical">
                         <img class="animate__animated animate__zoomIn" alt="Post"
@@ -149,396 +536,6 @@
                     <a href="{{ url('posts/1') }}" class="vertical">
                         <img class="animate__animated animate__zoomIn" alt="Post"
                              src="{{ asset('assets/images/gallery/post-38.jpg') }}" />
-                    </a>
-                </div>
-            </div>
-            <div class="post tab-pane fade" id="nav-2d" role="tabpanel" aria-labelledby="nav-2d-tab">
-                <div class="page-type">
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-39.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-40.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-41.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-42.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-43.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-44.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-45.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-46.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-47.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-48.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-49.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-50.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-51.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-52.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-53.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="big">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-54.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-55.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
-                    </a>
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
-                    </a>
-                </div>
-            </div>
-            <div class="post tab-pane fade" id="nav-3d" role="tabpanel" aria-labelledby="nav-3d-tab">
-                <div class="page-type">
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-58.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-59.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-60.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-61.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-62.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-63.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-64.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-65.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-66.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-67.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-68.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-69.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-1.png') }}" />
-                    </a>
-
-                    <a href="#" class="big">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-2.png') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-3.png') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-4.png') }}" />
-                    </a>
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-5.png') }}" />
-                    </a>
-                </div>
-            </div>
-            <div class="post tab-pane fade" id="nav-filter-latest" role="tabpanel"
-                 aria-labelledby="nav-filter-latest-tab">
-                <div class="page-type">
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-58.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-59.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-60.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-61.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-62.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-63.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-64.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-65.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-66.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-67.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-68.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-69.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-1.png') }}" />
-                    </a>
-
-                    <a href="#" class="big">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-2.png') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-3.png') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-4.png') }}" />
-                    </a>
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-5.png') }}" />
-                    </a>
-                </div>
-            </div>
-            <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel"
-                 aria-labelledby="nav-filter-popular-tab">
-                <div class="page-type">
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-39.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-40.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-41.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-42.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-43.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-44.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-45.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-46.jpg') }}" />
-                    </a>
-
-                    <a href="{{ url('posts/1') }}" class="vertical">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-47.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-48.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-49.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-50.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-51.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-52.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-53.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="big">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-54.jpg') }}" />
-                    </a>
-
-                    <a href="#">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-55.jpg') }}" />
-                    </a>
-
-                    <a href="#" class="horizontal">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
-                    </a>
-                    <a href="#" class="small">
-                        <img class="animate__animated animate__zoomIn" alt="Post"
-                             src="{{ asset('assets/images/gallery/post-57.jpg') }}" />
                     </a>
                 </div>
             </div>

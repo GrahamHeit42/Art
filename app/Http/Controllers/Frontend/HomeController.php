@@ -19,7 +19,7 @@ class HomeController extends Controller
     {
         $mediums = Medium::whereStatus(1)->get();
         $subjects = Subject::whereStatus(1)->get();
-        view()->share('page_title', 'Home Page');
+        view()->share('page_title', 'Home');
 
         return view('frontend.home', compact('mediums', 'subjects'));
     }

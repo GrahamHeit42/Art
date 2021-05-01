@@ -1,31 +1,39 @@
-.m-auto{
+.m-auto {
     margin: auto;
 }
-.br-50p{
+
+.br-50p {
     border-radius: 50px;
 }
-.ml-40-pr{
+
+.ml-40-pr {
     margin-left: 40%;
 }
-.btn2{
+
+.btn2 {
     margin-left: 10px;
     padding: 7px;
 }
-.hide{
+
+.hide {
     visibility: hidden;
 }
+
 /* .hidden{ */
-    /* display: none; */
+/* display: none; */
 /* } */
-.rounded2r{
-        border-radius: 0px 25px 25px 0px;
-    }
-.txt-centre{
+.rounded2r {
+    border-radius: 0px 25px 25px 0px;
+}
+
+.txt-centre {
     text-align: center;
-    }
-.m-7p{
+}
+
+.m-7p {
     margin: 7px;
 }
-.fw-normal{
+
+.fw-normal {
     font-weight: normal !important;
 }

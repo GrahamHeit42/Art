@@ -82,6 +82,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        session()->flash('success', 'Account registration successfully.');
+
         event(new Registered($user));
 
         return redirect(RouteServiceProvider::HOME);
