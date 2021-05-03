@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Medium;
+use App\Models\Post;
 use App\Models\Subject;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -19,9 +20,10 @@ class HomeController extends Controller
     {
         $mediums = Medium::whereStatus(1)->get();
         $subjects = Subject::whereStatus(1)->get();
+        $posts = Post::latest()->get();
         view()->share('page_title', 'Home');
 
-        return view('frontend.home', compact('mediums', 'subjects'));
+        return view('frontend.home', compact('mediums', 'subjects', 'posts'));
     }
 
     /**

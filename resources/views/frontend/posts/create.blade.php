@@ -1,18 +1,20 @@
 @extends('frontend.layouts.app')
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" />
+    <link href="{{ asset('assets/plugins/dropzone/dropzone.min.css') }}" rel="stylesheet"/>
 @endpush
 @section('content')
     <div class="post-upload">
         <div class="container">
-            <form id="create-post-form" class="upload-post" action="{{ url('posts/store') }}" method="post">
+            <form id="create-post-form" class="upload-post" action="{{ url('posts/store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input hidden name="id" value="{{ $post->id ?? NULL }}" id="post_id" class="form-control" title="ID" />
                 <input hidden name="type" value="{{ $type }}" id="type" class="form-control" title="Type" />
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="upload-info">
-                            <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+                            <input id="post-images" type="file" name="images[]" accept="image/*" multiple/>
+                            {{--<input id="file-upload" type="file" name="fileUpload" accept="image/*"/>
 
                             <label for="file-upload" id="file-drag">
                                 <img id="file-image" src="#" alt="Preview" class="hidden">
@@ -28,7 +30,7 @@
                                         <span>0</span>%
                                     </progress>
                                 </div>
-                            </label>
+                            </label>--}}
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -131,7 +133,7 @@
                                                             <input
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="price" id="price-{{ $rating }}"
-                                                                value="price-{{ $rating }}"
+                                                                value="{{ $rating }}"
                                                                 type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
                                                         @endfor
                                                     </div>
@@ -155,7 +157,7 @@
                                                         <input
                                                             class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                             name="speed" id="speed-{{ $rating }}"
-                                                            value="speed-{{ $rating }}"
+                                                            value="{{ $rating }}"
                                                             type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
                                                     @endfor
                                                 </div>
@@ -178,7 +180,7 @@
                                                         <input
                                                             class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                             name="communication" id="communication-{{ $rating }}"
-                                                            value="communication-{{ $rating }}"
+                                                            value="{{ $rating }}"
                                                             type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
                                                     @endfor
                                                 </div>
@@ -205,7 +207,7 @@
                                                             <input
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="concept" id="concept-{{ $rating }}"
-                                                                value="concept-{{ $rating }}"
+                                                                value="{{ $rating }}"
                                                                 type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
                                                         @endfor
                                                     </div>
@@ -231,7 +233,7 @@
                                                             <input
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="quality" id="quality-{{ $rating }}"
-                                                                value="quality-{{ $rating }}"
+                                                                value="{{ $rating }}"
                                                                 type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
                                                         @endfor
                                                     </div>
@@ -258,7 +260,7 @@
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="professionalism"
                                                                 id="professionalism-{{ $rating }}"
-                                                                value="professionalism-{{ $rating }}"
+                                                                value="{{ $rating }}"
                                                                 type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
                                                         @endfor
                                                     </div>
@@ -291,6 +293,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/dropzone/dropzone.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             if ($('.subject-matter-dropdown').length > 0) {

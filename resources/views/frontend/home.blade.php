@@ -248,7 +248,14 @@
             <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel"
                  aria-labelledby="nav-filter-latest-tab">
                 <div class="page-type">
-                    <a href="{{ url('posts/1') }}" class="vertical">
+                    @foreach($posts as $post)
+                        <a href="{{ url('posts/' . $post->id) }}" class="vertical">
+                            <img class="animate__animated animate__zoomIn" alt="Post"
+                                 src="{{ asset($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
+                        </a>
+                    @endforeach
+
+                    {{--<a href="{{ url('posts/1') }}" class="vertical">
                         <img class="animate__animated animate__zoomIn" alt="Post"
                              src="{{ asset('assets/images/gallery/post-56.jpg') }}" />
                     </a>
@@ -340,7 +347,7 @@
                     <a href="#" class="vertical">
                         <img class="animate__animated animate__zoomIn" alt="Post"
                              src="{{ asset('assets/images/gallery/post-5.png') }}" />
-                    </a>
+                    </a>--}}
                 </div>
             </div>
             <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel"

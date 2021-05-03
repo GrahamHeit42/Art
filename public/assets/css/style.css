@@ -798,7 +798,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .upload-post input[type=file] {
-    display: none;
+    /*display: none;*/
 }
 
 .upload-post div {
