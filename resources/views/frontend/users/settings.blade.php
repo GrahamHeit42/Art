@@ -19,7 +19,7 @@
                                                 </a>
                                             </h3>
                                         </div>
-                                        <div id="my-account-1" class="profile-collapse collapse show">
+                                        <div id="my-account-1" class="profile-collapse collapse @if(empty(old('old_password'))) show @endif">
                                             <form action="{{ url('profile') }}" method="POST">
                                                 @csrf
                                                 <div class="profile-body">
@@ -35,6 +35,9 @@
                                                                     <input id="display_name" class="clr-grey"
                                                                            type="text" name="display_name"
                                                                            value="{{$user->display_name}}">
+                                                                    @error('display_name')
+                                                                        <span class="small text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6 col-md-6">
@@ -42,6 +45,9 @@
                                                                     <label>User Name</label>
                                                                     <input id="username" class="clr-grey" type="text"
                                                                            name="username" value="{{$user->username}}">
+                                                                    @error('username')
+                                                                    <span class="small text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-12 col-md-12">
@@ -50,6 +56,9 @@
                                                                     <input id="email" class="clr-grey no-cursor"
                                                                            type="email" name="email"
                                                                            value="{{$user->email}}" readonly>
+                                                                    @error('email')
+                                                                    <span class="small text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -73,7 +82,7 @@
                                                 </a>
                                             </h3>
                                         </div>
-                                        <div id="my-account-2" class="profile-collapse collapse">
+                                        <div id="my-account-2" class="profile-collapse collapse @if(!empty(old('old_password'))) show @endif">
                                             <form action="{{ url('change-password') }}" method="POST">
                                                 @csrf
                                                 <div class="profile-body">
@@ -87,22 +96,28 @@
                                                                 <div class="change-info">
                                                                     <label>Old Password</label>
                                                                     <input id="old_password" type="password"
-                                                                           name="old_password" />
+                                                                           name="old_password" required/>
+                                                                    @error('old_password')
+                                                                    <span class="small text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-12 col-md-12">
                                                                 <div class="change-info">
                                                                     <label>New Password</label>
                                                                     <input id="password" type="password"
-                                                                           name="password" />
+                                                                           name="password" required/>
+                                                                    @error('password')
+                                                                    <span class="small text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-12 col-md-12">
                                                                 <div class="change-info">
-                                                                    <label>Password Confirm</label>
-                                                                    <input type="password" id="confirm_password"
+                                                                    <label>Confirm Password</label>
+                                                                    <input type="password" id="password_confirmation"
                                                                            class="" type="password"
-                                                                           name="confirm_password" />
+                                                                           name="password_confirmation" required/>
                                                                 </div>
                                                             </div>
                                                         </div>

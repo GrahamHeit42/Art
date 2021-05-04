@@ -28,8 +28,8 @@
                 </button>
             </div>
         </div>
-        <div class="card-body p-2" style="display: block;">
-            <table class="table table-bordered table-striped" id="subjects-table">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped w-100" id="subjects-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -69,10 +69,10 @@
                 type: 'post'
             },
             columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false},
-                {data: 'title', name: 'title'},
-                {data: 'status_text', name: 'status_text'},
-                {data: 'action', name: 'action', orderable: true, searchable: true},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, width: '10%'},
+                {data: 'title', name: 'title', width: '40%'},
+                {data: 'status_text', name: 'status_text', width: '35%'},
+                {data: 'action', name: 'action', orderable: false, searchable: false, width: '15%'},
             ],
             drawCallback: function () {
                 setDeleteEvent();

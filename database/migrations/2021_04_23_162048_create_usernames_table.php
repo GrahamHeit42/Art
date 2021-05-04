@@ -16,7 +16,7 @@ class CreateUsernamesTable extends Migration
         Schema::create('usernames', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->string('username', 100)->unique();
+            $table->string('username', 100);
             $table->foreignId('created_by')->nullable()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });

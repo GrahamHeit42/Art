@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Username;
 use App\Providers\RouteServiceProvider;
+use Exception;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\CustomController;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
@@ -18,7 +22,7 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -29,11 +33,11 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -41,7 +45,10 @@ class RegisteredUserController extends Controller
             'display_name' => 'required|string|max:100',
             'username' => 'required|string|max:100|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
+//            'password' => 'required|string|confirmed|min:8|regex:/^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-]).{8,}$/',
+            'password' => 'required|string|confirmed|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,16}$/',
+        ], [
+            'regex' => 'The password format is invalid, It must contain Uppercase, Lowercase, Symbol and Characters'
         ]);
 
         /*$imagePath = NULL;
@@ -76,7 +83,7 @@ class RegisteredUserController extends Controller
                 'status' => 1
             ]);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             info('User register error: ' . $e->getMessage());
         }
 

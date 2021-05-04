@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         $user->last_login_at = Date('Y-m-d H:i:s');
         $user->save();
 
-        session()->flash('success', 'Login successfully.');
+        // session()->flash('success', 'Login successfully.');
 
         if ($user->is_admin === 1) {
             return redirect(url('admin'));

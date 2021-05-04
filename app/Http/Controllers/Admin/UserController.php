@@ -27,13 +27,13 @@ class UserController extends Controller
                     return '<img alt="'.$row->display_name.'" src="'.asset($row->profile_image).'" class="img-thumbnail" style="width: auto; height: 100px;"/>';
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("admin/users/" . $row->id) . '" class="btn text-info p-2">
+                    return '<a href="' . url("admin/users/" . $row->id) . '" class="btn btn-lg text-info p-2">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="' . url("admin/users/edit/" . $row->id) . '" class="btn text-warning p-2">
+                            <a href="' . url("admin/users/edit/" . $row->id) . '" class="btn btn-lg text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button class="btn text-danger p-2" data-id="' . $row->id . '">
+                            <button class="btn btn-lg text-danger p-2 delete" data-id="' . $row->id . '">
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
@@ -107,16 +107,18 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         if ($request->ajax()) {
-            $user = User::find($request->post('id'));
-            if ($user) {
-                $user->delete();
-                session()->flash('success', 'User deleted successfully.');
-
-                return redirect(url('users'));
+            $delete = User::destroy($request->post('id'));
+            if ($delete) {
+                return response()->json([
+                    'status' => TRUE,
+                    'message' => 'User deleted successfully.'
+                ]);
             }
         }
-        session()->flash('error', 'Something went wrong, Please try again.');
 
-        return redirect(url('users/'));
+        return response()->json([
+            'status' => FALSE,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
     }
 }

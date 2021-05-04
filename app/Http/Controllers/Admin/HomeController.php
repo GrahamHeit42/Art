@@ -20,8 +20,6 @@ class HomeController extends Controller
         ];
         view()->share('page_title', 'Dashboard');
 
-        session()->flash('success', 'Login successfully.');
-
         return view('admin.dashboard', compact('summary'));
     }
 }

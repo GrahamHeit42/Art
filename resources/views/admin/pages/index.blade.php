@@ -20,8 +20,8 @@
                 </button>
             </div>
         </div>
-        <div class="card-body p-2" style="display: block;">
-            <table class="table table-bordered table-striped" id="pages-table">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped w-100" id="pages-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -64,10 +64,10 @@
                 type: 'post'
             },
             columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false},
-                {data: 'title', name: 'title'},
-                {data: 'content', name: 'content'},
-                {data: 'action', name: 'action', orderable: false, searchable: false },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, width: '10%'},
+                {data: 'title', name: 'title', width: '20%'},
+                {data: 'content', name: 'content', width: '60%'},
+                {data: 'action', name: 'action', orderable: false, searchable: false, width: '10%'},
             ]
         });
     </script>

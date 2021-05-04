@@ -28,8 +28,8 @@
                 </button>
             </div>
         </div>
-        <div class="card-body p-2">
-            <table class="table table-bordered table-striped" id="users-table">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped w-100" id="users-table">
                 <thead>
                     <tr>
                         <th>#</th>

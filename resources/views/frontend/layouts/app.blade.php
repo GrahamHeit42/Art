@@ -80,7 +80,7 @@
                                                 <span class="">
                                                     <i class="fa fa-cog" aria-hidden="true"></i>
                                                 </span>
-                                                Settings
+                                                User Settings
                                             </a>
                                         </li>
 

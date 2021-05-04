@@ -30,6 +30,19 @@ class Post extends Model
         'work_again', 'status'
     ];
 
+    protected $appends = [
+        'image_url',
+        'status_text'
+    ];
+
+    public function getImageUrlAttribute() {
+        return !empty($this->attributes['image_path']) ? asset($this->attributes['image_path']) : null;
+    }
+
+    public function getStatusTextAttribute() {
+        return $this->attributes['status'] === 1 ? 'Active' : 'Inactive';
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

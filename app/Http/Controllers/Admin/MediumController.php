@@ -24,10 +24,10 @@ class MediumController extends Controller
             return DataTables::of($mediums)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("admin/mediums/" . $row->id) . '" class="btn text-warning p-2">
+                    return '<a href="' . url("admin/mediums/" . $row->id) . '" class="btn btn-lg text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button class="btn text-danger p-2 delete" data-id="' . $row->id . '">
+                            <button class="btn btn-lg text-danger p-2 delete" data-id="' . $row->id . '">
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })

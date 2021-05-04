@@ -28,7 +28,7 @@ class PageController extends Controller
                     return Str::limit($row->content, 250);
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("admin/pages/" . $row->id) . '" class="btn text-warning p-2">
+                    return '<a href="' . url("admin/pages/" . $row->id) . '" class="btn btn-lg text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>';
                 })

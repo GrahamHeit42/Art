@@ -1,7 +1,81 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    @php
-        dump($user->toArray())
-    @endphp
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">User Details</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid"
+                                             src="{{ asset($user->profile_image) }}"
+                                             alt="User profile picture">
+                                    </div>
+
+                                    <h3 class="profile-username text-center">{{ $user->display_name }}</h3>
+
+                                    <p class="text-muted text-center">{{ $user->username }}</p>
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>Followers</b>
+                                            <a class="float-right">1,322</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Following</b>
+                                            <a class="float-right">543</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Friends</b>
+                                            <a class="float-right">13,287</a>
+                                        </li>
+                                    </ul>
+
+                                     <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary card-outline">
+                                {{--<div class="card-header">
+                                    <h3 class="card-title">About Me</h3>
+                                </div>--}}
+
+                                <div class="card-body">
+                                    <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
+                                    <p class="text-muted">{{ $user->email }}</p>
+                                    <hr>
+
+                                    <strong><i class="fas fa-lock-open mr-1"></i> Last Login At</strong>
+                                    <p class="text-muted">{{ !empty($user->last_login_at) ? $user->last_login_at->format("M d, Y g:i A") : 'N/A' }}</p>
+                                    <hr>
+
+                                    <strong><i class="fas fa-registered mr-1"></i> Registered At</strong>
+                                    <p class="text-muted">{{ $user->created_at->format("M d, Y g:i A") }}</p>
+                                    <hr>
+
+                                    <strong><i class="fas fa-info-circle mr-1"></i> Status</strong>
+                                    <p class="text-muted">{{ $user->status_text }}</p>
+                                    {{--<hr>--}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 @endsection

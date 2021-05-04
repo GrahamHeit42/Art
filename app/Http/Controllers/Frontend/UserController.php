@@ -42,19 +42,21 @@ class UserController extends Controller
         view()->share('page_title', 'Change Password');
         $request->validate([
             'old_password' => 'required',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,16}$/',
+        ], [
+            'regex' => 'The password format is invalid, It must contain Uppercase, Lowercase, Symbol and Characters'
         ]);
 
         $user = User::find(auth()->id());
-        if (Hash::check($request->post('old_password'), Hash::make($request->post('password')))) {
+        if (Hash::check($request->post('old_password'), $user->password)) {
             $user->password = Hash::make($request->post('password'));
             $user->save();
             session()->flash('success', 'Password changed successfully');
 
-            return redirect(url('profile'));
+            return redirect(url('settings'));
         }
         session()->flash('error', 'Current password is invalid.');
 
-        return redirect(url('profile'));
+        return redirect(url('settings'));
     }
 }
