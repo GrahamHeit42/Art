@@ -20,11 +20,9 @@ class Post extends Model
     // artist_type : 1=personal, 2=Commissioned
     protected $fillable = [
         'user_id',
-        'subject_id',
-        'medium_id',
-        'drawn_by',
-        'commisioned_by',
-        'title', 'description', 'keywords',
+        'subject_id', 'medium_id',
+        'drawn_by', 'commisioned_by',
+        'title', 'description', 'keywords', // 'cover_image',
         'price', 'speed', 'quality', 'communication',
         'transaction', 'concept', 'understanding', 'communication',
         'work_again', 'status'

@@ -24,6 +24,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('medium_id')->constrained('mediums')->cascadeOnDelete();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
+            // $table->string('cover_image')->nullable();
             $table->text('keywords')->nullable();
             $table->double('price', 10, 2)->default(0)->nullable();
             $table->double('speed', 10, 2)->default(0)->nullable();

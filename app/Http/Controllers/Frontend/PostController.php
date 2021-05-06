@@ -31,15 +31,16 @@ class PostController extends Controller
         view()->share('page_title', 'Create Post');
         $subjects = Subject::whereStatus(1)->get();
         $mediums = Medium::whereStatus(1)->get();
+        $usernames = Username::all();
 
-        return view('frontend.posts.create', compact('type', 'subjects', 'mediums'));
+        return view('frontend.posts.create', compact('type', 'subjects', 'mediums', 'usernames'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'type' => 'required',
-//            'owner_name' => 'required_if:type,commissioner',
+            'username' => 'required',
             'subject_id' => 'required',
             'medium_id' => 'required',
             'title' => 'required',
@@ -49,21 +50,36 @@ class PostController extends Controller
 
         $postId = $request->post('id');
         $postType = $request->post('type');
-        $drawnBy = NULL;
-        $commissionedBy = NULL;
-        if ($postType === 'commissioner') {
-            $drawnBy = Username::where('username', $request->post('owner_name'))->first()->user_id ?? NULL;
-        }
-        else {
-            $commissionedBy = User::where('display_name', $request->post('owner_name'))->first()->id ?? NULL;
-        }
+
+        $username = Username::updateOrCreate(
+            [
+                'username' => $request->post('username')
+            ],
+            [
+                'user_id' => NULL,
+                'created_by' => auth()->id()
+            ]
+        );
+
+        $drawnBy = ( $postType === 'commissioner' ) ? $username->id : NULL;
+        $commissionedBy = ( $postType === 'artist' ) ? $username->id : NULL;
 
         $postData = $request->post();
         $postData['drawn_by'] = $drawnBy;
         $postData['commissioned_by'] = $commissionedBy;
         $postData['user_id'] = auth()->id();
-        $postData['keywords'] = implode(',', $request->post('keywords')) ?? NULL;
+        $postData['keywords'] = implode(',', $request->post('keywords', [])) ?? NULL;
         $postData['status'] = 1;
+
+        /*if ($request->hasFile('cover_image')) {
+            $year = Carbon::now()->format('Y');
+            $month = Carbon::now()->format('m');
+            $coverImage = $request->file('cover_image');
+            $fileName = ( time() + 10 ) . '.' . $coverImage->getClientOriginalExtension();
+            $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $fileName);
+            $path = 'storage/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $fileName;
+            $postData['cover_image'] = $path;
+        }*/
 
         $post = Post::updateOrCreate(
             ['id' => $postId],
@@ -72,16 +88,17 @@ class PostController extends Controller
 
         if ($post) {
             if ($request->hasFile('images')) {
-                $images = $request->file('images');
                 $year = Carbon::now()->format('Y');
                 $month = Carbon::now()->format('m');
+                $images = $request->file('images');
                 foreach ($images as $key => $image) {
                     $fileName = ( time() + ( $key * 10 ) ) . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('posts/' . $year . '/' . $month . '/' . auth()->id(), $fileName);
-                    $path = 'storage/posts/' . $year . '/' . $month . '/' . auth()->id() .'/'. $fileName;
+                    $path = 'storage/posts/' . $year . '/' . $month . '/' . auth()->id() . '/' . $fileName;
                     Image::create([
                         'post_id' => $post->id,
-                        'image_path' => $path
+                        'image_path' => $path,
+                        'display_order' => ( Image::wherePostId($post->id)->count() + 1 )
                     ]);
                 }
             }

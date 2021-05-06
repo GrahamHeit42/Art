@@ -13,6 +13,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="upload-info">
+                            {{--<input id="cover-image" type="file" name="cover_image" accept="image/*"/>--}}
                             <input id="post-images" type="file" name="images[]" accept="image/*" multiple/>
                             {{--<input id="file-upload" type="file" name="fileUpload" accept="image/*"/>
 
@@ -37,12 +38,20 @@
                         <div class="post-description">
                             <form action="">
                                 <div class="post-details">
-                                    <div class="input-group owner-name">
-                                        <input title="{{ $type === 'artist' ? 'Commissioned By' : 'Drawn By' }}"
-                                               type="text"
-                                               class="form-control"
-                                               placeholder="{{ $type === 'artist' ? 'Commissioned By' : 'Drawn By' }}"
-                                               name="owner_name" />
+                                    <div class="username-dropdown">
+                                        <div class="username-matter">
+                                            {{--<input title="{{ $type === 'artist' ? 'Commissioned By' : 'Drawn By' }}"
+                                                   type="text"
+                                                   class="form-control"
+                                                   placeholder="{{ $type === 'artist' ? 'Commissioned By' : 'Drawn By' }}"
+                                                   name="owner_name" />--}}
+                                            <select class="username-matter-dropdown" name="username" id="username"
+                                                    title="Username">
+                                                @foreach($usernames as $username)
+                                                    <option value="{{ $username->id }}">{{ $username->username }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="post-dropdown">
@@ -50,7 +59,7 @@
                                             <select class="subject-matter-dropdown" name="subject_id" id="subject_id"
                                                     title="Subject">
                                                 @foreach($subjects as $subject)
-                                                    <option value="{{ $subject->id }}">{{ $subject->title }}</option>
+                                                    <option value="{{ $subject->id }}" {{ old('subject_id') == $subject->id ? 'selected' : NULL }}>{{ $subject->title }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -58,25 +67,22 @@
                                             <select class="medium-matter-dropdown" name="medium_id" id="medium_id"
                                                     title="Medium">
                                                 @foreach($mediums as $medium)
-                                                    <option value="{{ $medium->id }}">{{ $medium->title }}</option>
+                                                    <option value="{{ $medium->id }}" {{ old('medium_id') == $subject->id ? 'selected' : NULL }}>{{ $medium->title }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Title" name="title"
-                                               id="title" title="Title">
+                                               id="title" title="Title" value="{{ old('title') }}"/>
                                     </div>
                                     <div class="input-group">
                                     <textarea class="form-control" cols="30" rows="10" name="description"
-                                              id="description" title="Description" placeholder="Description"></textarea>
+                                              id="description" title="Description" placeholder="Description">{{ old('description') }}</textarea>
                                     </div>
                                     <div class="input-group hashtag">
                                         <select class="keywords-multiple" name="keywords[]" multiple="multiple" title="Keywords"
                                                 id="keywords">
-                                            <option value="great">Great</option>
-                                            <option value="nice">Nice</option>
-                                            <option value="good">Good</option>
                                         </select>
                                     </div>
                                     <div class="review">
@@ -109,7 +115,7 @@
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="transaction" id="transaction-{{ $rating }}"
                                                                 value="transaction-{{ $rating }}"
-                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('transaction') ? 'checked' : NULL) }}>
                                                         @endfor
                                                     </div>
                                                 </div>
@@ -134,7 +140,7 @@
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="price" id="price-{{ $rating }}"
                                                                 value="{{ $rating }}"
-                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('price') ? 'checked' : NULL) }}>
                                                         @endfor
                                                     </div>
                                                 </div>
@@ -158,7 +164,7 @@
                                                             class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                             name="speed" id="speed-{{ $rating }}"
                                                             value="{{ $rating }}"
-                                                            type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                            type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('speed') ? 'checked' : NULL) }}>
                                                     @endfor
                                                 </div>
                                             </div>
@@ -181,7 +187,7 @@
                                                             class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                             name="communication" id="communication-{{ $rating }}"
                                                             value="{{ $rating }}"
-                                                            type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                            type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('communication') ? 'checked' : NULL) }}>
                                                     @endfor
                                                 </div>
                                             </div>
@@ -208,7 +214,7 @@
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="concept" id="concept-{{ $rating }}"
                                                                 value="{{ $rating }}"
-                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('concept') ? 'checked' : NULL) }}>
                                                         @endfor
                                                     </div>
                                                 </div>
@@ -234,7 +240,7 @@
                                                                 class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                                                 name="quality" id="quality-{{ $rating }}"
                                                                 value="{{ $rating }}"
-                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('quality') ? 'checked' : NULL) }}>
                                                         @endfor
                                                     </div>
                                                 </div>
@@ -261,7 +267,7 @@
                                                                 name="professionalism"
                                                                 id="professionalism-{{ $rating }}"
                                                                 value="{{ $rating }}"
-                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : '' }}>
+                                                                type="radio" {{ $rating === 0 ? 'disabled checked' : ($rating == old('professionalism') ? 'checked' : NULL) }}>
                                                         @endfor
                                                     </div>
                                                 </div>
@@ -296,21 +302,20 @@
     <script src="{{ asset('assets/plugins/dropzone/dropzone.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            if ($('.subject-matter-dropdown').length > 0) {
-                $('.subject-matter-dropdown').select2({
-                    placeholder: "Select Subject"
-                });
-            }
-            if ($('.medium-matter-dropdown').length > 0) {
-                $('.medium-matter-dropdown').select2({
-                    placeholder: "Select Medium"
-                });
-            }
-            if ($('.keywords-multiple').length > 0) {
-                $('.keywords-multiple').select2({
-                    placeholder: "Keywords"
-                });
-            }
+            $('.username-matter-dropdown').select2({
+                placeholder: "Select User",
+                tags: true
+            });
+            $('.subject-matter-dropdown').select2({
+                placeholder: "Select Subject"
+            });
+            $('.medium-matter-dropdown').select2({
+                placeholder: "Select Medium"
+            });
+            $('.keywords-multiple').select2({
+                placeholder: "Keywords",
+                tags: true
+            });
         });
     </script>
 @endpush
