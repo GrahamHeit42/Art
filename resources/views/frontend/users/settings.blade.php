@@ -20,7 +20,7 @@
                                             </h3>
                                         </div>
                                         <div id="my-account-1" class="profile-collapse collapse @if(empty(old('old_password'))) show @endif">
-                                            <form action="{{ url('profile') }}" method="POST">
+                                            <form action="{{ url('settings') }}" method="POST">
                                                 @csrf
                                                 <div class="profile-body">
                                                     <div class="profile-info-wrapper">
@@ -65,7 +65,7 @@
                                                         <div class="change-back-btn">
                                                             <div class="profile-btn">
                                                                 <button type="submit"
-                                                                        class="btn gallery-btn-dark-yellow">Update
+                                                                        class="btn btndarkyellow">Update
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -124,7 +124,7 @@
                                                         <div class="change-back-btn">
                                                             <div class="profile-btn">
                                                                 <button type="submit"
-                                                                        class="btn gallery-btn-dark-yellow">Update
+                                                                        class="btn btndarkyellow">Update
                                                                 </button>
                                                             </div>
                                                         </div>

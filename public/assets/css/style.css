@@ -1,3 +1,27 @@
+/******** Fontface Fonts ********/
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../font/montserrat-regular.woff2') format('woff2'), url('../font/montserrat-regular.woff') format('woff');
+	font-style: normal;
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	src: url('../font/montserrat-bold.woff2') format('woff2'), url('../font/montserrat-bold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Anton';
+	src: url('../font/anton-regular.woff2') format('woff2'), url('../font/anton-regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
 /*=======================
 /** Reset CSS
 =========================*/
@@ -13,313 +37,343 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary,
 time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-    display: block;
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {
+    display:block;
 }
 
 ul {
-    list-style: none;
+    list-style:none;
 }
-
 blockquote, q {
-    quotes: none;
+    quotes:none;
 }
-
 blockquote:before, blockquote:after,
 q:before, q:after {
-    content: '';
-    content: none;
+    content:'';
+    content:none;
 }
-
-a {
-    margin: 0;
-    padding: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
+a{
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
 }
-
-ins {
-    background-color: #FFFF99;
-    color: #000000;
-    text-decoration: none;
+ins{
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
 }
-
 mark {
-    background-color: #FFFF99;
-    color: #000000;
-    font-style: italic;
-    font-weight: bold;
+    background-color:#ff9;
+    color:#000;
+    font-style:italic;
+    font-weight:bold;
 }
-
 del {
     text-decoration: line-through;
 }
-
 abbr[title], dfn[title] {
-    border-bottom: 1px dotted;
-    cursor: help;
+    border-bottom:1px dotted;
+    cursor:help;
 }
-
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+    border-collapse:collapse;
+    border-spacing:0;
 }
-
 hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #CCCCCC;
-    margin: 1em 0;
-    padding: 0;
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
 }
-
 input, select {
-    vertical-align: middle;
+    vertical-align:middle;
 }
-
 /*=======================
 /** Common CSS
 =========================*/
-body {
-    font-family: 'Anton', sans-serif;
-    line-height: 1.15;
-    background-color: #FFFFFF;
+body{
+    font-family: 'Anton';
+    line-height:1.15;
+    background-color: #fff;
     color: #000000;
     font-weight: normal;
     font-size: 16px;
     letter-spacing: 1px;
 }
-
-img {
+img{
     width: auto;
     max-width: 100%;
     height: auto;
     border: 0;
 }
-
-* {
+*{
     box-sizing: border-box;
 }
-
-a {
+a{
     color: #000000;
     text-decoration: none;
 }
-
-a:hover {
+a:hover{
     color: #000000;
     text-decoration: none;
 }
-
-h1, h2, h3, h4, h5, h6 {
+h1,h2,h3,h4,h5,h6{
     color: #000000;
     font-weight: bold;
 }
-
+.btngreen{
+    background-color: #14c4af;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #14c4af;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    color: #ffffff;
+    display: inline-block;
+}
+.btnyellow{
+    background-color: #f0e965;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #f0e965;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    color: #ffffff;
+    display: inline-block;
+}
+.btndarkyellow{
+    background-color: #c0c416;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #c0c416;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    color: #ffffff;
+    display: inline-block;
+}
 /*=======================
 /** Header CSS
 =========================*/
-#header {
-    background-color: #E9EBE9;
+#header{
+    background-color: #14c4af;
     padding: 10px;
 }
-
-#header > .row {
+#header>.row{
     margin-left: 0px;
     margin-right: 0px;
 }
-
-#logo a {
+#logo a{
     display: inline-block;
 }
-
-#logo img {
+#logo img{
     display: block;
     width: 60px;
 }
-
-.header-search-box .form-group {
+.header-search-box .headsearch{
+    display: flex;
     align-items: center;
-    margin-bottom: 0px;
+    justify-content: center;
 }
-
-.header-dropdown {
+.searchicon{
+    height: 38px;
+    width: 38px;
+    background-color: #f0e965;
+    text-align: center;
+    display: inline-block;
+    padding: 10px 30px;
+    margin-left: 15px;
+    border-radius: 5px;
+}
+.searchicon i{
+    margin-left: -7px;
+}
+.searchbox {
+    width: 70%;
+}
+.searchbox .form-control{
+    border-radius: 5px;
+    font-family: 'Montserrat';
+}
+.header-dropdown{
     display: flex;
     justify-content: flex-end;
+    font-family: 'Montserrat';
 }
-
-.profile a, .message a, .notification a, .plus a {
+.profile a, .message a, .notification a, .plus a{
     display: inline-block;
     margin-right: 5px;
     margin-left: 5px;
 }
-
-.profile img, .message img, .notification img, .plus img {
+.profile img, .message img, .notification img, .plus img{
     display: block;
     width: 35px;
 }
-
-.profile_dropdown {
+.profile_dropdown{
     top: 20px !important;
-    left: -151px !important;
+    left: 10px !important;
 }
-
-.message_dropdown {
+.message_dropdown{
     top: 20px !important;
-    left: -105px !important;
+    left: 10px !important;
 }
-
-.notification_dropdown {
+.notification_dropdown{
     top: 20px !important;
-    left: -60px !important;
+    left: 10px !important;
 }
-
-.profile_dropdown, .message_dropdown, .notification_dropdown {
+.profile_dropdown,.message_dropdown, .notification_dropdown{
     position: absolute;
     user-select: none;
-    background: #FFFFFF;
-    border: 1px solid #C7D8E2;
+    background: #fff;
+    border: 1px solid #c7d8e2;
     width: 200px;
     height: auto;
     display: none;
     border-radius: 3px;
     box-shadow: 10px 10px 35px rgb(0 0 0 / 13%), -10px -10px 35px rgb(0 0 0 / 13%);
 }
-
-.profile_dropdown::before, .message_dropdown::before, .notification_dropdown::before {
+.profile_dropdown::before, .message_dropdown::before, .notification_dropdown::before{
     content: "";
     position: absolute;
     top: -20px;
     right: 15px;
     border: 10px solid;
-    border-color: transparent transparent #FFFFFF transparent;
+    border-color: transparent transparent #fff transparent;
 }
-
-.profile_li {
-    border-bottom: 1px solid #F1F2F4;
+.profile_li{
+    border-bottom: 1px solid #f1f2f4;
 }
-
-.profile_li a {
+.profile_li a{
     display: block;
     padding: 10px;
     position: relative;
     color: #000000;
 }
-
-.profile_li a span {
+.profile_li a span{
     display: inline-block;
     width: 30px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
-
 .message_dropdown li, .notification_dropdown li {
-    border-bottom: 1px solid #F1F2F4;
+    border-bottom: 1px solid #f1f2f4;
     padding: 10px 20px;
     display: flex;
     align-items: center;
 }
-
-.form-control {
+.form-control{
     border-radius: 0px;
 }
-
-.form-control:focus {
+.form-control:focus{
     box-shadow: rgb(20 196 175) 0px 0px 0px 0.2rem;
 }
-
-/*=======================
-/** Gallery CSS
-=========================*/
-.gallery {
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.tab-button {
+.loginregisterbtn{
     display: flex;
-    justify-content: space-around;
-    flex-wrap: inherit;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: 'Montserrat';
 }
-
-.no-spacing {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.gallery-tab {
-    margin-bottom: 30px;
-}
-
-.tab-button .btn {
-    width: 140px;
+.loginregisterbtn a{
+    display: inline-block;
     margin-left: 10px;
-    margin: 10px;
-}
-
-.filter {
-    display: flex;
-    justify-content: space-between;
-}
-
-.mediums-dropdown {
-    transform: translate3d(-60px, 38px, 0px) !important;
-}
-
-.filter .dropdown {
     margin-right: 10px;
 }
-
-.post-btn .btn {
-    border-radius: 0px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    width: 80px;
-    margin-right: 10px;
+/*=======================
+/** Main Section CSS
+=========================*/
+.gallery{
+    padding: 10px 0px;
+}
+.gallertab .item{
+    text-align: center;
+}
+.gallertab.owl-carousel .owl-nav.disabled{
+    display: block;
 }
 
-.gallery-btn-green {
-    background-color: #14C4AF;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #14C4AF;
+.gallertab.owl-carousel .owl-nav [class*="owl-"]
+{
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+    display: inline-block;
+    vertical-align: top;
     cursor: pointer;
-    outline: none;
-    text-align: center;
-    color: #FFFFFF;
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
 }
-
-.gallery-btn-yellow {
-    background-color: #F0E965;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #F0E965;
-    cursor: pointer;
-    outline: none;
-    text-align: center;
-    color: #FFFFFF;
+.gallertab.owl-carousel .owl-nav [class*="owl-"]:hover
+{
+    color: #3680c5;
 }
+.gallertab.owl-carousel .owl-nav [class*="owl-"]
+{
+    color: #14c4af;
+    font-size: 34px;
+}
+.gallertab.owl-carousel .owl-nav [class*="owl-"]:hover
+{
+    color: #c0c416;
+}
+.gallertab.owl-carousel .owl-nav .owl-prev
+{
+    left: 0px;
+}
+.gallertab.owl-carousel .owl-nav .owl-next
+{
+    right: 0px;
+}
+.gallertab.owl-carousel .owl-dots
+{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+.gallertab .item a{
+   display: inline-block;
+}
+.tabbox{
+    display: inline-block;
+    padding: 15px;
+    background-image: url(../images/gallerytab.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    position: relative;
+    z-index: 99;
+}
+.tabbox h2{
+    color: #ffffff;
+    font-family: 'Montserrat';
 
-.gallery-btn-dark-yellow {
-    background-color: #C0C416;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #C0C416;
-    cursor: pointer;
-    outline: none;
-    text-align: center;
-    color: #FFFFFF;
+}
+.tabbox::before{
+    content: '';
+    background-color: #000000;
+    opacity: 0.3;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    z-index: -1;
 }
 
 .page-type > a {
@@ -328,19 +382,27 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     font-size: 2em;
 }
-
+.post .button{
+    padding: 5px 10px;
+    border-radius: 5px 5px 0px 0px;
+    margin-right: 5px;
+}
 .page-type > a > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     box-shadow: 0 2px 16px var(--shadow);
 }
-
-.post {
-    padding: 10px;
-    background: #E9EBE9;
+.filter{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
+.artsoption{
+    display: flex;
+    align-items: center;
+}
 .page-type {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
@@ -361,238 +423,406 @@ h1, h2, h3, h4, h5, h6 {
     grid-row: span 2;
 }
 
-.small {
+.small{
     grid-column: span 1;
     grid-row: span 1;
 }
-
-/*=======================
-/** Footer CSS
-=========================*/
-#footer {
-    background-color: #E9EBE9;
-    padding: 10px;
+.meddropdown{
+    font-family: 'Montserrat';
+    color: #ffffff;
+    padding: 5px 10px;
+    background-color: #14c4af;
 }
-
-#footer > .row {
-    margin-left: 0px;
-    margin-right: 0px;
+.mediums .dropdown-item{
+    padding: 5px 30px;
+    font-family: 'Montserrat';
 }
-
-.usefull-link ul {
+.commissions{
     display: flex;
+    align-items: center;
+    padding: 0px 10px;
 }
-
-.usefull-link ul li {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.realeyze {
-    display: flex;
-    justify-content: flex-end;
+.commissions label{
+    font-family: 'Montserrat';
+    margin-right: 5px;
 }
 
 /*----------------------------------------*/
 /**  Upload-popup css
 /*----------------------------------------*/
-.upload-popup .modal-content {
+.upload-popup .modal-content{
     border: 0px;
     border-radius: 0px;
 }
-
-.upload-popup .modal-header {
+.upload-popup .modal-header{
     border-bottom: 0px;
 }
-
-.upload-popup .modal-header::after {
+.upload-popup .modal-header::after{
     content: "";
     position: absolute;
     width: 90%;
     top: 60px;
-    border-bottom: 1px solid #E9ECEF;
+    border-bottom: 1px solid #e9ecef;
 }
-
-.upload-popup .modal-body .popup-btn {
+.upload-popup .modal-body .popup-btn{
     display: flex;
     justify-content: center;
     align-items: baseline;
     margin-bottom: 5px;
     margin-top: 5px;
 }
-
-.upload-popup .modal-body #popup-option {
+.upload-popup .modal-body #popup-option{
     display: none;
     text-align: center;
     margin-bottom: 10px;
     margin-top: 10px;
 }
-
-.upload-popup .modal-body .btn {
-    width: 120px;
-    display: block;
+.upload-popup .modal-body .btn{
+   width: 120px;
+   display: block;
 }
-
-.upload-popup .modal-body span {
+.upload-popup .modal-body span{
     margin-right: 10px;
     margin-left: 10px;
 }
-
-.upload-popup .modal-footer {
+.upload-popup .modal-footer{
     border-top: 0px;
+}
+/*=======================
+/** Footer CSS
+=========================*/
+#footer{
+    background-color: #14c4af;
+    padding: 10px;
+    font-family: 'Montserrat';
+}
+#footer>.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.usefull-link ul{
+    display: flex;
+}
+.usefull-link ul li{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.realeyze{
+    display: flex;
+    justify-content: flex-end;
 }
 
 /*=======================
-/** login-register CSS
+/** artist page CSS
 =========================*/
-.login-register-btn {
-    display: block;
-    text-align: right;
+.post-description{
+    background: #ffffff;
+    padding: 10px;
 }
-
-.login-register-btn a {
+.post-dropdown{
+    display: flex;
+    margin-bottom: 10px;
+}
+.hashtag{
+    margin-bottom: 10px;
+}
+.rateing h5, .feedback h5{
+    color: #067265;
+}
+.owner-name{
+    margin: 10px 0px;
+}
+.review{
+    display: flex;
+}
+.review h3{
+    color: #067265;
+}
+.review p, .note h5{
+    color: #6c757d;
+}
+.artist-rateing ul{
+    list-style-type: none;
     display: inline-block;
 }
-
-.login-register-area {
-    margin: auto;
+.rateing img{
+   width: 100%;
+   height: auto;
+   max-width: 15px;
+   margin-left: 10px;
 }
-
-.login-register {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.login-register-wrapper .login-register-tab-list {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    margin-bottom: 40px;
-}
-
-.login-register-wrapper .login-register-tab-list a {
-    position: relative;
-}
-
-.login-register-wrapper .login-register-tab-list a:last-child:before {
-    display: none;
-}
-
-.login-register-wrapper .login-register-tab-list a::before {
-    background-color: rgb(0, 0, 0);
-    bottom: 5px;
-    content: "";
-    height: 18px;
-    margin: 0 auto;
-    position: absolute;
-    right: -2px;
-    width: 1px;
-}
-
-.login-register-wrapper .login-register-tab-list a h4 {
-    font-size: 25px;
-    font-weight: 700;
-    margin: 0 20px;
-    text-transform: capitalize;
-    color: #000000;
-    opacity: 0.5;
-}
-
-.login-register-wrapper .login-register-tab-list a.active h4 {
-    opacity: 1;
-}
-
-.login-register-wrapper .login-form-container {
-    background: #E9EBE9;
-    -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-    padding: 80px;
-    text-align: left;
-    max-width: 500px;
-}
-
-.login-register-wrapper .login-form-container .login-register-form form input {
-    background-color: transparent;
-    border: 1px solid #000000;
-    color: rgb(0, 0, 0);
-    font-size: 14px;
-    height: 45px;
-    /*margin-bottom: 30px;*/
-    padding: 0 15px;
-    width: 100%;
-    outline: none;
-}
-
-.login-toggle-btn {
-    padding: 10px 0 19px;
+.rateing{
     display: flex;
     justify-content: space-between;
 }
-
-.login-register-wrapper .login-form-container .login-register-form form input[type="checkbox"] {
-    height: 15px;
-    margin: 0;
-    position: relative;
-    top: 1px;
-    width: 17px;
+#full-stars-example-two .rating-group {
+    display: inline-flex;
 }
-
-.login-register-wrapper .login-form-container .login-register-form form .button-box .login-toggle-btn label {
-    color: #253237;
-    font-size: 15px;
-    font-weight: 400;
+#full-stars-example-two .rating__icon {
+    pointer-events: none;
 }
-
-.login-register-wrapper .login-form-container .login-register-form form .button-box .login-toggle-btn a.flote-none {
-    float: none !important;
+#full-stars-example-two .rating__input {
+    position: absolute !important;
+    left: -9999px !important;
 }
-
-.login-register-wrapper .login-form-container .login-register-form form .button-box .login-toggle-btn a {
-    color: #000000;
+#full-stars-example-two .rating__input--none {
+    display: none;
+}
+#full-stars-example-two .rating__label {
+    cursor: pointer;
+    padding: 0 0.1em;
+    font-size: 25px;
+}
+#full-stars-example-two .rating__icon--star {
+    color: orange;
+}
+#full-stars-example-two .rating__input:checked ~ .rating__label .rating__icon--star {
+    color: #ddd;
+}
+#full-stars-example-two .rating-group:hover .rating__label .rating__icon--star {
+    color: orange;
+}
+#full-stars-example-two .rating__input:hover ~ .rating__label .rating__icon--star {
+    color: #ddd;
+}
+.rateing-title{
     text-align: right;
 }
-
-.forgot {
+.rateing-title span{
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #6c757d;
+}
+.feedback{
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+}
+.feedback-op{
+    display: flex;
+}
+.feedback-op .btn{
+    width: 80px;
+    border-radius: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.post-submit{
     text-align: center;
-    margin-bottom: 10px;
 }
-
-.button-box {
-    text-align: center;
+.post-submit .btn{
+    border-radius: 0px;
+    text-transform: uppercase;
 }
-
-.button-box .btn {
-    width: 150px;
-}
-
 /*=======================
-/** FAQ CSS
+/** artist-commissoner dropdown css
 =========================*/
-.faq {
-    margin: 30px 0px;
+.artistwrapper{
+    background: #e9ebe9;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.artistcol{
+    margin: auto;
+}
+.upload-btn-wrapper{
+    text-align: center;
+    position: relative;
+}
+.upload-btn-wrapper a{
+    font-size: 100px;
+    font-family: 'Montserrat';
+}
+.upload-btn-wrapper input[type=file] {
+    left: 0;
+    top: 0;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.upload-thumb{
+    position: relative;
+}
+.thumbnailtext{
+    color: #067265;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.upload-thumb input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+}
+.thubnailbtn{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.thubnailbtn a{
+    background-color: #ffffff;
+    font-family: 'Montserrat';
+    border: none;
+    color: #000000;
+    width: 100px;
+    margin: 5px;
+}
+.maturitybox h2{
+    text-align: center;
+    color: #067265;
+    margin-bottom: 20px;
+}
+.maturityrating{
+    max-width: 1000px;
+    font-family: 'Montserrat';
+    padding: 10px 0px;
+    margin: auto;
+}
+.addmorebtn {
+    text-align: center;
+    margin: 10px 0px;
+}
+.subject-matter,
+.medium-dropdown {
+    width: 50%;
 }
 
+.username-dropdown {
+    width: 100%;
+}
+.subject-matter .select2-container,
+.medium-dropdown .select2-container,
+.username-dropdown .select2-container {
+    width: 100% !important;
+}
+.subject-matter .select2-container .select2-selection--single,
+.medium-dropdown .select2-container .select2-selection--single,
+.username-dropdown .select2-container .select2-selection--single {
+    height: 40px;
+    padding: 5px;
+}
+.subject-matter .select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 5px;
+}
+.medium-dropdown .select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 5px;
+}
+.username-matter .select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 5px;
+}
+.select2-container--default .select2-results__option--selected{
+    background-color: #ffffff;
+    color: #ffffff;
+}
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable{
+
+}
+.select2-container--default .select2-search--dropdown .select2-search__field{
+    outline: none;
+}
+.select2-results__option--selectable{
+    color: #ffffff;
+    background-image: url(../images/gallerytab.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    margin: 5px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    font-size: 14px;
+}
+.select2-container--default .select2-selection--single{
+    border-radius: 0px;
+}
+.hashtag .select2-container{
+    width: 100% !important;
+}
+.select2-container--default .select2-selection--multiple{
+    border: 1px solid #ced4da;
+    border-radius: 0px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+    color: #6c757d;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove, .select2-container--default .select2-selection--multiple .select2-selection__choice{
+    border-radius: 0px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+    top: -14px;
+    font-size: 34px;
+}
 /*=======================
 /** Terms and conditions CSS
 =========================*/
-.terms-and-conditions {
+.terms-and-conditions{
     margin: 30px 0px;
+    font-family: 'Montserrat';
 }
-
+/*=======================
+/** login-register CSS
+=========================*/
+.login-register{
+    padding: 20px 0px;
+}
+.loginregistertext{
+    margin: 20px 0px;
+    text-align: center;
+    font-family: 'Montserrat';
+}
+.login-registerwrapper{
+    max-width: 450px;
+    margin: auto;
+    background-color: #e9ebe9;
+    font-family: 'Montserrat';
+}
+.login-register-form{
+    padding: 50px;
+}
+.arts-control{
+    width: 100%;
+    padding: 10px;
+    height: 42px;
+    font-size: 14px;
+    color: #000000;
+    outline: none;
+    background-color: #ffffff;
+    border: none;
+    margin-bottom: 30px;
+}
+.artscheck{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.loginbtn{
+    text-align: center;
+}
+.loginbtn a{
+    display: inline-block;
+}
+.forgottext{
+    margin-bottom: 30px;
+    text-align: center;
+}
 /*=======================
 /** Profile CSS
 =========================*/
-.profile-setting {
-    margin: 30px 0px;
+.profile-setting{
+    margin: 30px 0px ;
 }
-
+.profile-wrapper{
+    font-family: 'Montserrat';
+}
 .profile-my-account h3.profile-title {
-    background-color: #E9EBE9;
-    border-bottom: 1px solid #EBEBEB;
+    background-color: #e9ebe9;
+    border-bottom: 1px solid #ebebeb;
     font-size: 14px;
     font-weight: 700;
     margin: 0;
@@ -600,25 +830,22 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
     line-height: 2;
 }
-
 .profile-my-account h3.profile-title span {
     font-size: 14px;
     left: 20px;
     position: absolute;
     top: 16px;
 }
-
 .profile-my-account h3.profile-title a {
     display: block;
     padding: 16px 55px;
     position: relative;
 }
-
 .profile-my-account h3.profile-title a::before {
-    color: #000000;
+    color: #000;
     content: "\f063";
     display: inline-block;
-    font-family: "FontAwesome";
+    font-family:'Font Awesome 5 Brands';
     font-size: 14px;
     position: absolute;
     right: 10px;
@@ -628,15 +855,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .profile-my-account .profile-info-wrapper {
     padding: 30px 20px;
-    background-color: #FFFFFF;
+    background-color: #fff;
 }
-
 .profile-my-account .profile-info-wrapper .account-wrapper {
-    border-bottom: 1px solid #EAEAEA;
+    border-bottom: 1px solid #eaeaea;
     margin-bottom: 28px;
     padding-bottom: 30px;
 }
-
 .profile-my-account .profile-info-wrapper .account-wrapper h4 {
     font-size: 14px;
     margin: 0;
@@ -644,7 +869,6 @@ h1, h2, h3, h4, h5, h6 {
 
     font-weight: 700;
 }
-
 .profile-my-account .profile-info-wrapper .account-wrapper h5 {
     font-size: 14px;
     letter-spacing: 0.2px;
@@ -652,20 +876,17 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 
 }
-
 .profile-my-account .profile-info-wrapper .change-info {
     margin-bottom: 20px;
 }
-
 .profile-my-account .profile-info-wrapper .change-info label {
 
     font-size: 14px;
     text-transform: capitalize;
 }
-
 .profile-my-account .profile-info-wrapper .change-info input {
     background: transparent none repeat scroll 0 0;
-    border: 1px solid #EBEBEB;
+    border: 1px solid #ebebeb;
 
     height: 40px;
     padding: 0 15px;
@@ -673,472 +894,161 @@ h1, h2, h3, h4, h5, h6 {
     outline: none;
 }
 
-/*=======================
-/** artist page CSS
-=========================*/
-.post-upload {
-    margin: 30px 0px;
+/* Post page css  */
+.postwrapper{
+   padding-top: 20px;
+   padding-bottom: 20px;
 }
+.postbox{
+    max-width: 600px;
+    margin: auto;
+    background-color: #eaeaea;
 
-.upload-info {
-    display: flex;
-    background: #E9EBE9;
-    align-items: center;
-    height: 150vh;
 }
-
-.upload-post {
+.postslider.owl-carousel .owl-nav.disabled {
     display: block;
-    clear: both;
-    margin: 0 auto;
-    width: 100%;
-    /*max-width: 600px;*/
 }
-
-.upload-post label {
-    float: left;
-    clear: both;
-    width: 100%;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    background: #FFFFFF;
-    border-radius: 7px;
-    border: 3px solid #EEEEEE;
-    transition: all 0.2s ease;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.upload-post label:hover {
-    border-color: #14C4AF;
-}
-
-.upload-post label.hover {
-    border: 3px solid #14C4AF;
-    box-shadow: inset 0 0 0 6px #EEEEEE;
-}
-
-.upload-post label.hover #start i.fa {
-    transform: scale(0.8);
-    opacity: 0.3;
-}
-
-.upload-post #start {
-    float: left;
-    clear: both;
-    width: 100%;
-}
-
-.upload-post #start.hidden {
-    display: none;
-}
-
-.upload-post #start i.fa {
-    font-size: 50px;
-    margin-bottom: 1rem;
-    transition: all 0.2s ease-in-out;
-}
-
-.upload-post #response {
-    float: left;
-    clear: both;
-    width: 100%;
-}
-
-.upload-post #response.hidden {
-    display: none;
-}
-
-.upload-post #response #messages {
-    margin-bottom: 0.5rem;
-}
-
-.upload-post #file-image {
-    display: inline;
-    margin: 0 auto 0.5rem auto;
-    width: auto;
-    height: auto;
-    max-width: 180px;
-}
-
-.upload-post #file-image.hidden {
-    display: none;
-}
-
-.upload-post #notimage {
+.postslider.owl-carousel .owl-nav.disabled{
     display: block;
-    float: left;
-    clear: both;
-    width: 100%;
 }
 
-.upload-post #notimage.hidden {
-    display: none;
-}
-
-.upload-post progress,
-.upload-post .progress {
-    display: inline;
-    clear: both;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 180px;
-    height: 8px;
-    border: 0;
-    border-radius: 4px;
-    background-color: #EEEEEE;
-    overflow: hidden;
-}
-
-.upload-post .progress[value]::-webkit-progress-bar {
-    border-radius: 4px;
-    background-color: #EEEEEE;
-}
-
-.upload-post input[type=file] {
-    /*display: none;*/
-}
-
-.upload-post div {
-    margin: 0 0 0.5rem 0;
-    color: #BFC416;
-}
-
-.post-description {
-    background: #E9EBE9;
-    padding: 10px;
-}
-
-.post-dropdown {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.hashtag {
-    margin-bottom: 10px;
-}
-
-.rating h5, .feedback h5 {
-    color: #067265;
-}
-
-.owner-name {
-    margin: 10px 0px;
-}
-
-.review {
-    display: flex;
-}
-
-.review h3 {
-    color: #067265;
-}
-
-.review p, .note h5 {
-    color: #6C757D;
-}
-
-.artist-rating ul {
-    list-style-type: none;
+.postslider.owl-carousel .owl-nav [class*="owl-"]
+{
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
     display: inline-block;
-}
-
-.rating img {
-    width: 100%;
-    height: auto;
-    max-width: 15px;
-    margin-left: 10px;
-}
-
-.rating {
-    display: flex;
-    justify-content: space-between;
-}
-
-#full-stars-example-two .rating-group {
-    display: inline-flex;
-}
-
-#full-stars-example-two .rating__icon {
-    pointer-events: none;
-}
-
-#full-stars-example-two .rating__input {
-    position: absolute !important;
-    left: -9999px !important;
-}
-
-#full-stars-example-two .rating__input--none {
-    display: none;
-}
-
-#full-stars-example-two .rating__label {
+    vertical-align: top;
     cursor: pointer;
-    padding: 0 0.1em;
-    font-size: 25px;
-}
-
-#full-stars-example-two .rating__icon--star {
-    color: orange;
-}
-
-#full-stars-example-two .rating__input:checked ~ .rating__label .rating__icon--star {
-    color: #DDDDDD;
-}
-
-#full-stars-example-two .rating-group:hover .rating__label .rating__icon--star {
-    color: orange;
-}
-
-#full-stars-example-two .rating__input:hover ~ .rating__label .rating__icon--star {
-    color: #DDDDDD;
-}
-
-.rating-title {
-    text-align: right;
-}
-
-.rating-title span {
-    margin-left: 10px;
-    margin-right: 10px;
-    color: #6C757D;
-}
-
-.feedback {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0px;
-}
-
-.feedback-op {
-    display: flex;
-}
-
-.feedback-op .btn {
-    width: 80px;
-    border-radius: 0px;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.post-submit {
-    text-align: center;
-}
-
-.post-submit .btn {
-    border-radius: 0px;
-    text-transform: uppercase;
-}
-
-/*=======================
-/** post page CSS
-=========================*/
-.post-banner {
-    margin-top: 30px;
-}
-
-.banner {
-    position: relative;
-    font-size: 0;
-}
-
-.banner img {
-    width: 100%;
-}
-
-.post-wrapper > .row {
-    margin-left: 0px;
-    margin-right: 0px;
-}
-
-.post-artist {
     position: absolute;
-    bottom: 10px;
-    left: 30px;
-    display: flex;
+    top: 50%;
+    margin-top: -20px;
 }
-
-.artist-name, .artist-mail, .post-like {
-    display: flex;
-    align-items: center;
-    font-size: 20px;
+.postslider.owl-carousel .owl-nav [class*="owl-"]:hover
+{
+    color: #3680c5;
 }
-
-.artist-name i, .artist-mail i, .post-like i {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.post-like {
-    position: absolute;
-    bottom: 10px;
-    right: 30px;
-    display: flex;
-}
-
-.banner::after {
-    content: '';
-    background-color: #FFFFFF;
-    opacity: 0.3;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.post-artist-info {
-    margin-top: 40px;
-}
-
-.description-box h4 {
-    padding: 20px 0px;
-    color: #067265;
-}
-
-.description-box p {
-    margin-top: 40px;
-    margin-bottom: 30px;
-    color: #6C757D;
-    text-align: justify;
-}
-
-.description-box {
-    text-align: center;
-}
-
-.description-box .btn {
-    border-radius: 0px;
-}
-
-.social-media ul li {
-    margin: 10px 0px;
-}
-
-.social-media ul li a {
-    font-size: 20px;
-    color: #6C757D;
-}
-
-.social-media ul li a:hover {
-    color: #067265;
-}
-
-/*=======================
-/** artist-commissoner dropdown css
-=========================*/
-.subject-matter, .medium-dropdown {
-    width: 50%;
-}
-
-.username-matter, .username-dropdown {
-    width: 100%;
-}
-
-.subject-matter .select2-container, .medium-dropdown .select2-container, .username-dropdown .select2-container {
-    width: 100% !important;
-}
-
-.subject-matter .select2-container .select2-selection--single, .medium-dropdown .select2-container .select2-selection--single, .username-dropdown .select2-container .select2-selection--single {
-    height: 40px;
-    padding: 5px;
-}
-
-.subject-matter .select2-container--default .select2-selection--single .select2-selection__arrow {
-    top: 5px;
-}
-
-.medium-dropdown .select2-container--default .select2-selection--single .select2-selection__arrow {
-    top: 5px;
-}
-
-.username-dropdown .select2-container--default .select2-selection--single .select2-selection__arrow {
-    top: 5px;
-}
-
-.select2-container--default .select2-results__option--selected {
-    background-color: #FFFFFF;
-    color: #6C757D;
-}
-
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-    background-color: #14C4AF !important;
-    color: #6C757D;
-}
-
-.select2-container--default .select2-search--dropdown .select2-search__field {
-    outline: none;
-}
-
-.select2-results__option--selectable {
-    color: #6C757D;
-}
-
-.select2-container--default .select2-selection--single {
-    border-radius: 0px;
-}
-
-.hashtag .select2-container {
-    width: 100% !important;
-}
-
-.select2-container--default .select2-selection--multiple {
-    border: 1px solid #CED4DA;
-    border-radius: 0px;
-}
-
-.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
-    color: #6C757D;
-}
-
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove, .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    border-radius: 0px;
-}
-
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    top: -14px;
+.postslider.owl-carousel .owl-nav [class*="owl-"]
+{
+    color: #14c4af;
     font-size: 34px;
 }
-
-/* main page button slider css  */
-.slick-prev:before,
-.slick-next:before {
-    color: black;
+.postslider.owl-carousel .owl-nav [class*="owl-"]:hover
+{
+    color: #c0c416;
 }
-
-.gallery-tab .slick-arrow {
-    color: #000000;
-    font-size: 20px;
-    display: block;
-    width: 40px;
-    height: 40px;
-    background: #E9EBE9;
+.postslider.owl-carousel .owl-nav .owl-prev
+{
+    left: -25px;
+}
+.postslider.owl-carousel .owl-nav .owl-next
+{
+    right: -25px;
+}
+.postslider.owl-carousel .owl-dots
+{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+.posttab{
+    display: flex;
+    justify-content: center;
+}
+.posttab li a{
+    border-radius: 5px 5px 0px 0px;
+    padding: 10px 25px;
+}
+#postdetails{
+    background-color: #e9ebe9;
+}
+.commentsbox, .reviewbox{
+    padding: 10px;
+    height: 110vh;
+}
+.descriptionbox{
+    padding: 10px;
+}
+.destitle{
+    display: flex;
+    align-items: center;
+}
+.destitle img{
+    max-width: 100px;
+}
+.destitle h2{
+    font-size: 32px;
+    margin-left: 20px;
+    font-family: 'Montserrat';
+}
+.desowner{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0px;
+}
+.desowner a{
+    color: #6c757d;
+}
+.desinfo{
+    margin: 20px 0px;
+}
+.desinfo p{
+    color: #6c757d;
+    font-family: 'Montserrat';
+    font-weight: bold;
+}
+.deslike{
     text-align: center;
-    z-index: 99;
-    border-radius: 100%;
+    margin-bottom: 20px;
+}
+.deslike .btngreen{
+    background-color: #ffffff;
+    color: #6c757d;
+    border: none;
+    border-radius: 0px;
+    width: 200px;
+}
+.desoption{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.desoption .btndarkyellow, .desoption .btnyellow{
+    border: none;
+    border-radius: 0px;
+    width: 200px;
+}
+.deshastag{
+    margin-bottom: 20px;
+}
+.deshastag a{
+    border: none;
+    border-radius: 0px;
+    margin: 5px;
 }
 
-.gallery-tab .slick-arrow.slick-prev i {
-    transform: rotate(180deg);
+.make-control{
+    border: 1px solid #c0c416;
+    outline: none;
+    background-color: #ffffff;
+    color: #6c757d;
+    cursor: pointer;
+    border-radius: 0px;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-family: 'Montserrat';
 }
-
-.gallery-tab .slick-prev {
-    left: -35px;
+.usercommentbox{
+    height: 570px;
+    overflow: scroll;
 }
-
-.gallery-tab .slick-next {
-    right: -35px;
+.usercomment{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Montserrat';
 }
-
-@media only screen and (max-width: 991px) {
-    .gallery-tab .slick-prev {
-        left: -31px;
-    }
-
-    .gallery-tab .slick-next {
-        right: -31px;
-    }
+.usercomment img{
+    margin-right: 10px;
 }

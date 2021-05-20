@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}">
 
     @stack('stylesheets')
     @stack('styles')
@@ -38,7 +39,7 @@
                 </div>
                 <div class="col-lg-6">
                     @if(request()->path() === '/')
-                        <div class="header-search-box">
+                        {{-- <div class="header-search-box">
                             <form action="">
                                 <div class="form-group row">
                                     <i class="fa fa-search col-sm-2" aria-hidden="true"></i>
@@ -48,15 +49,33 @@
                                     </div>
                                 </div>
                             </form>
+                        </div> --}}
+                        <div class="header-search-box">
+                            <form action="">
+                                <div class="headsearch">
+                                    <div class="searchbox">
+                                        <input type="text" class="form-control" id="search" placeholder="Search here...">
+                                    </div>
+                                    <div class="searchicon">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     @endif
                 </div>
                 <div class="col-lg-4">
                     @guest()
-                        <div class="header-dropdown">
-                            <div class="profile">
-                                <a class="btn gallery-btn-green" href="{{  url('register') }}">Register</a>
-                                <a class="btn gallery-btn-green" href="{{  url('login') }}">Login</a>
+                        <div class="loginregisterbtn">
+                            <div class="login">
+                                <a href="{{  url('login') }}" class="btngreen">Login
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </a>
+                            </div>
+                            <div class="register">
+                                <a href="{{  url('register') }}" class="btndarkyellow">Register
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </a>
                             </div>
                         </div>
                     @else
@@ -212,20 +231,20 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="popup-btn">
-                                <a href="javascript:" class="btn gallery-btn-green"
+                                <a href="javascript:" class="btn btngreen"
                                    onclick="myFunction()">Artist
                                 </a>
                                 <span>OR</span>
-                                <a href="{{ url('posts/create/commissioner') }}" class="btn gallery-btn-dark-yellow">
+                                <a href="{{ url('posts/create/commissioner') }}" class="btn btndarkyellow">
                                     Commissioner
                                 </a>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div id="popup-option">
-                                <a href="{{ url('posts/create/artist') }}" class="btn gallery-btn-dark-yellow">Personal</a>
+                                <a href="{{ url('posts/create/artist') }}" class="btn btndarkyellow">Personal</a>
                                 <span>OR</span>
-                                <a href="{{ url('posts/create/commissioner') }}" class="btn gallery-btn-dark-yellow">Commissioned</a>
+                                <a href="{{ url('posts/create/commissioner') }}" class="btn btndarkyellow">Commissioned</a>
                             </div>
                         </div>
                     </div>

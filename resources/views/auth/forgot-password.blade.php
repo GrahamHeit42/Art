@@ -1,32 +1,29 @@
 @extends('layouts.app')
 @section('title','Forgot password')
 @section('content')
-    <div id="main">
-        <div class="login-register">
-            <div class="container">
-                <div class="row">
-                    <div class="login-register-area">
-                        <div class="col-md-12">
-                            <div class="login-register-wrapper">
-                                <div class="login-register-tab-list">
-                                    <a class="active">
-                                        <h4>Forgot-password</h4>
-                                    </a>
+<div class="login-register">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="loginregistertext">Forgot-Password</h2>
+                    <div class="login-registerwrapper">
+                        <div class="login-register-form">
+                            <form method="POST" action="{{ route('password.email') }}">
+                                @csrf
+                                <h2 class="forgottext">
+                                    Please enter your email address below and we will send you information to change your password.
+                                </h2>
+                                <div class="artsinput">
+                                    <input type="email" id="email" name="email" placeholder="Email" value="{{old('email') ?? ''}}"
+                                    class="arts-control @error('email') border border-danger @enderror" style="margin-bottom: 0;"/>
+                                    @error('email')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                <div class="login-form-container">
-                                    <div class="login-register-form">
-                                        <form method="POST" action="{{ route('password.email') }}">
-                                            @csrf
-
-                                            <span class="forgot">Please enter your email address below and we will send you information to change your password.</span>
-                                            <input type="email" id="email" name="email" placeholder="Email" value="{{old('email') ?? ''}}" />
-                                            <div class="button-box">
-                                                <button type="submit" class="btn gallery-btn-dark-yellow"><span>Get Link</span></button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                <div class="loginbtn mt-4">
+                                    <button type="submit" class="btngreen">Get Link</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

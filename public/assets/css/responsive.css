@@ -1,11 +1,30 @@
-/*----------------------------------------*/
-/**  Header css
-/*----------------------------------------*/
-@media only screen and (min-width: 991px){
-    .header-search-box .form-group .fa-search{
-        display: flex;
-        justify-content: flex-end;
-    } 
+@media only screen and (max-width: 1860px) {}
+@media only screen and (max-width: 1680px) {}
+@media only screen and (max-width: 1440px) {}
+@media only screen and (max-width: 1366px) {}
+@media only screen and (max-width: 1280px) {}
+@media only screen and (max-width: 1199px) {}
+@media only screen and (max-width: 1169px) {}
+@media only screen and (max-width: 1023px) {}
+@media only screen and (min-width: 992px) {}
+@media only screen and (max-width: 991px) {}
+@media only screen and (max-width: 959px) {}
+@media only screen and (max-width: 800px) {}
+@media only screen and (max-width: 768px) {}
+
+@media only screen and (max-width: 640px) {}
+@media only screen and (max-width: 575px) {}
+@media only screen and (max-width: 480px) {}
+
+@media only screen and (max-width: 1180px) {
+    .posttab li a{
+        padding: 10px 15px;
+    }
+}
+@media (min-width: 992px){
+    #container {
+        min-height: 100vh;
+    }
 }
 @media only screen and (max-width: 991px){
     #logo, .header-dropdown{
@@ -15,15 +34,12 @@
         margin-bottom: 5px;
     }
     .header-search-box .form-group{
-        text-align: center;
-        
+        text-align: center;  
     }
     .header-search-box .form-group .fa-search, .header-search-box .form-group .form-control{
         margin-top: 5px;
         margin-bottom: 5px;
     }
-}
-@media only screen and (max-width: 500px){
     .profile_dropdown{
         top: 20px !important;
         left: -25px !important;
@@ -34,111 +50,72 @@
     }
     .notification_dropdown{
         top: 20px !important;
-        left: -111px !important;
+        left: -116px !important;
     }
-}
-/*======================= 
-/** Common CSS 
-=========================*/
-@media (min-width: 992px) {
-    #main {
-      min-height: 100vh;
+    .filter{
+        flex-direction: column;
     }
-  }
-  
-/*======================= 
-/** Gallery CSS 
-=========================*/
-@media only screen and (max-width: 991px){
+    .post{
+        order: 2;
+    }
+    .artsoption{
+        order: 1;
+        margin-bottom: 10px;
+    }
     
-    .gallery-tab{
+    .realeyze {
+       justify-content: center;
+    }
+    .loginregisterbtn{
+        margin: 10px 0px;
+        justify-content: center;
+    }
+    .login-register{
+        min-height: 75vh;
+    }
+    .upload-info{
         margin-bottom: 20px;
     }
-    .tab-button{
-        display: block;
+    .upload-thumb{
         text-align: center;
     }
+    .upload-thumb img{
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        max-height: 300px;
+    }
+    .maturitybox{
+        text-align: center;
+    }
+    .descriptionbox, .commentsbox, .reviewbox{
+        height: auto;
+    }
 }
-/*======================= 
-/** footer CSS 
-=========================*/
-@media only screen and (max-width: 991px){
-    
+
+@media only screen and (max-width: 767px) {
     .usefull-link ul {
         display: block;
         text-align: center;
     }
-    .realeyze {
-       justify-content: center;
+    .upload-btn-wrapper a{
+        font-size: 60px;
     }
-}
-/*======================= 
-/** Login-register CSS 
-=========================*/
-@media only screen and (max-width: 991px){
-    
-    .login-register-btn{
-        text-align: center;
+    .postslider.owl-carousel .owl-nav .owl-next{
+        right: 0px;
     }
-    .login-toggle-btn{
-        display: block;
-        justify-content: center;
-    }
-    .login-option{
-        margin-bottom: 15px;
-    }
-}
-/*======================= 
-/** post page CSS 
-=========================*/
-@media only screen and (max-width: 480px){
-    .post-artist{
-        bottom: 40px;
-    }
-    .post-like{
-        bottom: 10px;
-        left: 40px;
-        right: 0px
-    }
-     
-}
-@media only screen and (min-width: 991px){
-    .post-description{
-        height: 150vh;
-    }
-}
-@media only screen and (max-width: 991px){
-    .post-description{
-       margin-top: 30px;
-    }
-}
-
-
-
-
-
-
-@media only screen and (max-width: 480px){
-    .filter{
-        flex-direction: column;
-    }
-    .post-btn{
-        order: 2;
-    }
-    .filter .dropdown{
-        order: 1;
-        text-align: center;
-        margin-bottom: 10px;
-    }  
-    .mediums-dropdown {
-        transform: translate3d(70px, 38px, 0px) !important;
+    .postslider.owl-carousel .owl-nav .owl-prev{
+        left: 0px;
     }   
 }
-@media only screen and (max-width: 575px) {
-    .gallery-tab .slick-next {
-        right: -10px;
+@media only screen and (max-width: 480px) {
+    .login-register-form{
+        padding: 20px;
     }
-    .gallery-tab .slick-prev {
-        left: -16px;
+    .login-registerwrapper{
+        font-size: 14px;
+    }
+    .login-register {
+        padding: 50px 0px;
     }
 }
