@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,9 +10,7 @@
 
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}">
@@ -26,6 +25,7 @@
 
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet" />
 </head>
+
 <body>
     <div id="wrapper">
         <header id="header">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-lg-6">
                     @if(request()->path() === '/')
-                        {{-- <div class="header-search-box">
+                    {{-- <div class="header-search-box">
                             <form action="">
                                 <div class="form-group row">
                                     <i class="fa fa-search col-sm-2" aria-hidden="true"></i>
@@ -50,134 +50,132 @@
                                 </div>
                             </form>
                         </div> --}}
-                        <div class="header-search-box">
-                            <form action="">
-                                <div class="headsearch">
-                                    <div class="searchbox">
-                                        <input type="text" class="form-control" id="search" placeholder="Search here...">
-                                    </div>
-                                    <div class="searchicon">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </div>
+                    <div class="header-search-box">
+                        <form action="">
+                            <div class="headsearch">
+                                <div class="searchbox">
+                                    <input type="text" class="form-control" id="search" placeholder="Search here...">
                                 </div>
-                            </form>
-                        </div>
+                                <div class="searchicon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     @endif
                 </div>
                 <div class="col-lg-4">
                     @guest()
-                        <div class="loginregisterbtn">
-                            <div class="login">
-                                <a href="{{  url('login') }}" class="btngreen">Login
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </a>
-                            </div>
-                            <div class="register">
-                                <a href="{{  url('register') }}" class="btndarkyellow">Register
-                                    <i class="fas fa-sign-out-alt"></i>
-                                </a>
-                            </div>
+                    <div class="loginregisterbtn">
+                        <div class="login">
+                            <a href="{{  url('login') }}" class="btngreen">Login
+                                <i class="fas fa-sign-in-alt"></i>
+                            </a>
                         </div>
+                        <div class="register">
+                            <a href="{{  url('register') }}" class="btndarkyellow">Register
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </div>
                     @else
-                        <div class="header-dropdown">
-                            <div class="profile">
-                                <a id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{{ asset('assets/icon/profile.svg') }}" alt="">
-                                </a>
-                                <div class="dropdown-menu profile_dropdown" aria-labelledby="profile">
-                                    <ul>
-                                        <li class="profile_li">
-                                            <a class="" href="{{ url('profile') }}">
-                                                <span class="">
-                                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                                </span>
-                                                Profile
-                                            </a>
-                                        </li>
-                                        <li class="profile_li">
-                                            <a class="" href="{{ url('settings') }}">
-                                                <span class="">
-                                                    <i class="fa fa-cog" aria-hidden="true"></i>
-                                                </span>
-                                                User Settings
-                                            </a>
-                                        </li>
+                    <div class="header-dropdown">
+                        <div class="profile">
+                            <a id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('assets/icon/profile.svg') }}" alt="">
+                            </a>
+                            <div class="dropdown-menu profile_dropdown" aria-labelledby="profile">
+                                <ul>
+                                    <li class="profile_li">
+                                        <a class="" href="{{ url('profile') }}">
+                                            <span class="">
+                                                <i class="fa fa-user" aria-hidden="true"></i>
+                                            </span>
+                                            Profile
+                                        </a>
+                                    </li>
+                                    <li class="profile_li">
+                                        <a class="" href="{{ url('settings') }}">
+                                            <span class="">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                            </span>
+                                            User Settings
+                                        </a>
+                                    </li>
 
-                                        <li class="profile_li">
-                                            <form method="POST" action="{{ route('logout') }}">
-                                                @csrf
-                                                <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    <li class="profile_li">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                                 <span class="">
                                                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                                                 </span>
-                                                    Logout
-                                                </a>
-                                            </form>
+                                                Logout
+                                            </a>
+                                        </form>
 
-                                        </li>
-                                    </ul>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="message">
-                                <a href="" id="message" data-toggle="dropdown" aria-haspopup="true"
-                                   aria-expanded="false">
-                                    <img src="{{ asset('assets/icon/message.svg') }}" alt="">
-                                </a>
-                                <div class="dropdown-menu message_dropdown" aria-labelledby="message">
-                                    <ul>
-                                        <li>
-                                            <div>
-                                                Lorem, ipsum dolor.
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                Lorem, ipsum dolor.
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                Lorem, ipsum dolor.
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="notification">
-                                <a href="" id="notification" data-toggle="dropdown" aria-haspopup="true"
-                                   aria-expanded="false">
-                                    <img src="{{ asset('assets/icon/notification.svg') }}" alt="">
-                                </a>
-                                <div class="dropdown-menu notification_dropdown" aria-labelledby="notification">
-                                    <ul>
-                                        <li>
-                                            <div>
-                                                Lorem, ipsum dolor.
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                Lorem, ipsum dolor.
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                Lorem, ipsum dolor.
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="plus">
-                                <a data-toggle="modal" data-target="#postUploadModal">
-                                    <img src="{{ asset('assets/icon/plus.svg') }}" alt="">
-                                </a>
-                            </div>
-
                         </div>
+                        <div class="message">
+                            <a href="" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('assets/icon/message.svg') }}" alt="">
+                            </a>
+                            <div class="dropdown-menu message_dropdown" aria-labelledby="message">
+                                <ul>
+                                    <li>
+                                        <div>
+                                            Lorem, ipsum dolor.
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            Lorem, ipsum dolor.
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            Lorem, ipsum dolor.
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="notification">
+                            <a href="" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('assets/icon/notification.svg') }}" alt="">
+                            </a>
+                            <div class="dropdown-menu notification_dropdown" aria-labelledby="notification">
+                                <ul>
+                                    <li>
+                                        <div>
+                                            Lorem, ipsum dolor.
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            Lorem, ipsum dolor.
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            Lorem, ipsum dolor.
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="plus">
+                            <a data-toggle="modal" data-target="#postUploadModal">
+                                <img src="{{ asset('assets/icon/plus.svg') }}" alt="">
+                            </a>
+                        </div>
+
+                    </div>
                     @endguest
                 </div>
             </div>
@@ -217,8 +215,7 @@
     </div>
 
     <!-- popup modal -->
-    <div class="modal fade upload-popup" id="postUploadModal" tabindex="-1" role="dialog"
-         aria-labelledby="postUploadModalLabel" aria-hidden="true">
+    <div class="modal fade upload-popup" id="postUploadModal" tabindex="-1" role="dialog" aria-labelledby="postUploadModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -231,8 +228,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="popup-btn">
-                                <a href="javascript:" class="btn btngreen"
-                                   onclick="myFunction()">Artist
+                                <a href="javascript:" class="btn btngreen" onclick="myFunction()">Artist
                                 </a>
                                 <span>OR</span>
                                 <a href="{{ url('posts/create/commissioner') }}" class="btn btndarkyellow">
@@ -244,7 +240,7 @@
                             <div id="popup-option">
                                 <a href="{{ url('posts/create/artist') }}" class="btn btndarkyellow">Personal</a>
                                 <span>OR</span>
-                                <a href="{{ url('posts/create/commissioner') }}" class="btn btndarkyellow">Commissioned</a>
+                                <a href="{{ url('posts/create/commissioned') }}" class="btn btndarkyellow">Commissioned</a>
                             </div>
                         </div>
                     </div>
@@ -285,12 +281,19 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-        @if(session()->has('success'))
-        toastr.success("{{ session()->get('success') }}", 'Success', toastrOptions);
-        @elseif(session()->has('error'))
-        toastr.error('{{ session()->get('error') }}', 'Error', toastrOptions);
-        @endif
     </script>
-
+    @if(session()->has('success'))
+    <script type="text/javascript">
+        toastr.success('<?php echo session()->get('success'); ?>')
+    </script>
+    @endif
+    @if ($errors->any())
+    @foreach ($errors->all() as $error)
+    <script type="text/javascript">
+        toastr.error('{{$error}}')
+    </script>
+    @endforeach
+    @endif
 </body>
+
 </html>

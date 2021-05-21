@@ -16,15 +16,15 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-//            $table->tinyInteger('user_type')->default(0);
-//            $table->tinyInteger('artist_type')->nullable();
-            $table->foreignId('drawn_by')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->foreignId('commisioned_by')->nullable()->constrained('users')->cascadeOnDelete();
+            //            $table->tinyInteger('user_type')->default(0);
+            //            $table->tinyInteger('artist_type')->nullable();
+            $table->foreignId('drawn_by')->nullable()->constrained('usernames')->cascadeOnDelete();
+            $table->foreignId('commisioned_by')->nullable()->constrained('usernames')->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->foreignId('medium_id')->constrained('mediums')->cascadeOnDelete();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
-            // $table->string('cover_image')->nullable();
+            $table->string('cover_image')->nullable();
             $table->text('keywords')->nullable();
             $table->double('price', 10, 2)->default(0)->nullable();
             $table->double('speed', 10, 2)->default(0)->nullable();
@@ -35,6 +35,7 @@ class CreatePostsTable extends Migration
             $table->double('understanding', 10, 2)->default(0)->nullable();
             $table->boolean('want_work_again')->default(0)->comment('0-No, 1-Yes');
             $table->boolean('status')->default(0)->comment('0-Inactive, 1-Active');
+            $table->tinyInteger('maturity_rating')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

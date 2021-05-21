@@ -27,6 +27,9 @@ return [
     'AP' => 'ArtistPersonal',
     'AC' => 'ArtistCommisioned',
     'CC' => 'Commissioner',
+    'Artist' => 'artist',
+    'Commisioned' => 'commissioned',
+    'Commissioner' => 'commissioner',
 
     'admin' => [
         'display_name' => env('ADMIN_NAME'),

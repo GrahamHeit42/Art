@@ -22,10 +22,10 @@ class Post extends Model
         'user_id',
         'subject_id', 'medium_id',
         'drawn_by', 'commisioned_by',
-        'title', 'description', 'keywords', // 'cover_image',
+        'title', 'description', 'keywords', 'cover_image',
         'price', 'speed', 'quality', 'communication',
-        'transaction', 'concept', 'understanding', 'communication',
-        'work_again', 'status'
+        'transaction', 'concept', 'understanding', //'communication',
+        'want_work_again', 'status', 'maturity_rating'
     ];
 
     protected $appends = [
@@ -33,11 +33,13 @@ class Post extends Model
         'status_text'
     ];
 
-    public function getImageUrlAttribute() {
+    public function getImageUrlAttribute()
+    {
         return !empty($this->attributes['image_path']) ? asset($this->attributes['image_path']) : null;
     }
 
-    public function getStatusTextAttribute() {
+    public function getStatusTextAttribute()
+    {
         return $this->attributes['status'] === 1 ? 'Active' : 'Inactive';
     }
 

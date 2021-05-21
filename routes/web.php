@@ -59,10 +59,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('store', [FrontPostController::class, 'store']);
     });
 
-//    Route::get('artist-personal/create', [FrontPostController::class, 'artistPersonalCreate'])->name('artist-personal');
-//    Route::get('artist-commissioned/create', [FrontPostController::class, 'artistCommissionedCreate'])->name('artist-commissioned');
-//    Route::get('commissioner/create', [FrontPostController::class, 'commissionerCreate'])->name('commissioner');
-//    Route::post('frontside/posts/save', [FrontPostController::class, 'savePost']);
+    //    Route::get('artist-personal/create', [FrontPostController::class, 'artistPersonalCreate'])->name('artist-personal');
+    //    Route::get('artist-commissioned/create', [FrontPostController::class, 'artistCommissionedCreate'])->name('artist-commissioned');
+    //    Route::get('commissioner/create', [FrontPostController::class, 'commissionerCreate'])->name('commissioner');
+    //    Route::post('frontside/posts/save', [FrontPostController::class, 'savePost']);
 });
 
 // Admin
