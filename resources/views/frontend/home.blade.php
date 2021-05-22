@@ -38,7 +38,7 @@
             <div class="commissions">
 
                 <label for="commissionscheck">Commissions</label>
-                <input class="commissions_input" type="radio" name="commissions" value="option1" id="commissionscheck" checked>
+                <input class="commissions_input" type="radio" name="commissions" value="option1" id="commissionscheck" checked onclick="filterOptions();">
             </div>
             <div class="mediums">
                 <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -47,7 +47,7 @@
                 <div class="dropdown-menu mediums-dropdown" aria-labelledby="mediumsdropdown">
                     @foreach($mediums as $key => $medium)
                     <div class="form-check dropdown-item">
-                        <input class="form-check-input" type="checkbox" name="filter[mediums]" id="medium-{{ $medium->id }}" value="{{ $medium->id }}" onchange="filterMedium('{{ $medium->id }}');">
+                        <input class="form-check-input" type="checkbox" name="filter[mediums]" id="medium-{{ $medium->id }}" value="{{ $medium->id }}" onchange="filterOptions();">
                         <label class="form-check-label" for="medium-{{ $medium->id }}">
                             {{ $medium->title }}
                         </label>
@@ -156,8 +156,39 @@
     });
 </script>
 <script>
-    function filterMedium(medium_id) {
-        window.location.href = "{{url('/?mid=')}}" + medium_id;
+    function param(name) {
+        return (location.search.split(name + '=')[1] || '').split('&')[0];
+    }
+</script>
+<script>
+    var urlsid = param('sid');
+    var urlmid = param('mid');
+    var searched_value = param('q');
+    var subject_arr = [];
+
+    if (searched_value !== "") {
+        $("#search").val(searched_value);
+    }
+
+    if (urlsid !== "") {
+        subject_arr.push(urlsid);
+    }
+    if (urlmid !== "") {
+
+        var urlmid_arr = urlmid.split(",");
+        $.each(urlmid_arr, function(i) {
+            $("#medium-" + urlmid_arr[i]).prop('checked', true);
+        });
+    }
+
+    function filterOptions(t) {
+        var checked = []
+        $("input[name='filter[mediums]']:checked").each(function() {
+            checked.push(parseInt($(this).val()));
+        });
+        var search = $("#search").val();
+        var commissions = $("input[name='commissions']:checked").val();
+        window.location.href = "{{url('/?sid=')}}" + subject_arr + "&mid=" + checked + "&q=" + search + "&c=" + commissions;
     }
 </script>
 @endpush

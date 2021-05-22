@@ -56,7 +56,7 @@
                                 <div class="searchbox">
                                     <input type="text" class="form-control" id="search" placeholder="Search here...">
                                 </div>
-                                <div class="searchicon">
+                                <div class="searchicon" onclick="filterOptions();">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </div>
                             </div>

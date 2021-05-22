@@ -10,8 +10,26 @@
 
     .gridImage {
         margin: 1.5%;
-        width: 30%;
+        width: 100%;
         height: 200px;
+    }
+
+    .w-30 {
+        width: 30%;
+        position: relative;
+        margin: 1.5%;
+    }
+
+    .spanclose {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 100;
+        color: red;
+        /* border-radius: 10px; */
+        /* background-color: darkgrey; */
+        font-size: 2rem;
+        cursor: pointer;
     }
 </style>
 @endpush
@@ -23,7 +41,7 @@
             <div class="row">
                 <div class="col-lg-6 artistcol">
                     <div class="upload-info">
-                        <div class="upload-btn-wrapper">
+                        <div class="upload-btn-wrapper row">
                             <a class="btngreen btngreen-upload">Upload</a>
                             <input id="post-images" type="file" name="images[]" accept="image/*" multiple />
                         </div>
@@ -550,6 +568,10 @@ enctype="multipart/form-data">
             tags: true
         });
     });
+    //remove image
+    function funRemoveImage(t) {
+        $(t).parent().remove();
+    }
 </script>
 <script type="text/javascript">
     var uploadImagesCount = 0;
@@ -590,7 +612,8 @@ enctype="multipart/form-data">
                     var reader = new FileReader();
 
                     reader.onload = function(event) {
-                        $($.parseHTML('<img class="gridSingleImage">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                        // $($.parseHTML('<img class="gridSingleImage">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                        $($.parseHTML('<div class="w-30"><span class="spanclose" onclick="funRemoveImage(this);">&times;</span><img class="gridSingleImage" src="' + event.target.result + '"></div>')).appendTo(placeToInsertImagePreview);
                     }
 
                     reader.readAsDataURL(input.files[0]);
@@ -609,7 +632,8 @@ enctype="multipart/form-data">
                         var reader = new FileReader();
 
                         reader.onload = function(event) {
-                            $($.parseHTML('<img class="gridImage">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                            $($.parseHTML('<div class="w-30"><span class="spanclose" onclick="funRemoveImage(this);">&times;</span><img class="gridImage" src="' + event.target.result + '"></div>')).appendTo(placeToInsertImagePreview);
+                            // $($.parseHTML('<img class="gridImage">')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
                         }
 
                         reader.readAsDataURL(input.files[i]);

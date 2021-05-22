@@ -19,6 +19,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        // dd($request);
         $mediums = Medium::whereStatus(1)->get();
         $subjects = Subject::whereStatus(1)->get();
         $posts = Post::latest();
@@ -28,7 +29,20 @@ class HomeController extends Controller
             $posts = $posts->where('subject_id', $request->get('sid'));
         }
         if (!empty($request->get('mid'))) {
-            $posts = $posts->where('medium_id', $request->get('mid'));
+            $mid = explode(",", $request->get('mid'));
+            $posts = $posts->whereIn('medium_id', $mid);
+        }
+        if (!empty($request->get('q'))) {
+            $q = $request->post('q');
+            $posts = $posts->where(function ($query) use ($q) {
+                $query->Where('title', 'like', "%$q%")
+                    ->orWhere('description', 'like', "%$q%")
+                    ->orWhere('keywords', 'like', "%$q%");
+            });
+        }
+        if (!empty($request->get('c'))) {
+            // $posts = $posts->where('commisioned_by', '<>', '');
+            $posts = $posts->whereNotNull('commisioned_by');
         }
 
         $posts = $posts->get();
