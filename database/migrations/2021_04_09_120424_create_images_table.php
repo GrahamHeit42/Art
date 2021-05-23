@@ -17,6 +17,7 @@ class CreateImagesTable extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
             $table->string('image_path', 255);
+            $table->tinyInteger('display_order')->default(0);
             $table->timestamps();
         });
     }

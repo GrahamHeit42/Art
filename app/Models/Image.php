@@ -12,7 +12,8 @@ class Image extends Model
 
     protected $fillable = [
         'post_id',
-        'image_path'
+        'image_path',
+        'display_order'
     ];
 
     public function post(): BelongsTo
