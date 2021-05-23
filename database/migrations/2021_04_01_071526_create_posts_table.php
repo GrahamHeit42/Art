@@ -35,7 +35,7 @@ class CreatePostsTable extends Migration
             $table->double('understanding', 10, 2)->default(0)->nullable();
             $table->boolean('want_work_again')->default(0)->comment('0-No, 1-Yes');
             $table->boolean('status')->default(0)->comment('0-Inactive, 1-Active');
-            $table->tinyInteger('maturity_rating')->nullable();
+            $table->tinyInteger('maturity_rating')->default(0)->comment('0-General, 1-Mature, 2-Adult');
             $table->softDeletes();
             $table->timestamps();
         });

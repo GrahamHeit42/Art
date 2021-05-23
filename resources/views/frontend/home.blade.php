@@ -11,13 +11,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
+                    <input type="hidden" name="subject_id" id="subject_id" value="{{ request()->get('sid') ?? 0 }}">
                     <div class="tab-button nav gallertab owl-carousel " id="nav-tab" role="tablist">
                         @foreach($subjects as $key => $subject)
-                        {{-- <a href="javascript:" class="btn {{ (($key) % 3) === 0 ? 'gallery-btn-dark-yellow' : ((($key) % 3) === 1 ? 'gallery-btn-yellow' : 'gallery-btn-green') }}">{{ $subject->title }}</a>
-                        --}}
                         <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}">
-                            <a href="{{url('/?sid='.$subject->id)}}">
-                                <div class="tabbox">
+                            <a href="javascript:" onclick="filterPosts({{ $subject->id }})">
+                                <div class="tabbox" style="backdrop-image: {{ $subject->image_url }}">
                                     <h2>{{ $subject->title }}</h2>
                                 </div>
                             </a>
@@ -30,82 +29,71 @@
     </div>
     <div class="filter">
         <div class="post nav" id="nav-tab" role="tablist">
-            <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest" role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
-            <a class="button btnyellow" id="filter-popular-tab" data-bs-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
-            <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending" role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
+            <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest"
+                role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
+            <a class="button btnyellow" id="filter-popular-tab" data-bs-toggle="tab" href="#nav-filter-popular"
+                role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
+            <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending"
+                role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
         </div>
         <div class="artsoption">
             <div class="commissions">
 
-                <label for="commissionscheck">Commissions</label>
-                <input class="commissions_input" type="checkbox" name="commissions" value="option1" id="commissionscheck" checked onclick="filterOptions();">
+                <label for="is_commissions_posts">Commissions</label>
+                <input class="commissions_input" type="checkbox" name="commissions" value="1"
+                    id="is_commissions_posts" onchange="filterPosts()" {{ (request()->get('c') === 'true') ? 'checked' : '' }}>
             </div>
             <div class="mediums">
-                <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                     All Mediums
                 </a>
                 <div class="dropdown-menu mediums-dropdown" aria-labelledby="mediumsdropdown">
                     @foreach($mediums as $key => $medium)
                     <div class="form-check dropdown-item">
-                        <input class="form-check-input" type="checkbox" name="filter[mediums]" id="medium-{{ $medium->id }}" value="{{ $medium->id }}" onchange="filterOptions();">
+                        <input class="form-check-input" type="checkbox" name="filter[mediums]"
+                            id="medium-{{ $medium->id }}" value="{{ $medium->id }}" onchange="filterPosts()"
+                            {{ !empty(request()->get('mid')) && in_array($medium->id, explode(',', request()->get('mid'))) ? 'checked' : '' }} />
                         <label class="form-check-label" for="medium-{{ $medium->id }}">
                             {{ $medium->title }}
                         </label>
                     </div>
                     @endforeach
                 </div>
-
-                {{-- <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    All Mediums
-                </a>
-                <div class="dropdown-menu mediums-dropdown" aria-labelledby="mediumsdropdown">
-                    <div class="form-check dropdown-item">
-                        <input class="form-check-input" type="checkbox" name="exampleRadios" id="mediums1" value="option1">
-                        <label class="form-check-label" for="mediums1">
-                            lllustration
-                        </label>
-                    </div>
-                    <div class="form-check dropdown-item">
-                        <input class="form-check-input" type="checkbox" name="exampleRadios" id="mediums2" value="option1">
-                        <label class="form-check-label" for="mediums2">
-                            2D
-                        </label>
-                    </div>
-                    <div class="form-check dropdown-item">
-                        <input class="form-check-input" type="checkbox" name="exampleRadios" id="mediums3" value="option1">
-                        <label class="form-check-label" for="mediums3">
-                            3D
-                        </label>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </div>
 
     <div class="tab-content" id="nav-tabContent">
-        <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel" aria-labelledby="nav-filter-latest-tab">
+        <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel"
+            aria-labelledby="nav-filter-latest-tab">
             <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
                 <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
-                    <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->cover_image ?? $post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
+                    <img class="animate__animated animate__zoomIn" alt="Post"
+                        src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg')) }}" />
                 </a>
                 @endforeach
             </div>
         </div>
-        <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel" aria-labelledby="nav-filter-popular-tab">
+        <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel"
+            aria-labelledby="nav-filter-popular-tab">
             <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
                 <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
-                    <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
+                    <img class="animate__animated animate__zoomIn" alt="Post"
+                        src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg')) }}" />
                 </a>
                 @endforeach
             </div>
         </div>
-        <div class="post tab-pane fade" id="nav-filter-trending" role="tabpanel" aria-labelledby="nav-filter-trending-tab">
+        <div class="post tab-pane fade" id="nav-filter-trending" role="tabpanel"
+            aria-labelledby="nav-filter-trending-tab">
             <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
                 <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
-                    <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
+                    <img class="animate__animated animate__zoomIn" alt="Post"
+                        src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg')) }}" />
                 </a>
                 @endforeach
             </div>
@@ -155,40 +143,42 @@
 
     });
 </script>
-<script>
-    function param(name) {
-        return (location.search.split(name + '=')[1] || '').split('&')[0];
-    }
-</script>
-<script>
-    var urlsid = param('sid');
-    var urlmid = param('mid');
-    var searched_value = param('q');
-    var subject_arr = [];
+<script type="text/javascript">
 
-    if (searched_value !== "") {
-        $("#search").val(searched_value);
-    }
+    function filterPosts(sid) {
+        if(sid !== undefined && sid !== null && sid !== '') {
+            $("#subject_id").val(sid);
+        }
 
-    if (urlsid !== "") {
-        subject_arr.push(urlsid);
-    }
-    if (urlmid !== "") {
-
-        var urlmid_arr = urlmid.split(",");
-        $.each(urlmid_arr, function(i) {
-            $("#medium-" + urlmid_arr[i]).prop('checked', true);
-        });
-    }
-
-    function filterOptions(t) {
-        var checked = []
-        $("input[name='filter[mediums]']:checked").each(function() {
-            checked.push(parseInt($(this).val()));
-        });
         var search = $("#search").val();
-        var commissions = $("input[name='commissions']:checked").val();
-        window.location.href = "{{url('/?sid=')}}" + subject_arr + "&mid=" + checked + "&q=" + search + "&c=" + commissions;
+        var subjectId = $("#subject_id").val();
+
+        var mediumIds = [];
+        $("input[name='filter[mediums]']:checked").each(function() {
+            mediumIds.push(parseInt($(this).val()));
+        });
+        var isCommissionsPosts = $("#is_commissions_posts").prop('checked');
+
+        var filterUrl = '{{ url("/") }}?';
+        var singleFilter = true;
+        if(search.toString().length > 0) {
+            singleFilter = false;
+            filterUrl += 'q=' + search;
+        }
+        if(parseInt(subjectId) > 0) {
+            filterUrl += (singleFilter === false ? '&' : '') + 'sid=' + parseInt(subjectId);
+            singleFilter = false;
+        }
+        if(mediumIds.length > 0) {
+            filterUrl += (singleFilter === false ? '&' : '') + 'mid=' + mediumIds;
+            singleFilter = false;
+        }
+        if(isCommissionsPosts === true) {
+            filterUrl += (singleFilter === false ? '&' : '') + 'c=' + isCommissionsPosts;
+            singleFilter = false;
+        }
+
+        window.location.href = filterUrl;
     }
 </script>
 @endpush

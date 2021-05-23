@@ -18,8 +18,14 @@ class Subject extends Model
     ];
 
     protected $appends = [
+        'image_url',
         'status_text'
     ];
+
+    public function getImageUrlAttribute()
+    {
+        return !empty($this->attributes['image_path']) ? asset($this->attributes['image_path']) : null;
+    }
 
     public function getStatusTextAttribute()
     {
