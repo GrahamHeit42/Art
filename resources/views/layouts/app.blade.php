@@ -175,7 +175,7 @@
                 </div>
             </header>
 
-            <div id="main">
+            <div id="container">
                 @yield('content')
             </div>
 

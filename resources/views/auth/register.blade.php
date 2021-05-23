@@ -62,7 +62,7 @@
                                     class="mt-4 arts-control" style="margin-bottom: 0;" />
                             </div>
 
-                            <div class="loginbtn">
+                            <div class="loginbtn mt-4">
                                 <button type="submit" class="btndarkyellow">Register</button>
                             </div>
                         </form>

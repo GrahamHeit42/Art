@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}">
@@ -81,7 +81,7 @@
                     @else
                     <div class="header-dropdown">
                         <div class="profile">
-                            <a id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a id="profile" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('assets/icon/profile.svg') }}" alt="">
                             </a>
                             <div class="dropdown-menu profile_dropdown" aria-labelledby="profile">
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                         <div class="message">
-                            <a href="" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="" id="message" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('assets/icon/message.svg') }}" alt="">
                             </a>
                             <div class="dropdown-menu message_dropdown" aria-labelledby="message">
@@ -145,7 +145,7 @@
                         </div>
 
                         <div class="notification">
-                            <a href="" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="" id="notification" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('assets/icon/notification.svg') }}" alt="">
                             </a>
                             <div class="dropdown-menu notification_dropdown" aria-labelledby="notification">
@@ -170,7 +170,7 @@
                         </div>
 
                         <div class="plus">
-                            <a data-toggle="modal" data-target="#postUploadModal">
+                            <a data-bs-toggle="modal" data-bs-target="#postUploadModal">
                                 <img src="{{ asset('assets/icon/plus.svg') }}" alt="">
                             </a>
                         </div>
@@ -181,7 +181,7 @@
             </div>
         </header>
 
-        <div id="main">
+        <div id="container">
             @yield('content')
         </div>
 
@@ -220,9 +220,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="postUploadModalLabel">Upload</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <a  class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                    </a>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -247,16 +247,18 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel" data-dismiss="modal" data-targe="#postUploadModal">Cancel</button>
+                    <button type="button" class="btn btn-cancel btngreen" data-bs-dismiss="modal" data-targe="#postUploadModal">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="{{ asset('assets/plugins/jquery/jquery-3.5.1.slim.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/popper/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.mini.js') }}"></script>
+    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/arts.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 
     @stack('scripts')
 

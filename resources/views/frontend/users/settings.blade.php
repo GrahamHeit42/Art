@@ -6,7 +6,7 @@
             <div class="profile-area">
                 <div class="container">
                     <div class="row">
-                        <div class="ml-auto mr-auto col-lg-9">
+                        <div class="mx-auto col-lg-9">
                             <div class="profile-wrapper">
                                 <div id="faq" class="profile-group">
                                     <div class="profile profile-default profile-my-account">
@@ -14,7 +14,7 @@
                                         <div class="profile-heading">
                                             <h3 class="profile-title">
                                                 <span>1 .</span>
-                                                <a data-toggle="collapse" data-parent="#faq" href="#my-account-1"
+                                                <a data-bs-toggle="collapse" data-bs-parent="#faq" href="#my-account-1"
                                                    aria-expanded="false" class="collapsed">Edit your account information
                                                 </a>
                                             </h3>
@@ -77,7 +77,7 @@
                                     <div class=" profile profile-default profile-my-account">
                                         <div class="profile-heading">
                                             <h3 class="profile-title"><span>2 .</span>
-                                                <a data-toggle="collapse" data-parent="#faq" href="#my-account-2"
+                                                <a data-bs-toggle="collapse" data-bs-parent="#faq" href="#my-account-2"
                                                    class="collapsed" aria-expanded="false">Change your password
                                                 </a>
                                             </h3>

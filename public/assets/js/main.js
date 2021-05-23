@@ -6,6 +6,7 @@ $('.gallertab').owlCarousel({
     nav :true,
     navText :["<i class='fas fa-chevron-left'></i>","<i class='fas fa-chevron-right'></i>"],
     dots:false,
+    margin:10,
     responsive:{
         0:{
             items:1
@@ -14,13 +15,13 @@ $('.gallertab').owlCarousel({
             items:2
         },
         500:{
-            items:3
+            items:2
         },
         600:{
             items:3
         },
         700:{
-            items:4
+            items:3
         },
         800:{
             items:4
@@ -35,13 +36,13 @@ $('.gallertab').owlCarousel({
             items:6
         },
         1200:{
-            items:7
+            items:6
         },
         1300:{
-            items:7
+            items:6
         },
         1400:{
-            items:8
+            items:7
         }
     }
 });
@@ -57,9 +58,9 @@ $('.postslider').owlCarousel({
 
     var x = document.getElementById("popup-option");
     if (x.style.display === "none" || x.style.display === "") {
-      x.style.display = "inline-block";
-    } else {
       x.style.display = "none";
+    } else {
+      x.style.display = "inline-block";
     }
 
 /*================= artist-commissoner dropdown js =================*/

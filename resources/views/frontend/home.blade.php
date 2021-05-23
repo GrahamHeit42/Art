@@ -11,11 +11,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
-                    <div class="tab-button nav gallerybtn-slider" id="nav-tab" role="tablist">
+                    <div class="tab-button nav gallertab owl-carousel " id="nav-tab" role="tablist">
                         @foreach($subjects as $key => $subject)
                         {{-- <a href="javascript:" class="btn {{ (($key) % 3) === 0 ? 'gallery-btn-dark-yellow' : ((($key) % 3) === 1 ? 'gallery-btn-yellow' : 'gallery-btn-green') }}">{{ $subject->title }}</a>
                         --}}
-                        <div class="item mr-3">
+                        <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}">
                             <a href="{{url('/?sid='.$subject->id)}}">
                                 <div class="tabbox">
                                     <h2>{{ $subject->title }}</h2>
@@ -30,18 +30,18 @@
     </div>
     <div class="filter">
         <div class="post nav" id="nav-tab" role="tablist">
-            <a class="button btngreen" id="nav-filter-latest-tab" data-toggle="tab" href="#nav-filter-latest" role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
-            <a class="button btnyellow" id="filter-popular-tab" data-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
-            <a class="button btndarkyellow" id="filter-trending-tab" data-toggle="tab" href="#nav-filter-trending" role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
+            <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest" role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
+            <a class="button btnyellow" id="filter-popular-tab" data-bs-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
+            <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending" role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
         </div>
         <div class="artsoption">
             <div class="commissions">
 
                 <label for="commissionscheck">Commissions</label>
-                <input class="commissions_input" type="radio" name="commissions" value="option1" id="commissionscheck" checked onclick="filterOptions();">
+                <input class="commissions_input" type="checkbox" name="commissions" value="option1" id="commissionscheck" checked onclick="filterOptions();">
             </div>
             <div class="mediums">
-                <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     All Mediums
                 </a>
                 <div class="dropdown-menu mediums-dropdown" aria-labelledby="mediumsdropdown">
@@ -84,27 +84,27 @@
 
     <div class="tab-content" id="nav-tabContent">
         <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel" aria-labelledby="nav-filter-latest-tab">
-            <div class="page-type">
+            <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
-                <a href="{{ url('posts/' . $post->id) }}" class="vertical">
+                <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
                     <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->cover_image ?? $post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
                 </a>
                 @endforeach
             </div>
         </div>
         <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel" aria-labelledby="nav-filter-popular-tab">
-            <div class="page-type">
+            <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
-                <a href="{{ url('posts/' . $post->id) }}" class="vertical">
+                <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
                     <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
                 </a>
                 @endforeach
             </div>
         </div>
         <div class="post tab-pane fade" id="nav-filter-trending" role="tabpanel" aria-labelledby="nav-filter-trending-tab">
-            <div class="page-type">
+            <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
-                <a href="{{ url('posts/' . $post->id) }}" class="vertical">
+                <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
                     <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg') }}" />
                 </a>
                 @endforeach
