@@ -76,6 +76,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::get('create', [SubjectController::class, 'show']);
         Route::post('store', [SubjectController::class, 'store']);
         Route::post('delete', [SubjectController::class, 'destroy']);
+        Route::post('delete-image', [SubjectController::class, 'deleteImage']);
         Route::get('/{id}', [SubjectController::class, 'show']);
     });
 

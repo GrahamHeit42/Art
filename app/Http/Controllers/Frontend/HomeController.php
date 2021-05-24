@@ -41,7 +41,6 @@ class HomeController extends Controller
             });
         }
         if (!empty($request->get('c'))) {
-            // $posts = $posts->where('commisioned_by', '<>', '');
             $posts = $posts->whereNotNull('commisioned_by');
         }
 

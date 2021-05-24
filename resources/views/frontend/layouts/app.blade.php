@@ -109,7 +109,7 @@
                                             <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                                 <span class="">
-                                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                                    <i class="fas fa-sign-out-alt"></i>
                                                 </span>
                                                 Logout
                                             </a>
@@ -220,7 +220,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="postUploadModalLabel">Upload</h5>
-                    <a  class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <a class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </a>
                 </div>

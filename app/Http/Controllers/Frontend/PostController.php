@@ -38,89 +38,101 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'type' => 'required',
-            'subject_id' => 'required',
-            'medium_id' => 'required',
-            'title' => 'required',
-            'description' => 'required',
-            // 'images' => 'required',
-        ]);
-
-        if ($request->post('type') === config('constants.Commissioner') || $request->post('type') === config('constants.Commisioned')) {
+        // dd($request->file('images'));
+        if ($request->ajax()) {
             $request->validate([
-                'username' => 'required',
+                'type' => 'required',
+                'subject_id' => 'required',
+                'medium_id' => 'required',
+                'title' => 'required',
+                'description' => 'required',
+                // 'images' => 'required',
             ]);
-        }
-
-        $postId = $request->post('id');
-        $postType = $request->post('type');
-
-        if (!empty($request->post('username'))) {
-            $username = Username::updateOrCreate(
-                [
-                    'username' => $request->post('username')
-                ],
-                [
-                    'user_id' => NULL,
-                    'created_by' => auth()->id()
-                ]
-            );
-        }
-
-        $drawnBy = ($postType === config('constants.Commissioner')) ? $username->id : NULL;
-        $commissionedBy = ($postType === config('constants.Commisioned')) ? $username->id : NULL;
-
-        $postData = $request->post();
-        $postData['drawn_by'] = $drawnBy;
-        $postData['commisioned_by'] = $commissionedBy;
-        $postData['user_id'] = auth()->id();
-        $postData['keywords'] = implode(',', $request->post('keywords', [])) ?? NULL;
-        $postData['status'] = 1;
-        if (isset($request->work_again)) {
-            $postData['want_work_again'] = $request->work_again;
-        }
-
-        if ($request->hasFile('cover_image')) {
-            $year = Carbon::now()->format('Y');
-            $month = Carbon::now()->format('m');
-            $coverImage = $request->file('cover_image');
-            $fileName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
-            $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $fileName);
-            $path = 'storage/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $fileName;
-            $postData['cover_image'] = $path;
-        }
-
-        $post = Post::updateOrCreate(
-            ['id' => $postId],
-            $postData
-        );
-
-        if ($post) {
-            if ($request->hasFile('images')) {
-                $year = Carbon::now()->format('Y');
-                $month = Carbon::now()->format('m');
-                $images = $request->file('images');
-                foreach ($images as $key => $image) {
-                    $fileName = (time() + ($key * 10)) . '.' . $image->getClientOriginalExtension();
-                    $image->storeAs('posts/' . $year . '/' . $month . '/' . auth()->id(), $fileName);
-                    $path = 'storage/posts/' . $year . '/' . $month . '/' . auth()->id() . '/' . $fileName;
-                    Image::create([
-                        'post_id' => $post->id,
-                        'image_path' => $path,
-                        'display_order' => (Image::wherePostId($post->id)->count() + 1)
-                    ]);
-                }
+            // dd("stop");
+            if ($request->post('type') === config('constants.Commissioner') || $request->post('type') === config('constants.Commisioned')) {
+                $request->validate([
+                    'username' => 'required',
+                ]);
             }
 
-            session()->flash('success', 'Post created successfully.');
+            $postId = $request->post('id');
+            $postType = $request->post('type');
 
-            return redirect(url('posts/' . $post->id));
+            if (!empty($request->post('username'))) {
+                $username = Username::updateOrCreate(
+                    [
+                        'username' => $request->post('username')
+                    ],
+                    [
+                        'user_id' => NULL,
+                        'created_by' => auth()->id()
+                    ]
+                );
+            }
+
+            $drawnBy = ($postType === config('constants.Commissioner')) ? $username->id : NULL;
+            $commissionedBy = ($postType === config('constants.Commisioned')) ? $username->id : NULL;
+
+            $postData = $request->post();
+            $postData['drawn_by'] = $drawnBy;
+            $postData['commisioned_by'] = $commissionedBy;
+            $postData['user_id'] = auth()->id();
+            $postData['keywords'] = implode(',', $request->post('keywords', [])) ?? NULL;
+            $postData['status'] = 1;
+            if (isset($request->work_again)) {
+                $postData['want_work_again'] = $request->work_again;
+            }
+
+            if ($request->hasFile('cover_image')) {
+                $year = Carbon::now()->format('Y');
+                $month = Carbon::now()->format('m');
+                $coverImage = $request->file('cover_image');
+                $fileName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
+                $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $fileName);
+                $path = 'storage/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $fileName;
+                $postData['cover_image'] = $path;
+            }
+
+            $post = Post::updateOrCreate(
+                ['id' => $postId],
+                $postData
+            );
+
+            if ($post) {
+                if ($request->hasFile('images')) {
+                    $year = Carbon::now()->format('Y');
+                    $month = Carbon::now()->format('m');
+                    $images = $request->file('images');
+                    foreach ($images as $key => $image) {
+                        $fileName = (time() + ($key * 10)) . '.' . $image->getClientOriginalExtension();
+                        $image->storeAs('posts/' . $year . '/' . $month . '/' . auth()->id(), $fileName);
+                        $path = 'storage/posts/' . $year . '/' . $month . '/' . auth()->id() . '/' . $fileName;
+                        Image::create([
+                            'post_id' => $post->id,
+                            'image_path' => $path,
+                            'display_order' => (Image::wherePostId($post->id)->count() + 1)
+                        ]);
+                    }
+                }
+
+                // session()->flash('success', 'Post created successfully.');
+
+                // return redirect(url('posts/' . $post->id));
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Post created successfully.',
+                    'id' => $post->id
+                ]);
+            }
         }
 
-        session()->flash('error', 'Something went wrong, Please try again.');
+        // session()->flash('error', 'Something went wrong, Please try again.');
 
-        return redirect()->back();
+        // return redirect()->back();
+        return response()->json([
+            'status' => false,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
     }
 
     public function show($id)

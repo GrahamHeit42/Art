@@ -23,6 +23,13 @@ class SubjectController extends Controller
 
             return DataTables::of($subjects)
                 ->addIndexColumn()
+                ->editColumn('image_url', function ($subject) {
+                    if ($subject->image_url !== NULL) {
+                        return '<img src="' . $subject->image_url . '" width="70px" height="70px"/>';
+                    } else {
+                        return '';
+                    }
+                })
                 ->addColumn('action', function ($row) {
                     return '<a href="' . url("admin/subjects/" . $row->id) . '" class="btn btn-lg text-warning p-2">
                                 <i class="fas fa-edit"></i>
@@ -31,7 +38,7 @@ class SubjectController extends Controller
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'image_url'])
                 ->make(TRUE);
         }
 
@@ -45,7 +52,7 @@ class SubjectController extends Controller
     {
         $subject = Subject::find($id);
 
-        view()->share('page_title', ( ! empty($id) ? 'Update' : 'Create' ) . ' Subject');
+        view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . ' Subject');
 
         return view('admin.subjects.show', compact('subject'));
     }
@@ -58,12 +65,21 @@ class SubjectController extends Controller
             'title' => 'required|max:255|unique:subjects,title,' . $subjectId
         ]);
 
+        $image_path = NULL;
+        if ($request->hasFile('image_path')) {
+            $image = $request->file('image_path');
+            $fileName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('subjects', $fileName);
+            $image_path = 'storage/subjects/' . $fileName;
+        }
+
         $subject = Subject::updateOrCreate(
             [
                 'id' => $subjectId
             ],
             [
                 'title' => $request->post('title'),
+                'image_path' => $image_path,
                 'status' => $request->post('status')
             ]
         );
@@ -87,6 +103,25 @@ class SubjectController extends Controller
                 return response()->json([
                     'status' => TRUE,
                     'message' => 'Subject deleted successfully.'
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => FALSE,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
+    }
+    public function deleteImage(Request $request)
+    {
+        if ($request->ajax()) {
+            $subject = Subject::find($request->post('id'));
+            $subject->image_path = NULL;
+            $save = $subject->save();
+            if ($save) {
+                return response()->json([
+                    'status' => TRUE,
+                    'message' => 'Subject image deleted successfully.'
                 ]);
             }
         }
