@@ -59,7 +59,7 @@
                                         </div> --}}
                                         <a href="">
                                             <img src="{{ asset($post->drawnBy->profile_image ?? 'assets/images/user.png') }}"
-                                                alt="user" width="100" height="100" />
+                                                alt="user" />
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->drawnBy->username ?? "UserName"}}</a>
@@ -73,7 +73,7 @@
                                     <div class="desusercaption">
                                         <a href="">
                                             <img src="{{ asset($post->commisionedBy->profile_image ?? 'assets/images/user.png') }}"
-                                                alt="user" width="100" height="100" />
+                                                alt="user"/>
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
