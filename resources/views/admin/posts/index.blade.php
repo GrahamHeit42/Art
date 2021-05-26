@@ -1,71 +1,71 @@
 @extends('admin.layouts.app')
 
 @push('stylesheets')
-    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @endpush
 
 @section('content')
-    <div class="row justify-content-end">
-        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
-            <a type="button" href="{{ url('admin/posts/create') }}" class="btn btn-primary float-right mb-3"
-               title="Add Post">
-                <i class="fas fa-plus"></i> Add Post
-            </a>
-        </div>
+<div class="row justify-content-end">
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+        <a type="button" href="{{ url('admin/posts/create') }}" class="btn btn-primary float-right mb-3"
+            title="Add Post">
+            <i class="fas fa-plus"></i> Add Post
+        </a>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">List Posts</h3>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">List Posts</h3>
 
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card-body table-responsive">
-            <table class="table table-bordered table-striped w-100" id="posts-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>User</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Subject</th>
-                        <th>Medium</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     </div>
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-striped w-100" id="posts-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>User</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Subject</th>
+                    <th>Medium</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
-    <script type="text/javascript">
-        let postsTable = $('#posts-table').DataTable({
+<script type="text/javascript">
+    let postsTable = $('#posts-table').DataTable({
             processing: true,
             serverSide: true,
             order: [],
@@ -75,7 +75,7 @@
             },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false},
-                {data: 'image_url', name: 'image_url'},
+                {data: 'image_url', name: 'image_url', orderable: false, searchable: false},
                 {data: 'display_name', name: 'display_name'},
                 {data: 'title', name: 'title'},
                 {data: 'description', name: 'description'},
@@ -133,5 +133,5 @@
                     })
             });
         }
-    </script>
+</script>
 @endpush

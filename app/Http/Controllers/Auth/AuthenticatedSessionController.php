@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
         // session()->flash('success', 'Login successfully.');
 
         if ($user->is_admin === 1) {
-            return redirect(url('admin'));
+            return redirect(url('admin/dashboard'));
         }
 
         return redirect(url('/'));

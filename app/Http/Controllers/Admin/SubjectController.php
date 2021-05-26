@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use File;
 
 class SubjectController extends Controller
 {
@@ -27,7 +28,7 @@ class SubjectController extends Controller
                     if ($subject->image_url !== NULL) {
                         return '<img src="' . $subject->image_url . '" width="70px" height="70px"/>';
                     } else {
-                        return '';
+                        return '<img src="' . asset("assets/images/noimage.jpg") . '" width="70px" height="70px"/>';
                     }
                 })
                 ->addColumn('action', function ($row) {
@@ -98,12 +99,19 @@ class SubjectController extends Controller
     public function destroy(Request $request)
     {
         if ($request->ajax()) {
-            $delete = Subject::destroy($request->post('id'));
-            if ($delete) {
-                return response()->json([
-                    'status' => TRUE,
-                    'message' => 'Subject deleted successfully.'
-                ]);
+            $subject = Subject::find($request->post('id'));
+            if (!empty($subject)) {
+                $old_image = $subject->image_path;
+                $delete = Subject::destroy($request->post('id'));
+                if ($delete) {
+                    if (\File::exists(public_path($old_image))) {
+                        File::delete(public_path($old_image));
+                    }
+                    return response()->json([
+                        'status' => TRUE,
+                        'message' => 'Subject deleted successfully.'
+                    ]);
+                }
             }
         }
 
@@ -116,9 +124,14 @@ class SubjectController extends Controller
     {
         if ($request->ajax()) {
             $subject = Subject::find($request->post('id'));
+            $old_image = $subject->image_path;
             $subject->image_path = NULL;
             $save = $subject->save();
             if ($save) {
+                if (\File::exists(public_path($old_image))) {
+                    File::delete(public_path($old_image));
+                }
+
                 return response()->json([
                     'status' => TRUE,
                     'message' => 'Subject image deleted successfully.'

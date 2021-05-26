@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
             'display_name' => 'required|string|max:100',
             'username' => 'required|string|max:100|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-//            'password' => 'required|string|confirmed|min:8|regex:/^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-]).{8,}$/',
+            //            'password' => 'required|string|confirmed|min:8|regex:/^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$%^&*-]).{8,}$/',
             'password' => 'required|string|confirmed|min:8|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,16}$/',
         ], [
             'regex' => 'The password format is invalid, It must contain Uppercase, Lowercase, Symbol and Characters'
@@ -68,7 +68,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'display_name' => $request->post('display_name'),
-            'username' => $request->post('email'),
+            'username' => $request->post('username'),
             'email' => $request->post('email'),
             'password' => Hash::make($request->post('password')),
             'status' => 0,
@@ -76,14 +76,18 @@ class RegisteredUserController extends Controller
         ]);
 
         try {
-            Username::create([
-                'user_id' => $user->id,
-                'username' => $request->username ?? NULL,
-                'created_by' => $user->id,
-                'status' => 1
-            ]);
-        }
-        catch (Exception $e) {
+            $username = Username::where('username', $request->username)->first();
+            if ($username && empty($username->user_id)) {
+                $username->user_id = $user->id;
+                $username->save();
+            } else {
+                Username::create([
+                    'user_id' => $user->id,
+                    'username' => $request->username ?? NULL,
+                    'created_by' => $user->id,
+                ]);
+            }
+        } catch (Exception $e) {
             info('User register error: ' . $e->getMessage());
         }
 

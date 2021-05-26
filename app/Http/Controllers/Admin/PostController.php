@@ -23,6 +23,13 @@ class PostController extends Controller
 
             return DataTables::of($posts)
                 ->addIndexColumn()
+                ->editColumn('image_url', function ($row) {
+                    if ($row->image_url !== NULL) {
+                        return '<img src="' . $row->image_url . '" width="70px" height="70px"/>';
+                    } else {
+                        return '<img src="' . asset("assets/images/noimage.jpg") . '" width="70px" height="70px"/>';
+                    }
+                })
                 ->addColumn('display_name', function ($row) {
                     return $row->user->display_name ?? NULL;
                 })
@@ -40,7 +47,7 @@ class PostController extends Controller
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'image_url'])
                 ->makeHidden(['user', 'subject', 'medium'])
                 ->make(TRUE);
         }
@@ -55,7 +62,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
 
-        view()->share('page_title', ( ! empty($id) ? 'Update' : 'Create' ) . ' Post');
+        view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . ' Post');
 
         return view('admin.posts.show', compact('post'));
     }

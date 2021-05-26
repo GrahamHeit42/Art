@@ -34,7 +34,7 @@
         margin-bottom: 5px;
     }
     .header-search-box .form-group{
-        text-align: center;  
+        text-align: center;
     }
     .header-search-box .form-group .fa-search, .header-search-box .form-group .form-control{
         margin-top: 5px;
@@ -62,7 +62,7 @@
         order: 1;
         margin-bottom: 10px;
     }
-    
+
     .realeyze {
        justify-content: center;
     }
@@ -91,6 +91,9 @@
     .descriptionbox, .commentsbox, .reviewbox{
         height: auto;
     }
+    .posttab li {
+        width: 33.33%;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -106,7 +109,7 @@
     }
     .postslider.owl-carousel .owl-nav .owl-prev{
         left: 0px;
-    }   
+    }
 }
 @media only screen and (max-width: 480px) {
     .login-register-form{

@@ -138,8 +138,13 @@ class PostController extends Controller
     public function show($id)
     {
         view()->share('page_title', 'Post Information');
-        $post = Post::with('images')->find($id);
+        $post = Post::with('images', 'drawnBy', 'commisionedBy')->find($id);
 
         return view('frontend.posts.show', compact('post'));
+    }
+
+    public function follow(Request $request)
+    {
+        return $request->post('userid');
     }
 }

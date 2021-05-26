@@ -766,7 +766,7 @@ h1,h2,h3,h4,h5,h6{
     font-family: 'Montserrat';
     font-weight: bold;
     font-size: 14px;
-    color: #ffffff;
+    color: #fffffff;
 }
 /*=======================
 /** Terms and conditions CSS
@@ -964,10 +964,18 @@ h1,h2,h3,h4,h5,h6{
 .posttab{
     display: flex;
     justify-content: center;
+    margin: 0px;
+}
+.posttab li{
+    padding: 0px;
 }
 .posttab li a{
     border-radius: 5px 5px 0px 0px;
     padding: 10px 25px;
+    width: 100%;
+}
+.posttab ul .ui-state-active a{
+     padding: 15px 25px;
 }
 #postdetails{
     background-color: #e9ebe9;
@@ -980,11 +988,77 @@ h1,h2,h3,h4,h5,h6{
     padding: 10px;
 }
 .destitle{
-    display: flex;
-    align-items: center;
+    text-align:center;
 }
-.destitle img{
-    max-width: 100px;
+.debox{
+    display:flex;
+    justify-content:space-between;
+}
+.despostdate{
+    text-align:center;
+        color: #6c757d;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    margin-bottom:10px;
+}
+.socialdes{
+    display:flex;
+    justify-content:center;
+    margin-bottom:10px;
+}
+.socialdes .fb .btngreen{
+    /* display:flex; */
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0px;
+    font-size: 12px;
+}
+.deshastag h3 .destag{
+    color: #6c757d;
+    font-family: 'Montserrat';
+    font-weight: bold;
+}
+.deshastag h3 .destag i{
+    color:#14c4af;
+    margin-right:10px;
+}
+.deshastag .btngreen{
+    background-color:transparent;
+    margin: 5px;
+     color:#14c4af;
+     padding:5px 10px;
+}
+.desuername{
+    color: #6c757d;
+    font-family: 'Montserrat';
+    font-weight: bold;
+}
+.descuserbox > h2{
+     color: #6c757d;
+    font-family: 'Montserrat';
+    font-weight: bold;
+}
+.likeviewcur{
+    display:flex;
+    justify-content:center;
+}
+.deslike p{
+    color: #6c757d;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    margin:0px 10px;
+}
+.desusercaption{
+    display:flex;
+    align-items: center;
+    margin-top:10px
+}
+.desusercaption img{
+    max-width:50px;
+}
+.descuerbox{
+    display:grid;
+    margin-left:10px
 }
 .destitle h2{
     font-size: 32px;
@@ -1010,13 +1084,12 @@ h1,h2,h3,h4,h5,h6{
 .deslike{
     text-align: center;
     margin-bottom: 20px;
+    display: flex;
 }
-.deslike .btngreen{
-    background-color: #ffffff;
-    color: #6c757d;
-    border: none;
-    border-radius: 0px;
-    width: 200px;
+.deslike .button{
+       width: 50%;
+    display: inline-block;
+    margin: 15px;
 }
 .desoption{
     text-align: center;
@@ -1030,11 +1103,7 @@ h1,h2,h3,h4,h5,h6{
 .deshastag{
     margin-bottom: 20px;
 }
-.deshastag a{
-    border: none;
-    border-radius: 0px;
-    margin: 5px;
-}
+
 
 .make-control{
     border: 1px solid #c0c416;
@@ -1049,8 +1118,8 @@ h1,h2,h3,h4,h5,h6{
     font-family: 'Montserrat';
 }
 .usercommentbox{
-    height: 570px;
-    overflow: scroll;
+    height: 420px;
+    overflow-y: scroll;
 }
 .usercomment{
     display: flex;
@@ -1092,4 +1161,13 @@ h1,h2,h3,h4,h5,h6{
     height: 100%;
     object-fit: cover;
     box-shadow: 0 2px 16px var(--shadow);
+}
+.reviewbox img, .commentsbox img {
+    height: 150px;
+}
+.usercomment img {
+    height: 70px;
+}
+.postslider img {
+    min-height: 450px;
 }

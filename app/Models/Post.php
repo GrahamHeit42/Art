@@ -35,7 +35,7 @@ class Post extends Model
 
     public function getImageUrlAttribute()
     {
-        return !empty($this->attributes['image_path']) ? asset($this->attributes['image_path']) : null;
+        return !empty($this->attributes['cover_image']) ? asset($this->attributes['cover_image']) : null;
     }
 
     public function getStatusTextAttribute()
@@ -60,7 +60,7 @@ class Post extends Model
 
     public function drawnBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'drawn_by', 'id');
+        return $this->belongsTo(Username::class, 'id', 'drawn_by');
     }
 
     public function commisionedBy(): BelongsTo

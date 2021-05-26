@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
+use File;
 
 class UserController extends Controller
 {
@@ -23,8 +24,12 @@ class UserController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->editColumn('profile_image', function($row) {
-                    return '<img alt="'.$row->display_name.'" src="'.asset($row->profile_image).'" class="img-thumbnail" style="width: auto; height: 100px;"/>';
+                ->editColumn('profile_image', function ($row) {
+                    if (!empty($row->profile_image)) {
+                        return '<img alt="' . $row->display_name . '" src="' . asset($row->profile_image) . '" class="img-thumbnail" style="width: auto; height: 100px;"/>';
+                    } else {
+                        return '<img alt="' . $row->display_name . '" src="' . asset("assets/images/user.png") . '" class="img-thumbnail" style="width: auto; height: 100px;"/>';
+                    }
                 })
                 ->addColumn('action', function ($row) {
                     return '<a href="' . url("admin/users/" . $row->id) . '" class="btn btn-lg text-info p-2">
@@ -58,7 +63,7 @@ class UserController extends Controller
 
     public function show($id = NULL)
     {
-        $user = User::find($id);
+        $user = User::with('usernames', 'usernames.createdBy')->find($id);
 
         view()->share('page_title', 'User Details');
 
@@ -71,7 +76,7 @@ class UserController extends Controller
 
         $request->validate([
             'display_name' => 'required|max:100',
-            'username' => 'required|max:100',
+            'username' => 'required|max:100|unique:users,username,' . $userId,
             'email' => "required|email|max:200|unique:users,email," . $userId,
             'password' => 'nullable|min:8'
         ]);
@@ -79,8 +84,13 @@ class UserController extends Controller
         $data = $request->except('profile_image');
 
         if ($request->hasFile('profile_image')) {
+            $old_image = User::select('profile_image')->whereId($userId)->first();
+
+            if (!empty($old_image->profile_image)) {
+                File::delete(public_path($old_image->profile_image));
+            }
             $profileImage = $request->file('profile_image');
-            $fileName = time() .'.'. $profileImage->getClientOriginalExtension();
+            $fileName = time() . '.' . $profileImage->getClientOriginalExtension();
             $profileImage->storeAs('users', $fileName);
             $data['profile_image'] = 'storage/users/' . $fileName;
         }
@@ -107,12 +117,19 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         if ($request->ajax()) {
-            $delete = User::destroy($request->post('id'));
-            if ($delete) {
-                return response()->json([
-                    'status' => TRUE,
-                    'message' => 'User deleted successfully.'
-                ]);
+            $user = User::find($request->post('id'));
+            if (!empty($user)) {
+                $old_image = $user->profile_image;
+                $delete = User::destroy($request->post('id'));
+                if ($delete) {
+                    if (\File::exists(public_path($old_image))) {
+                        File::delete(public_path($old_image));
+                    }
+                    return response()->json([
+                        'status' => TRUE,
+                        'message' => 'User deleted successfully.'
+                    ]);
+                }
             }
         }
 

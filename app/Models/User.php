@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -57,8 +58,7 @@ class User extends Authenticatable
         $is_admin_text = 'User';
         if ($value === 1) {
             $is_admin_text = 'Super Admin';
-        }
-        else if ($value === 2) {
+        } else if ($value === 2) {
             $is_admin_text = 'Admin';
         }
 
@@ -71,14 +71,17 @@ class User extends Authenticatable
         $status_text = 'Pending';
         if ($value === 1) {
             $status_text = 'Active';
-        }
-        else if ($value === 2) {
+        } else if ($value === 2) {
             $status_text = 'Inactive';
-        }
-        else if ($value === 3) {
+        } else if ($value === 3) {
             $status_text = 'Suspended';
         }
 
         return $this->attributes['status_text'] = $status_text;
+    }
+
+    public function usernames(): HasMany
+    {
+        return $this->hasMany(Username::class);
     }
 }

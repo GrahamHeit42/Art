@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::view('test', 'dropzone');
 //Route::get('dropzone', [CustomController::class, 'dropzone']);
 //Route::post('dropzone/store', [CustomController::class, 'dropzoneStore'])->name('dropzone.store');
 
@@ -38,6 +39,7 @@ Route::post('/subjects', [HomeController::class, 'subjects']);
 // Posts
 Route::post('/posts', [FrontPostController::class, 'index']);
 Route::get('/posts/{id}', [FrontPostController::class, 'show']);
+Route::post('/follow', [FrontPostController::class, 'follow']);
 
 // Pages
 Route::match(['get', 'post'], 'contact-us', [PageController::class, 'contactUs']);
@@ -68,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
 // Admin
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
-    Route::get('/', [AdminHomeController::class, 'index']);
+    Route::get('/dashboard', [AdminHomeController::class, 'index']);
 
     Route::prefix('subjects')->group(function () {
         Route::get('/', [SubjectController::class, 'index']);
