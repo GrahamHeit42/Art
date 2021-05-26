@@ -60,12 +60,12 @@ class Post extends Model
 
     public function drawnBy(): BelongsTo
     {
-        return $this->belongsTo(Username::class, 'id', 'drawn_by');
+        return $this->belongsTo(Username::class, 'drawn_by', 'id');
     }
 
     public function commisionedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'commisioned_by', 'id');
+        return $this->belongsTo(Username::class, 'commisioned_by', 'id');
     }
 
     public function images(): HasMany

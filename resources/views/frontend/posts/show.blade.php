@@ -27,8 +27,8 @@
             </div>
             <div class="col-lg-5">
                 <div class="deslike">
-                    <a href="#" class="button btngreen like"><i class="fas fa-heart"></i>Like</a>
-                    <a href="#" class="deccreate button btndarkyellow"><i class="fas fa-bookmark"></i>Create</a>
+                    <a href="#" class="button btngreen like"><i class="fas fa-heart"></i> Like</a>
+                    <a href="#" class="deccreate button btndarkyellow"><i class="fas fa-copy"></i> Curate</a>
 
                 </div>
                 <div id="postdetails">
@@ -96,10 +96,10 @@
                                     <p><i class="fas fa-heart"></i> 000 Likes</p>
                                 </div>
                                 <div class="deslike">
-                                    <p><i class="fas fa-heart"></i> 000 Likes</p>
+                                    <p><i class="fas fa-copy"></i> 000 Curations</p>
                                 </div>
                                 <div class="deslike">
-                                    <p><i class="fas fa-heart"></i> 000 Likes</p>
+                                    <p><i class="fas fa-eye"></i> 000 Views</p>
                                 </div>
                             </div>
                             <div class="socialdes row">

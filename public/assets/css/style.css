@@ -1171,3 +1171,12 @@ h1,h2,h3,h4,h5,h6{
 .postslider img {
     min-height: 450px;
 }
+.btnfb {
+    background-color: #3b5998;
+}
+.btntw {
+    background-color: #1DA1F2;
+}
+.btnpi {
+    background-color: #c8232c;
+}
