@@ -3,6 +3,7 @@
 @push('stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/plugins/slick-slider/css/slick.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/slick-slider/css/slick-theme.css') }}">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/dot-luv/jquery-ui.css">
 @endpush
 
 @section('content')
@@ -29,24 +30,31 @@
     </div>
     <div class="filter">
         <div class="post nav" id="nav-tab" role="tablist">
-            <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest" role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
-            <a class="button btnyellow" id="filter-popular-tab" data-bs-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
-            <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending" role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
+            <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest"
+                role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
+            <a class="button btnyellow" id="filter-popular-tab" data-bs-toggle="tab" href="#nav-filter-popular"
+                role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
+            <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending"
+                role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
         </div>
         <div class="artsoption">
             <div class="commissions">
 
                 <label for="is_commissions_posts">Commissions</label>
-                <input class="commissions_input" type="checkbox" name="commissions" value="1" id="is_commissions_posts" onchange="filterPosts()" {{ (request()->get('c') === 'true') ? 'checked' : '' }}>
+                <input class="commissions_input" type="checkbox" name="commissions" value="1" id="is_commissions_posts"
+                    onchange="filterPosts()" {{ (request()->get('c') === 'true') ? 'checked' : '' }}>
             </div>
             <div class="mediums">
-                <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="meddropdown dropdown-toggle" type="button" id="mediumsdropdown" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                     All Mediums
                 </a>
                 <div class="dropdown-menu mediums-dropdown" aria-labelledby="mediumsdropdown">
                     @foreach($mediums as $key => $medium)
                     <div class="form-check dropdown-item">
-                        <input class="form-check-input" type="checkbox" name="filter[mediums]" id="medium-{{ $medium->id }}" value="{{ $medium->id }}" onchange="filterPosts()" {{ !empty(request()->get('mid')) && in_array($medium->id, explode(',', request()->get('mid'))) ? 'checked' : '' }} />
+                        <input class="form-check-input" type="checkbox" name="filter[mediums]"
+                            id="medium-{{ $medium->id }}" value="{{ $medium->id }}" onchange="filterPosts()"
+                            {{ !empty(request()->get('mid')) && in_array($medium->id, explode(',', request()->get('mid'))) ? 'checked' : '' }} />
                         <label class="form-check-label" for="medium-{{ $medium->id }}">
                             {{ $medium->title }}
                         </label>
@@ -58,29 +66,36 @@
     </div>
 
     <div class="tab-content" id="nav-tabContent">
-        <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel" aria-labelledby="nav-filter-latest-tab">
-            <div class="atrtspostimg row no-spacing">
+        <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel"
+            aria-labelledby="nav-filter-latest-tab">
+            <div class="atrtspostimg row no-spacing" id="sortable">
                 @foreach($posts as $post)
-                <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
-                    <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg')) }}" />
+                <a href="{{ url('posts/' . $post->id) }}"
+                    class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing dragable">
+                    <img class="animate__animated animate__zoomIn" alt="Post"
+                        src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/noimage.jpg')) }}" />
                 </a>
                 @endforeach
             </div>
         </div>
-        <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel" aria-labelledby="nav-filter-popular-tab">
+        <div class="post tab-pane fade" id="nav-filter-popular" role="tabpanel"
+            aria-labelledby="nav-filter-popular-tab">
             <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
                 <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
-                    <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg')) }}" />
+                    <img class="animate__animated animate__zoomIn" alt="Post"
+                        src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/noimage.jpg')) }}" />
                 </a>
                 @endforeach
             </div>
         </div>
-        <div class="post tab-pane fade" id="nav-filter-trending" role="tabpanel" aria-labelledby="nav-filter-trending-tab">
+        <div class="post tab-pane fade" id="nav-filter-trending" role="tabpanel"
+            aria-labelledby="nav-filter-trending-tab">
             <div class="atrtspostimg row no-spacing">
                 @foreach($posts as $post)
                 <a href="{{ url('posts/' . $post->id) }}" class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-spacing">
-                    <img class="animate__animated animate__zoomIn" alt="Post" src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/gallery/post-56.jpg')) }}" />
+                    <img class="animate__animated animate__zoomIn" alt="Post"
+                        src="{{ asset($post->cover_image ?? ($post->images->first()->image_path ?? 'assets/images/noimage.jpg')) }}" />
                 </a>
                 @endforeach
             </div>
@@ -166,5 +181,17 @@
 
         window.location.href = filterUrl;
     }
+</script>
+<script>
+    $("#sortable").sortable({
+    revert: true,
+    stop: function(event, ui) {
+        if(!ui.item.data('tag') && !ui.item.data('handle')) {
+            ui.item.data('tag', true);
+            // ui.item.fadeTo(400, 0.1);
+        }
+    }
+});
+$("ul, li").disableSelection();
 </script>
 @endpush

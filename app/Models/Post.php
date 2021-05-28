@@ -30,7 +30,9 @@ class Post extends Model
 
     protected $appends = [
         'image_url',
-        'status_text'
+        'status_text',
+        'maturity_rating_text',
+        // 'views_count'
     ];
 
     public function getImageUrlAttribute()
@@ -41,6 +43,19 @@ class Post extends Model
     public function getStatusTextAttribute()
     {
         return $this->attributes['status'] === 1 ? 'Active' : 'Inactive';
+    }
+
+    public function getMaturityRatingTextAttribute()
+    {
+        if ($this->attributes['maturity_rating'] === 1) {
+            $maturity_rating = 'General';
+        } else if ($this->attributes['maturity_rating'] === 2) {
+            $maturity_rating = 'Mature';
+        } else {
+            $maturity_rating = 'Adult';
+        }
+
+        return $maturity_rating;
     }
 
     public function user(): BelongsTo

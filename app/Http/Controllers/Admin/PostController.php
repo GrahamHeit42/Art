@@ -40,7 +40,10 @@ class PostController extends Controller
                     return $row->medium->title ?? NULL;
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . url("admin/posts/" . $row->id) . '" class="btn btn-lg text-warning p-2">
+                    return '<a href="' . url("admin/posts/" . $row->id) . '" class="btn btn-lg text-info p-2">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                    <a href="' . url("admin/posts/" . $row->id) . '" class="btn btn-lg text-warning p-2">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <button class="btn btn-lg text-danger p-2 delete" data-id="' . $row->id . '">
@@ -60,7 +63,7 @@ class PostController extends Controller
 
     public function show($id = NULL)
     {
-        $post = Post::find($id);
+        $post = Post::with(['user', 'subject', 'medium', 'drawnBy', 'commisionedBy', 'images'])->find($id);
 
         view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . ' Post');
 

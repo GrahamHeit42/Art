@@ -12,6 +12,10 @@ use App\Models\Username;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Follow;
+use App\Models\PostView;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -59,19 +63,48 @@ class PostController extends Controller
             $postType = $request->post('type');
 
             if (!empty($request->post('username'))) {
-                $username = Username::updateOrCreate(
-                    [
-                        'username' => $request->post('username')
-                    ],
-                    [
-                        'user_id' => NULL,
-                        'created_by' => auth()->id()
-                    ]
-                );
-            }
+                $username = $request->post('username');
 
-            $drawnBy = ($postType === config('constants.Commissioner')) ? $username->id : NULL;
-            $commissionedBy = ($postType === config('constants.Commisioned')) ? $username->id : NULL;
+                if (!is_numeric($username)) {
+                    $update_username = Username::updateOrCreate(
+                        [
+                            'username' => $username
+                        ],
+                        [
+                            'user_id' => NULL,
+                            'created_by' => auth()->id()
+                        ]
+                    );
+                    $username = $update_username->id;
+                }
+            }
+            /*
+            $username = Username::updateOrCreate(
+                        [
+                            'username' => $username
+                        ],
+                        [
+                            'user_id' => NULL,
+                            'created_by' => auth()->id()
+                        ]
+                    );
+            */
+
+            // $drawnBy = ($postType === config('constants.Commissioner')) ? $username->id : NULL;
+            // $commissionedBy = ($postType === config('constants.Commisioned')) ? $username->id : NULL;
+
+            $getUsername = Username::select('id')->where('user_id', auth()->id())->latest()->first();
+
+            if ($postType === config('constants.Commissioner')) {
+                $drawnBy = $username ?? NULL;
+                $commissionedBy = $getUsername->id  ?? NULL;
+            } else if ($postType === config('constants.Commisioned')) {
+                $drawnBy = $getUsername->id  ?? NULL;
+                $commissionedBy = $username ?? NULL;
+            } else if ($postType === config('constants.Artist')) {
+                $drawnBy = $getUsername->id ?? NULL;
+                $commissionedBy = NULL;
+            }
 
             $postData = $request->post();
             $postData['drawn_by'] = $drawnBy;
@@ -140,11 +173,80 @@ class PostController extends Controller
         view()->share('page_title', 'Post Information');
         $post = Post::with('images', 'drawnBy', 'commisionedBy')->find($id);
 
+        $user_id = auth()->id() ?? NULL;
+        $count = 0;
+
+        $postview = PostView::updateOrCreate(
+            [
+                'post_id' => $id,
+                'user_id' => $user_id,
+            ],
+            [
+                'count' => DB::Raw('count+1'),
+            ]
+        );
+        $post->views_count = PostView::where('post_id', $id)->sum('count') ?? 0;
+
         return view('frontend.posts.show', compact('post'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        view()->share('page_title', 'Post Edit');
+
+        $subjects = Subject::whereStatus(1)->get();
+        $mediums = Medium::whereStatus(1)->get();
+        $usernames = Username::all();
+        $post = Post::with('images', 'drawnBy', 'commisionedBy')->find($id);
+        $getUsernames = Username::select('user_id')->where('id', $post->drawn_by)->first();
+        if (empty($post->commisioned_by)) {
+            $type = config('constants.Artist');
+        } else if ($post->user_id == $getUsernames->user_id) {
+            $type = config('constants.Commisioned');
+        } else {
+            $type = config('constants.Commissioner');
+        }
+
+        return view('frontend.posts.edit', compact('post', 'type', 'subjects', 'mediums', 'usernames'));
+    }
+
+    public function imageDelete(Request $request)
+    {
+        if (!empty($request->post('image_path'))) {
+            $delete = Image::where('image_path', $request->post('image_path'))->delete();
+            if ($delete) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Image delete Successfully.',
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
     }
 
     public function follow(Request $request)
     {
-        return $request->post('userid');
+        $follow_user_id = $request->post('userid');
+        $user_id = Auth::user()->id;
+
+        $follow = Follow::create([
+            'user_id' => $user_id,
+            'follow_user_id' => $follow_user_id,
+        ]);
+        if ($follow) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Follow changes Successfully.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
     }
 }

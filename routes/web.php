@@ -39,6 +39,8 @@ Route::post('/subjects', [HomeController::class, 'subjects']);
 // Posts
 Route::post('/posts', [FrontPostController::class, 'index']);
 Route::get('/posts/{id}', [FrontPostController::class, 'show']);
+Route::get('/posts/edit/{id}', [FrontPostController::class, 'update']);
+Route::post('/posts/image/delete', [FrontPostController::class, 'imageDelete']);
 Route::post('/follow', [FrontPostController::class, 'follow']);
 
 // Pages

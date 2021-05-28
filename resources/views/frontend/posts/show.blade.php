@@ -31,6 +31,9 @@
                     <a href="#" class="deccreate button btndarkyellow"><i class="fas fa-copy"></i> Curate</a>
 
                 </div>
+                @if(isset($post) && Auth::check() && $post->user_id == Auth::user()->id)
+                <div class=""><a href="{{url('/posts/edit',$post->id)}}" class="btn btn-info">Edit</a></div>
+                @endif
                 <div id="postdetails">
                     <ul class="posttab row">
                         <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#description"
@@ -46,17 +49,10 @@
                                 <h2>{{$post->title}}</h2>
                             </div>
                             <div class="debox">
+                                @if(!empty($post->drawnBy))
                                 <div class="descuserbox">
                                     <h2>Drawn by:</h2>
                                     <div class="desusercaption">
-                                        {{-- <a href="">
-                                            <img src="{{ asset('assets/images/user.png') }}" alt="user" width="100"
-                                        height="100" />
-                                        </a>
-                                        <div class="descuerbox">
-                                            <a class="desuername">User Name</a>
-                                            <a class="btngreen followbtn" href="#">Follow</a>
-                                        </div> --}}
                                         <a href="">
                                             <img src="{{ asset($post->drawnBy->profile_image ?? 'assets/images/user.png') }}"
                                                 alt="user" />
@@ -68,12 +64,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
+                                @if(!empty($post->commisionedBy))
                                 <div class="descuserbox">
                                     <h2>Commisioned by:</h2>
                                     <div class="desusercaption">
                                         <a href="">
                                             <img src="{{ asset($post->commisionedBy->profile_image ?? 'assets/images/user.png') }}"
-                                                alt="user"/>
+                                                alt="user" />
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
@@ -83,6 +81,7 @@
 
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             <div class="desinfo">
                                 <p>{{$post->description}}</p>
@@ -99,7 +98,8 @@
                                     <p><i class="fas fa-copy"></i> 000 Curations</p>
                                 </div>
                                 <div class="deslike">
-                                    <p><i class="fas fa-eye"></i> 000 Views</p>
+                                    <p><i class="fas fa-eye"></i> @if(isset($post->views_count)){{$post->views_count}}
+                                        @else '000' @endif Views</p>
                                 </div>
                             </div>
                             <div class="socialdes row">
