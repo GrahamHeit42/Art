@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Username;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -24,10 +26,38 @@ class UserController extends Controller
         if (Str::lower($request->method()) === 'post') {
             $request->validate([
                 'display_name' => 'required',
+                // 'username' => 'required|unique:usernames,username,NULL,id,user_id,' . $user->id,
                 'username' => 'required',
                 'email' => 'required|unique:users,email,' . $user->id
             ]);
-            $user->fill($request->except('profile_picture'));
+
+            $existUsername = Username::where('username', $request->username)->first();
+            if (empty($existUsername)) {
+                $username = Username::where('user_id', $user->id)->first();
+                if (!empty($username)) {
+                    $username->username = $user->username;
+                    $username->save();
+                }
+            }
+            if ($existUsername->user_id !== auth()->id()) {
+                // session()->flash('error', 'Username already taken.');
+                return redirect(url('settings'))->withErrors(['Username already taken.']);
+            }
+
+            $user->display_name = $request->display_name;
+            $user->username = $request->username;
+
+            if ($request->hasFile('profile_image')) {
+                if (File::exists(public_path($user->profile_image))) {
+                    File::delete(public_path($user->profile_image));
+                }
+
+                $profile_image = $request->file('profile_image');
+                $fileName = (time() + 10) . '.' . $profile_image->getClientOriginalExtension();
+                $profile_image->storeAs('users', $fileName);
+                $path = 'storage/users/' . $fileName;
+                $user->profile_image = $path;
+            }
             $user->save();
             session()->flash('success', 'User details updated successfully');
 
@@ -55,8 +85,8 @@ class UserController extends Controller
 
             return redirect(url('settings'));
         }
-        session()->flash('error', 'Current password is invalid.');
+        // session()->flash('error', 'Current password is invalid.');
 
-        return redirect(url('settings'));
+        return redirect(url('settings'))->withErrors(['Current password is invalid.']);
     }
 }

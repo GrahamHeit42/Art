@@ -342,24 +342,6 @@
 
 </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalDelete" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
-            </div>
-            <div class="modal-body">
-                <p>This is a small modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')
@@ -367,6 +349,23 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+
+    //check if rating given then edit only subject, medium, keywords
+    @if($post->price != 0 || $post->speed != 0 || $post->quality != 0 || $post->communication != 0 || $post->transaction != 0 || $post->concept != 0 || $post->understanding != 0)
+        $('#post-images').attr('disabled','disabled');
+        $('.spanclose').hide();
+        $("#add-more").css({"background-color":"gray","border-color":"gray"});
+        $('#username').attr('disabled','disabled');
+        $('#title').attr('disabled','disabled');
+        $('#description').attr('disabled','disabled');
+        $('#selectYes').css('pointer-events','none');
+        $('#selectNo').css('pointer-events','none');
+        $('#upload-thumbnail-image').attr('disabled','disabled');
+        $('.maturityrating_input').attr('disabled','disabled');
+        $('.rating__input').attr('readonly',true);
+    @endif
+
+
         //set username
         setUserSpan();
         $('#username').on('change', function() {
@@ -416,7 +415,6 @@
     });
 </script>
 <script type="text/javascript">
-    const ASSET_URL = '{{ asset("/") }}';
     var uploadImages = [];
     var allImages = [];
 
@@ -472,7 +470,7 @@
     //remove image
     $(".spanclose").click(function () {
         let imgpath = $(this).data('imgpath');
-        let BASE_URL = '{{ url("/") }}';
+        // let BASE_URL = '{{ url("/") }}';
 
         Swal.fire({
             title: 'Are you sure?',
@@ -656,5 +654,15 @@
             }
         });
     });
+</script>
+<script>
+    $(".upload-btn-wrapper").sortable({
+    revert: true,
+    stop: function(event, ui) {
+        if(!ui.item.data('tag') && !ui.item.data('handle')) {
+            ui.item.data('tag', true);
+        }
+    }
+});
 </script>
 @endpush

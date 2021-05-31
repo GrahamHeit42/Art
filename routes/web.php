@@ -41,7 +41,9 @@ Route::post('/posts', [FrontPostController::class, 'index']);
 Route::get('/posts/{id}', [FrontPostController::class, 'show']);
 Route::get('/posts/edit/{id}', [FrontPostController::class, 'update']);
 Route::post('/posts/image/delete', [FrontPostController::class, 'imageDelete']);
+Route::post('/likes', [FrontPostController::class, 'likes']);
 Route::post('/follow', [FrontPostController::class, 'follow']);
+Route::post('/posts/comment', [FrontPostController::class, 'comment']);
 
 // Pages
 Route::match(['get', 'post'], 'contact-us', [PageController::class, 'contactUs']);

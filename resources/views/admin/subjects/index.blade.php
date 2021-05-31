@@ -9,7 +9,8 @@
 @section('content')
 <div class="row justify-content-end">
     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
-        <a type="button" href="{{ url('admin/subjects/create') }}" class="btn btn-primary float-right mb-3" title="Add Subject">
+        <a type="button" href="{{ url('admin/subjects/create') }}" class="btn btn-primary float-right mb-3"
+            title="Add Subject">
             <i class="fas fa-plus"></i> Add Subject
         </a>
     </div>
@@ -17,23 +18,14 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">List Subjects</h3>
-
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
     </div>
     <div class="card-body table-responsive">
         <table class="table table-bordered table-striped w-100" id="subjects-table">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Subject</th>
                     <th>Image</th>
+                    <th>Subject</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -75,16 +67,16 @@
                 width: '10%'
             },
             {
-                data: 'title',
-                name: 'title',
-                width: '40%'
-            },
-            {
                 data: 'image_url',
                 name: 'image_url',
                 orderable: false,
                 searchable: false,
                 width: '20%'
+            },
+            {
+                data: 'title',
+                name: 'title',
+                width: '40%'
             },
             {
                 data: 'status_text',
@@ -98,6 +90,12 @@
                 searchable: false,
                 width: '15%'
             },
+        ],
+        'columnDefs': [
+            {
+                "targets": 1,
+                "className": "text-center",
+            }
         ],
         drawCallback: function() {
             setDeleteEvent();

@@ -18,15 +18,6 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">List Posts</h3>
-
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
     </div>
     <div class="card-body table-responsive">
         <table class="table table-bordered table-striped w-100" id="posts-table">
@@ -82,7 +73,13 @@
                 {data: 'subject_title', name: 'subject_title'},
                 {data: 'medium_title', name: 'medium_title'},
                 {data: 'status_text', name: 'status_text'},
-                {data: 'action', name: 'action', orderable: true, searchable: true },
+                {data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            'columnDefs': [
+            {
+                "targets": 1,
+                "className": "text-center",
+            }
             ],
             drawCallback: function () {
                 setDeleteEvent();

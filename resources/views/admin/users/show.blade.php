@@ -10,12 +10,6 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">User Details</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -24,7 +18,8 @@
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
                                 <div class="text-center">
-                                    <img class="profile-user-img img-fluid" src="{{ asset($user->profile_image) }}"
+                                    <img class="profile-user-img img-fluid"
+                                        src="{{ ($user->profile_image != NULL) ? asset($user->profile_image) : asset("assets/images/user.png") }}"
                                         alt="User profile picture">
                                 </div>
 
@@ -82,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <div class="card-body table-responsive">
                             <table class="table table-bordered table-striped w-100" id="users-table"
                                 style="border: 1px solid #dee2e6 !important;">
@@ -97,16 +92,16 @@
                                     @foreach ($user->usernames as $username)
                                     <tr>
                                         <td>{{$loop->index+1}}</td>
-                                        <td>{{$username->username}}</td>
-                                        <td>{{$username->createdBy->username}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <td>{{$username->username}}</td>
+                    <td>{{$username->createdBy->username}}</td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                    </table>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
-    @endsection
+</div>
+</div>
+@endsection

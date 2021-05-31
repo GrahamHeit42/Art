@@ -14,27 +14,24 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">{{ !empty($subject->id ?? null) ? 'Update' : 'Create New' }} Subject</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
             </div>
             <div class="card-body">
-                <form name="subject-form" id="subject-form" action="{{ url('admin/subjects/store') }}" method="post" enctype="multipart/form-data">
+                <form name="subject-form" id="subject-form" action="{{ url('admin/subjects/store') }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <input hidden id="subject_id" name="id" value="{{ $subject->id ?? NULL }}" />
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" id="title" name="title" class="form-control" value="{{ $subject->title ?? NULL }}" />
+                        <input type="text" id="title" name="title" class="form-control"
+                            value="{{ $subject->title ?? NULL }}" />
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label>
                         @if(isset($subject) && $subject->image_path !== NULL)
                         <div class="text-center">
                             <img src="{{asset($subject->image_path)}}" class="form-control subject-img" />
-                            <button type="button" data-id="{{$subject->id}}" class="btn btn-danger delete">Remove Image</button>
+                            <button type="button" data-id="{{$subject->id}}" class="btn btn-danger delete">Remove
+                                Image</button>
                         </div>
                         @else
                         <input type="file" id="image" name="image_path" class="form-control" accept="image/*" />
@@ -43,10 +40,12 @@
                     <div class="form-group">
                         <label for="status">Status</label><br>
                         <label>
-                            <input type="radio" id="status-inactive" name="status" value="0" {{ ($subject->status ?? 0) === 0 ? 'checked' : '' }} /> Inactive
+                            <input type="radio" id="status-inactive" name="status" value="0"
+                                {{ ($subject->status ?? 0) === 0 ? 'checked' : '' }} /> Inactive
                         </label>
                         <label class="ml-3">
-                            <input type="radio" id="status-active" name="status" value="1" {{ ($subject->status ?? 0) === 1 ? 'checked' : '' }}> Active
+                            <input type="radio" id="status-active" name="status" value="1"
+                                {{ ($subject->status ?? 0) === 1 ? 'checked' : '' }}> Active
                         </label>
                     </div>
                     <a type="button" href="{{ url('admin/subjects') }}" class="btn btn-secondary">Cancel</a>

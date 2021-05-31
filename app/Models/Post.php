@@ -32,7 +32,6 @@ class Post extends Model
         'image_url',
         'status_text',
         'maturity_rating_text',
-        // 'views_count'
     ];
 
     public function getImageUrlAttribute()
@@ -86,5 +85,10 @@ class Post extends Model
     public function images(): HasMany
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

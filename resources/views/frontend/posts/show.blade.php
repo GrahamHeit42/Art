@@ -1,9 +1,11 @@
 @extends('frontend.layouts.app')
 @section('title','Post Details')
 @push('styles')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
     .disablebtn {
-        cursor: none !important;
+        pointer-events: none;
+        cursor: default;
         background-color: gray !important;
         border: 1px solid gray !important;
     }
@@ -27,8 +29,11 @@
             </div>
             <div class="col-lg-5">
                 <div class="deslike">
-                    <a href="#" class="button btngreen like"><i class="fas fa-heart"></i> Like</a>
-                    <a href="#" class="deccreate button btndarkyellow"><i class="fas fa-copy"></i> Curate</a>
+                    <a href="#" onclick="likes();"
+                        class="button btngreen like @if($post->post_like_by_user == 1) text-dark @endif"><i
+                            class="fas fa-heart"></i> Like</a>
+                    <a href="#" onclick="curate();" class="deccreate button btndarkyellow"><i class="fas fa-copy"></i>
+                        Curate</a>
 
                 </div>
                 @if(isset($post) && Auth::check() && $post->user_id == Auth::user()->id)
@@ -59,8 +64,10 @@
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->drawnBy->username ?? "UserName"}}</a>
-                                            <a class="btngreen followbtn @if(empty($post->drawnBy)) disablebtn @endif"
-                                                onclick="follow({{$post->drawnBy->id ?? 0}})">Follow</a>
+                                            <a class="btngreen followbtn @if(empty($post->drawnBy) || empty($post->drawnBy->user_id)) disablebtn @endif @if($post->drwan_by_follow == 1) text-dark @endif"
+                                                onclick="follow({{$post->drawnBy->id ?? 0}})"><span
+                                                    class="setDrawnBy">@if($post->drwan_by_follow
+                                                    == 1) Followed @else Follow @endif</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -75,8 +82,10 @@
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
-                                            <a class="btngreen followbtn @if(empty($post->commisionedBy)) disablebtn @endif"
-                                                onclick="follow({{ $post->commisionedBy->id ?? 0}})">Follow</a>
+                                            <a class="btngreen followbtn @if(empty($post->commisionedBy) || empty($post->commisionedBy->user_id)) disablebtn @endif @if($post->commisioned_by_follow == 1) text-dark @endif"
+                                                onclick="follow({{ $post->commisionedBy->id ?? 0}})"><span
+                                                    class="setCommisionedBy">@if($post->commisioned_by_follow
+                                                    == 1) Followed @else Follow @endif</span></a>
                                         </div>
 
                                     </div>
@@ -92,14 +101,14 @@
                             </div>
                             <div class="likeviewcur">
                                 <div class="deslike">
-                                    <p><i class="fas fa-heart"></i> 000 Likes</p>
+                                    <p><i class="fas fa-heart"></i> <span class="getLikes">{{$post->likes}}</span> Likes
+                                    </p>
                                 </div>
                                 <div class="deslike">
                                     <p><i class="fas fa-copy"></i> 000 Curations</p>
                                 </div>
                                 <div class="deslike">
-                                    <p><i class="fas fa-eye"></i> @if(isset($post->views_count)){{$post->views_count}}
-                                        @else '000' @endif Views</p>
+                                    <p><i class="fas fa-eye"></i> {{$post->views_count}} Views</p>
                                 </div>
                             </div>
                             <div class="socialdes row">
@@ -144,439 +153,487 @@
                                 <a href="#">Posted: March 31 2021</a>
                             </div>
                             <div class="makecomment">
-                                <input type="text" placeholder="Make a comment" disabled class="make-control">
+                                <form onsubmit="return false">
+                                    <input type="text" placeholder="Make a comment" class="make-control"
+                                        id="add-comment">
+                                    <button class="btn btn-sm btngreen" type="button" id="add-comment-btn">Add</button>
+                                </form>
                             </div>
                             <div class="usercommentbox">
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
+                                @if(!@empty($post->comments))
+                                @foreach ($post->comments as $comment)
+
+                                {{-- <div class="usercomment">
+                                    <img src="{{ asset($comment->user->profile_image) ?? asset('assets/images/profile.png') }}"
+                                alt="profile" width="64" height="64" />
+                                <p>{{$comment->comment}}</p>
+                                <p>{{$comment->user->display_name}}</p>
+                                <p>{{$comment->created_at}}</p>
+                            </div> --}}
+                            <div class="usercomment row">
+                                <div class="col-md-3">
+                                    <img src="{{ asset($comment->user->profile_image) ?? asset('assets/images/profile.png') }}"
+                                        alt="profile" width="64" height="64" />
                                 </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
-                                </div>
-                                <div class="usercomment">
-                                    <img src="{{ asset('assets/images/profile.png') }}" alt="profile" width="64"
-                                        height="64" />
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel </p>
+                                <div class="col-md-9 row">
+                                    <p class="col-md-12"><b>{{$comment->comment}}</b></p>
+                                    <p class="col-md-6">{{$comment->user->display_name}}</p>
+                                    <p class="col-md-6">{{ date('M d,Y', strtotime($comment->created_at)) }}</p>
                                 </div>
                             </div>
+                            @endforeach
+                            @endif
+
+
                         </div>
                     </div>
-                    <div id="review">
-                        <div class="reviewbox">
-                            <div class="destitle">
-                                <img src="{{ asset('assets/images/user.png') }}" alt="user" width="100" height="100" />
-                                <h2>Artist Username</h2>
+                </div>
+                <div id="review">
+                    <div class="reviewbox">
+                        @if($post->type == config('constants.Artist') || $post->type ==
+                        config('constants.Commisioned'))
+                        <div class="destitle">
+                            <img src="{{ asset('assets/images/user.png') }}" alt="user" width="100" height="100" />
+                            <h2>Artist Username</h2>
+                        </div>
+                        <div class="artist-rateing">
+                            <div class="rateing-title">
+                                <span>Very Bad</span>
+                                <span>Very Good</span>
                             </div>
-                            <div class="artist-rateing">
-                                <div class="rateing-title">
-                                    <span>Very Bad</span>
-                                    <span>Very Good</span>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Transaction
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Transaction"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating1" id="rating1-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating1-1">
+                            <div class="rateing">
+                                <h5>Transaction
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Transaction"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="transaction-{{ $rating }}">
                                                 <i class="rating__icon rating__icon--star fa fa-star"></i>
                                             </label>
-                                            <input class="rating__input" name="rating1" id="rating1-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating1-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating1-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating1-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating1-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-5" value="5"
-                                                type="radio">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Speed
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Speed"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating2" id="rating2-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating2-1">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating2-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating2-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating2-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating2-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-5" value="5"
-                                                type="radio">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Communication
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Communication"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating3" id="rating3-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating3-1">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating3-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating3-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating3-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating3-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-5" value="5"
-                                                type="radio">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Prepertion / Concept
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Prepertion / Concept"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating4" id="rating4-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating4-1">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating4-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating4-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating4-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating4-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-5" value="5"
-                                                type="radio">
-                                        </div>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="transaction" id="transaction-{{ $rating }}" value="{{ $rating }}"
+                                                type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->transaction ? 'checked' : NULL) }}>
+                                            @endfor
                                     </div>
                                 </div>
                             </div>
-                            <div class="destitle">
-                                <img src="{{ asset('assets/images/user.png') }}" alt="user" width="100" height="100" />
-                                <h2>Buyer Username</h2>
+                            <div class="rateing">
+                                <h5>Speed
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Speed"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="speed-{{ $rating }}">
+                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                            </label>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="speed" id="speed-{{ $rating }}" value="{{ $rating }}" type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->speed ? 'checked' : NULL) }}>
+                                            @endfor
+                                    </div>
+                                </div>
                             </div>
-                            <div class="artist-rateing">
-                                <div class="rateing-title">
-                                    <span>Very Bad</span>
-                                    <span>Very Good</span>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Price
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Price"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating1" id="rating1-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating1-1">
+                            <div class="rateing">
+                                <h5>Communication
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Communication"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="communication-{{ $rating }}">
                                                 <i class="rating__icon rating__icon--star fa fa-star"></i>
                                             </label>
-                                            <input class="rating__input" name="rating1" id="rating1-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating1-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating1-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating1-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating1-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating1" id="rating1-5" value="5"
-                                                type="radio">
-                                        </div>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="communication" id="communication-{{ $rating }}"
+                                                value="{{ $rating }}" type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->communication ? 'checked' : NULL) }}>
+                                            @endfor
                                     </div>
                                 </div>
-                                <div class="rateing">
-                                    <h5>Speed
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Speed"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating2" id="rating2-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating2-1">
+                            </div>
+                            <div class="rateing">
+                                <h5>Prepertion / Concept
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Prepertion / Concept"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="concept-{{ $rating }}">
                                                 <i class="rating__icon rating__icon--star fa fa-star"></i>
                                             </label>
-                                            <input class="rating__input" name="rating2" id="rating2-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating2-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating2-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating2-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating2-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating2" id="rating2-5" value="5"
-                                                type="radio">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Quality
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Quality"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating3" id="rating3-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating3-1">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating3-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating3-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating3-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating3-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating3" id="rating3-5" value="5"
-                                                type="radio">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rateing">
-                                    <h5>Professonalism
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Professonalism"></i>
-                                    </h5>
-
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating4" id="rating4-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating4-1">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating4-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating4-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating4-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating4-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating4" id="rating4-5" value="5"
-                                                type="radio">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="rateing">
-                                    <h5>Communication
-                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                            data-placement="top" title="Communication"></i>
-                                    </h5>
-                                    <div id="full-stars-example-two">
-                                        <div class="rating-group">
-                                            <input disabled checked class="rating__input rating__input--none"
-                                                name="rating5" id="rating5-none" value="0" type="radio">
-                                            <label aria-label="1 star" class="rating__label" for="rating5-1">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating5" id="rating5-1" value="1"
-                                                type="radio">
-                                            <label aria-label="2 stars" class="rating__label" for="rating5-2">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating5" id="rating5-2" value="2"
-                                                type="radio">
-                                            <label aria-label="3 stars" class="rating__label" for="rating5-3">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating5" id="rating5-3" value="3"
-                                                type="radio">
-                                            <label aria-label="4 stars" class="rating__label" for="rating5-4">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating5" id="rating5-4" value="4"
-                                                type="radio">
-                                            <label aria-label="5 stars" class="rating__label" for="rating5-5">
-                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
-                                            </label>
-                                            <input class="rating__input" name="rating5" id="rating5-5" value="5"
-                                                type="radio">
-                                        </div>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="concept" id="concept-{{ $rating }}" value="{{ $rating }}"
+                                                type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->concept ? 'checked' : NULL) }}>
+                                            @endfor
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @endif
+                        @if($post->type == config('constants.Commissioner'))
+                        <div class="destitle">
+                            <img src="{{ asset('assets/images/user.png') }}" alt="user" width="100" height="100" />
+                            <h2>Buyer Username</h2>
+                        </div>
+                        <div class="artist-rateing">
+                            <div class="rateing-title">
+                                <span>Very Bad</span>
+                                <span>Very Good</span>
+                            </div>
+                            <div class="rateing">
+                                <h5>Price
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Price"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="price-{{ $rating }}">
+                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                            </label>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="price" id="price-{{ $rating }}" value="{{ $rating }}" type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->price ? 'checked' : NULL) }}>
+                                            @endfor
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rateing">
+                                <h5>Speed
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Speed"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="speed-{{ $rating }}">
+                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                            </label>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="speed" id="speed-{{ $rating }}" value="{{ $rating }}" type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->speed ? 'checked' : NULL) }}>
+                                            @endfor
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rateing">
+                                <h5>Quality
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Quality"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="quality-{{ $rating }}">
+                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                            </label>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="quality" id="quality-{{ $rating }}" value="{{ $rating }}"
+                                                type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->quality ? 'checked' : NULL) }}>
+                                            @endfor
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rateing">
+                                <h5>Professonalism
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Professonalism"></i>
+                                </h5>
+
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="professionalism-{{ $rating }}">
+                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                            </label>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="professionalism" id="professionalism-{{ $rating }}"
+                                                value="{{ $rating }}" type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->professionalism ? 'checked' : NULL) }}>
+                                            @endfor
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="rateing">
+                                <h5>Communication
+                                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                        data-placement="top" title="Communication"></i>
+                                </h5>
+                                <div id="full-stars-example-two">
+                                    <div class="rating-group">
+                                        @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            <label aria-label="{{ $rating }} star" class="rating__label"
+                                                for="communication-{{ $rating }}">
+                                                <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                            </label>
+                                            @endif
+                                            <input
+                                                class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                name="communication" id="communication-{{ $rating }}"
+                                                value="{{ $rating }}" type="radio"
+                                                {{ $rating === 0 ? 'disabled checked' : ($rating == $post->communication ? 'checked' : NULL) }}>
+                                            @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="login-register">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="loginregistertext">Login</h2>
+                                <div class="login-registerwrapper">
+                                    <div class="login-register-form">
+                                        <form action="{{ route('login') }}" method="post">
+                                            @csrf
+                                            <input id="post_id" name="post_id" value="{{ $post->id }}" type="hidden" />
+                                            <div class="artsinput">
+                                                <input id="email" title="Email Address" type="email" name="email"
+                                                    value="{{ old('email') ?? NULL }}" placeholder="Email"
+                                                    class="arts-control @error('email') border-danger border @enderror"
+                                                    autofocus style="margin-bottom: 0;" />
+                                                @error('email')
+                                                <span class="small text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="artsinput mt-4 mb-4">
+                                                <input id="password" title="Password" type="password" name="password"
+                                                    placeholder="Password"
+                                                    class="arts-control @error('password') mb-0 @enderror" />
+                                                @error('password')
+                                                <span class="small text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="loginbtn">
+                                                <button type="button" class="btn btn-danger modal-close">Cancel</button>
+                                                <button type="submit" class="btngreen">Login</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
 @endsection
 @push('scripts')
-<script>
+<script type="text/javascript">
+    var loggedIn = {{ auth()->check() ? 'true' : 'false' }};
 
+    function likes(){
+
+        if (loggedIn){
+            doLike();
+        }else{
+            login();
+        }
+    }
+
+    function curate(){
+        if(!loggedIn){
+            login();
+        }
+    }
+
+    function login(){
+        $("#modalLogin").modal('show');
+    }
+    $(".modal-close").on("click",function(){
+        $("#modalLogin").modal('hide');
+    });
+
+    function doLike(){
+
+        $.ajax({
+            url: '/likes',
+            data: {
+                "_token" : '{{csrf_token()}}',
+                "postid": {!! $post->id !!},
+            },
+            type: 'post',
+            success: function(response)
+            {
+                if (response.status === true) {
+                    toastr.success(response.message, 'Success', toastrOptions);
+                    if(response.is_like == 1){
+                        $(".like").addClass('text-dark');
+                    }else{
+                        $(".like").removeClass('text-dark');
+                    }
+                    $(".getLikes").html(response.likes_count);
+                } else {
+                    toastr.error(response.message, '', toastrOptions);
+                }
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }
+
+    function follow(follow_user_id){
+        $.ajax({
+            url: '/follow',
+            data: {
+                "_token" : '{{csrf_token()}}',
+                "follow_user_id": follow_user_id
+            },
+            type: 'post',
+            success: function(response)
+            {
+                if (response.status === true) {
+                    if(response.is_follow == 1){
+                        $(".setDrawnBy").html("Followed");
+                    }else{
+                        $(".setDrawnBy").html("Follow");
+                    }
+                    toastr.success(response.message, 'Success', toastrOptions);
+                } else {
+                    toastr.error(response.message, '', toastrOptions);
+                }
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    }
+
+    //add comment ajax call
+    $("#add-comment-btn").on('click',function(e){
+        var comment = $("#add-comment").val();
+        var post_id = {!! $post->id !!}
+        var token = "{{csrf_token()}}"
+
+        if(comment.length >0 && post_id != null){
+            let formData = new FormData();
+            formData.append('post_id', post_id);
+            formData.append('comment', comment);
+            formData.append('_token', token);
+
+            $.ajax({
+                url: BASE_URL + '/posts/comment',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response)
+                {
+                    if (response.status === true) {
+                        $("#add-comment").value = "";
+                        toastr.success(response.message, 'Success', toastrOptions);
+                        window.setTimeout(function(){location.reload()},2000);
+                    } else {
+                        toastr.error(response.message, '', toastrOptions);
+                    }
+                },
+                error: function(err){
+                    $("#add-comment").value = "";
+                    console.log(err);
+                }
+            });
+        }
+    });
+    /* $("#add-comment").keydown(function (e) {
+        if(!loggedIn){
+            login();
+        }else{
+            if (e.keyCode == 13) {
+
+                var comment = this.value;
+                var post_id = {!! $post->id !!}
+                var token = "{{csrf_token()}}"
+                if(comment.length >0 && post_id != null){
+                    let formData = new FormData();
+                    formData.append('post_id', post_id);
+                    formData.append('comment', comment);
+                    formData.append('_token', token);
+
+                    $.ajax({
+                        url: BASE_URL + '/posts/comment',
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response)
+                        {
+                            if (response.status === true) {
+                                $("#add-comment").value = "";
+                                toastr.success(response.message, 'Success', toastrOptions);
+                                window.setTimeout(function(){
+                                    location.reload()
+                                },2000);
+                            } else {
+                                toastr.error(response.message, '', toastrOptions);
+                            }
+                        },
+                        error: function(err){
+                            $("#add-comment").value = "";
+                            console.log(err);
+                        }
+                    });
+                }
+
+            }
+        }
+
+    }); */
 </script>
 @endpush

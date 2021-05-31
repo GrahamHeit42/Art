@@ -760,4 +760,14 @@ name="owner_name" />- -}}
         });
     });
 </script>
+<script>
+    $(".upload-btn-wrapper").sortable({
+    revert: true,
+    stop: function(event, ui) {
+        if(!ui.item.data('tag') && !ui.item.data('handle')) {
+            ui.item.data('tag', true);
+        }
+    }
+});
+</script>
 @endpush

@@ -40,6 +40,9 @@ class AuthenticatedSessionController extends Controller
         $user->save();
 
         // session()->flash('success', 'Login successfully.');
+        if (!empty($request->post('post_id'))) {
+            return redirect(url("posts/" . $request->post('post_id')));
+        }
 
         if ($user->is_admin === 1) {
             return redirect(url('admin/dashboard'));

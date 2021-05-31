@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>{{ $page_title ?? NULL }} - {{ config('app.name') }}</title>
 
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}">
@@ -24,6 +27,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet" />
+
+    <script type="text/javascript">
+        const BASE_URL = '{{ url("/") }}';
+        const ASSET_URL = '{{ asset("/") }}';
+    </script>
 </head>
 
 <body>
@@ -120,7 +128,8 @@
                             </div>
                         </div>
                         <div class="message">
-                            <a href="" id="message" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="" id="message" data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                                 <img src="{{ asset('assets/icon/message.svg') }}" alt="">
                             </a>
                             <div class="dropdown-menu message_dropdown" aria-labelledby="message">
@@ -145,7 +154,8 @@
                         </div>
 
                         <div class="notification">
-                            <a href="" id="notification" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="" id="notification" data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                                 <img src="{{ asset('assets/icon/notification.svg') }}" alt="">
                             </a>
                             <div class="dropdown-menu notification_dropdown" aria-labelledby="notification">
@@ -215,7 +225,8 @@
     </div>
 
     <!-- popup modal -->
-    <div class="modal fade upload-popup" id="postUploadModal" tabindex="-1" role="dialog" aria-labelledby="postUploadModalLabel" aria-hidden="true">
+    <div class="modal fade upload-popup" id="postUploadModal" tabindex="-1" role="dialog"
+        aria-labelledby="postUploadModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -240,14 +251,16 @@
                             <div id="popup-option">
                                 <a href="{{ url('posts/create/artist') }}" class="btn btndarkyellow">Personal</a>
                                 <span>OR</span>
-                                <a href="{{ url('posts/create/commissioned') }}" class="btn btndarkyellow">Commissioned</a>
+                                <a href="{{ url('posts/create/commissioned') }}"
+                                    class="btn btndarkyellow">Commissioned</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-cancel btngreen" data-bs-dismiss="modal" data-targe="#postUploadModal">Cancel</button>
+                    <button type="button" class="btn btn-cancel btngreen" data-bs-dismiss="modal"
+                        data-targe="#postUploadModal">Cancel</button>
                 </div>
             </div>
         </div>

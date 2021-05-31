@@ -49,7 +49,8 @@ class User extends Authenticatable
 
     protected $appends = [
         'is_admin_text',
-        'status_text'
+        'status_text',
+        'profile_image_url'
     ];
 
     public function getIsAdminTextAttribute()
@@ -78,6 +79,11 @@ class User extends Authenticatable
         }
 
         return $this->attributes['status_text'] = $status_text;
+    }
+
+    public  function getProfileImageUrlAttribute()
+    {
+        return !empty($this->attributes['profile_image']) ? asset($this->attributes['profile_image']) : null;
     }
 
     public function usernames(): HasMany

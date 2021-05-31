@@ -1404,9 +1404,9 @@ h6 {
     outline: none;
     background-color: #ffffff;
     color: #6c757d;
-    cursor: pointer;
+    /* cursor: pointer; */
     border-radius: 0px;
-    width: 100%;
+    width: 90%;
     padding: 10px;
     text-align: center;
     font-family: 'Montserrat';
@@ -1494,4 +1494,8 @@ h6 {
 
 .btngreen.followbtn {
     padding: 5px;
+}
+
+.usercomment p{
+    color: gray;
 }

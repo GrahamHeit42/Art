@@ -6,12 +6,6 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">{{ !empty($page->id ?? null) ? 'Update' : 'Create New' }} Page</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
             </div>
             <div class="card-body">
                 <form name="page-form" id="page-form" action="{{ url('admin/pages/store') }}" method="post">

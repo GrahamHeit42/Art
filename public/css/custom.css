@@ -37,3 +37,8 @@
 .fw-normal {
     font-weight: normal !important;
 }
+
+.displayImage{
+    width: 100px !important;
+    height: 100px !important;
+}

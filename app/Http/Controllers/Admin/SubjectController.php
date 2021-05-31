@@ -26,9 +26,9 @@ class SubjectController extends Controller
                 ->addIndexColumn()
                 ->editColumn('image_url', function ($subject) {
                     if ($subject->image_url !== NULL) {
-                        return '<img src="' . $subject->image_url . '" width="70px" height="70px"/>';
+                        return '<img src="' . $subject->image_url . '" width="70px" height="70px" class="img-thumbnail"/>';
                     } else {
-                        return '<img src="' . asset("assets/images/noimage.jpg") . '" width="70px" height="70px"/>';
+                        return '<img src="' . asset("assets/images/noimage.jpg") . '" width="70px" height="70px" class="img-thumbnail"/>';
                     }
                 })
                 ->addColumn('action', function ($row) {
