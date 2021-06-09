@@ -64,7 +64,7 @@
                                 <div class="searchbox">
                                     <input type="text" class="form-control" id="search" placeholder="Search here...">
                                 </div>
-                                <div class="searchicon" onclick="filterOptions();">
+                                <div class="searchicon" onclick="filterPosts();">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </div>
                             </div>
@@ -88,6 +88,7 @@
                     </div>
                     @else
                     <div class="header-dropdown">
+                        <div class="displayname">{{auth()->user()->display_name ?? ''}}</div>
                         <div class="profile">
                             <a id="profile" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('assets/icon/profile.svg') }}" alt="">
@@ -195,33 +196,7 @@
             @yield('content')
         </div>
 
-        <footer id="footer">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="usefull-link">
-                        <ul>
-                            <li>
-                                <a href="{{ url('terms-and-conditions') }}">Terms and conditions</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('help-and-faqs') }}">Help & FAQ</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('contact-us') }}">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="realeyze">
-                        <p>©2021
-                            <a href="#">Realeyze</a>
-                            | Version {{ config('constants.app.version') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        @yield("footer")
     </div>
 
     <!-- popup modal -->
@@ -266,7 +241,8 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/jquery.mini.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/jquery.mini.js') }}"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/arts.js') }}"></script>

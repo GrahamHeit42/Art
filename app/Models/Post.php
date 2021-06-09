@@ -32,6 +32,7 @@ class Post extends Model
         'image_url',
         'status_text',
         'maturity_rating_text',
+        // 'views_count'
     ];
 
     public function getImageUrlAttribute()
@@ -87,8 +88,33 @@ class Post extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function comments(): HasMany
+    public function getcomments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
+
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
+    }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+    public function views(): HasMany
+    {
+        return $this->hasMany(PostView::class);
+    }
+
+    // public function views_count()
+    // {
+    //     return $this->hasMany(PostView::class)->sum('count');
+    // }
+
+    // public function getViewsCountAttributes()
+    // {
+    //     dd($this->attributes->id);
+    // }
 }

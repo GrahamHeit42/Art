@@ -4,6 +4,14 @@
 <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<style>
+    .desc {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 75ch;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -30,7 +38,8 @@
                     <th>Description</th>
                     <th>Subject</th>
                     <th>Medium</th>
-                    <th>Status</th>
+                    <th>Count</th>
+                    {{-- <th>Status</th> --}}
                     <th>Action</th>
                 </tr>
             </thead>
@@ -65,20 +74,24 @@
                 type: 'post'
             },
             columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false},
-                {data: 'image_url', name: 'image_url', orderable: false, searchable: false},
-                {data: 'display_name', name: 'display_name'},
-                {data: 'title', name: 'title'},
-                {data: 'description', name: 'description'},
-                {data: 'subject_title', name: 'subject_title'},
-                {data: 'medium_title', name: 'medium_title'},
-                {data: 'status_text', name: 'status_text'},
-                {data: 'action', name: 'action', orderable: false, searchable: false },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, width: '2%'},
+                {data: 'image_url', name: 'image_url', orderable: false, searchable: false, width: '8%'},
+                {data: 'display_name', name: 'display_name',width: '20%'},
+                {data: 'title', name: 'title', width: '15%'},
+                {data: 'description', name: 'description',width: '20%'},
+                {data: 'subject_title', name: 'subject_title', width: '10%'},
+                {data: 'medium_title', name: 'medium_title', width: '10%'},
+                // {data: 'status_text', name: 'status_text'},
+                {data: 'count', name: 'count', width: '10%'},
+                {data: 'action', name: 'action', orderable: false, searchable: false, width: '5%'},
             ],
             'columnDefs': [
             {
                 "targets": 1,
                 "className": "text-center",
+            },{
+                "targets": 4,
+                "className": "desc",
             }
             ],
             drawCallback: function () {

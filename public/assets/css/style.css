@@ -988,7 +988,7 @@ h6 {
 }
 
 .subject-matter-dropdown-container .select2-results .select2-results__option {
-    background-image: url(../images/gallerytab.jpg);
+    /* background-image: url(../images/gallerytab.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 5px;
@@ -1498,4 +1498,12 @@ h6 {
 
 .usercomment p{
     color: gray;
+}
+
+.displayname{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 2%;
+    color: white;
+    font-weight: bolder;
 }

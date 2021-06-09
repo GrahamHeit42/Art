@@ -11,6 +11,8 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Username;
 
 class HomeController extends Controller
 {
@@ -20,9 +22,11 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // dd($request);
+        DB::enableQueryLog();
         $mediums = Medium::whereStatus(1)->get();
         $subjects = Subject::whereStatus(1)->get();
-        $posts = Post::latest();
+        // $posts = Post::latest();
+        $posts = new Post();
         view()->share('page_title', 'Home');
 
         if (!empty($request->get('sid'))) {
@@ -41,10 +45,14 @@ class HomeController extends Controller
             });
         }
         if (!empty($request->get('c'))) {
-            $posts = $posts->whereNotNull('commisioned_by');
+            $posts = $posts->where('type_id', 3);
+        }
+        if (!empty($request->get('p'))) {
+            $posts = $posts->withCount('likes')->orderBy('likes_count', 'desc');
         }
 
-        $posts = $posts->get();
+        $posts = $posts->latest()->get();
+        // dd(DB::getQueryLog());
         // dd($posts);
 
         return view('frontend.home', compact('mediums', 'subjects', 'posts'));

@@ -52,7 +52,7 @@ class PostController extends Controller
                 'medium_id' => 'required',
                 'title' => 'required_if:id,null',
                 'description' => 'required_if:id,null',
-                // 'images' => 'required',
+                'images' => 'required',
             ]);
             // dd("stop");
             if ($request->post('type') === config('constants.Commissioner') || $request->post('type') === config('constants.Commisioned')) {
@@ -124,12 +124,28 @@ class PostController extends Controller
             }
 
             if ($request->hasFile('cover_image')) {
+                // dd($request->all());
                 $year = Carbon::now()->format('Y');
-                $month = Carbon::now()->format('m');
                 $coverImage = $request->file('cover_image');
-                $fileName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
-                $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $fileName);
-                $path = 'storage/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $fileName;
+
+                $data = $request->post("crop_cover_image");
+                $image_array_1 = explode(";", $data);
+                $image_array_2 = explode(",", $image_array_1[1]);
+                $data = base64_decode($image_array_2[1]);
+                $imageName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
+                file_put_contents(storage_path('app/public/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $imageName), $data);
+
+
+
+                // $image_array_1 = explode(";", $coverImage);
+                // $image_array_2 = explode(",", $image_array_1[1]);
+                // $data = base64_decode($image_array_2[1]);
+
+
+                // $month = Carbon::now()->format('m');
+                // $fileName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
+                // $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $fileName);
+                $path = 'storage/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $imageName;
                 $postData['cover_image'] = $path;
             }
 
@@ -178,7 +194,8 @@ class PostController extends Controller
     public function show($id)
     {
         view()->share('page_title', 'Post Information');
-        $post = Post::with('images', 'drawnBy', 'commisionedBy', 'comments.user:id,display_name,profile_image')->find($id);
+        // $post = Post::with('images', 'drawnBy', 'commisionedBy', 'comments.user:id,display_name,profile_image', 'comments.replies')->find($id);
+        $post = Post::with('images', 'drawnBy', 'commisionedBy')->find($id);
 
         $user_id = auth()->id() ?? NULL;
         $count = 0;
@@ -196,7 +213,8 @@ class PostController extends Controller
 
         $post->post_like_by_user = Like::where('post_id', $id)->where('user_id', $user_id)->count() ?? 0;
         $post->drwan_by_follow = Follow::where('user_id', $user_id)->where('follow_user_id', $post->drawnBy->user_id)->count() ?? 0;
-        $post->commisioned_by_follow = Follow::where('user_id', $user_id)->where('follow_user_id', $post->commisionedBy->user_id)->count() ?? 0;
+        if (!empty($post->commisionedBy->user_id))
+            $post->commisioned_by_follow = Follow::where('user_id', $user_id)->where('follow_user_id', $post->commisionedBy->user_id)->count() ?? 0;
 
         $post->likes = Like::where('post_id', $id)->count() ?? 0;
 
@@ -312,9 +330,32 @@ class PostController extends Controller
         ]);
     }
 
-    public function comment(Request $request)
+    public function imagesOrder(Request $request)
     {
         if ($request->ajax()) {
+            $request->validate([
+                'image_id' => 'required',
+                'order_id' => 'required',
+            ]);
+            $image = Image::find($request->post('image_id'));
+            $image->display_order = $request->post('order_id');
+            $save = $image->save();
+            if ($save) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Display order changed Successfully.',
+                ]);
+            }
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Something went wrong, Please try again.'
+        ]);
+    }
+
+    public function comment(Request $request)
+    {
+        /* if ($request->ajax()) {
             $request->validate([
                 'post_id' => 'required',
                 'comment' => 'required',
@@ -322,6 +363,7 @@ class PostController extends Controller
             $comment = Comment::create([
                 'post_id' => $request->post('post_id'),
                 'user_id' => auth()->id(),
+                'parent_id' => $request->post('parent_id') ?? 0,
                 'comment' => $request->post('comment')
             ]);
             if ($comment) {
@@ -335,6 +377,6 @@ class PostController extends Controller
         return response()->json([
             'status' => false,
             'message' => 'Something went wrong, Please try again.'
-        ]);
+        ]); */
     }
 }

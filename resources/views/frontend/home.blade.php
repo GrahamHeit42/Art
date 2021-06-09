@@ -17,7 +17,10 @@
                         @foreach($subjects as $key => $subject)
                         <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}">
                             <a href="javascript:" onclick="filterPosts({{ $subject->id }})">
-                                <div class="tabbox" style="background-image: url('{{ $subject->image_url }}')">
+                                {{-- <div class="tabbox" style="background-image: url('{{ $subject->image_url }}')">
+                                --}}
+                                <div class="tabbox"
+                                    style="{{ request()->get('sid') == $subject->id ? 'background-image: url("'.$subject->image_url.'")' : '' }}">
                                     <h2>{{ $subject->title }}</h2>
                                 </div>
                             </a>
@@ -32,8 +35,10 @@
         <div class="post nav" id="nav-tab" role="tablist">
             <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest"
                 role="tab" aria-controls="nav-filter-latest" aria-selected="false">Latest</a>
-            <a class="button btnyellow" id="filter-popular-tab" data-bs-toggle="tab" href="#nav-filter-popular"
-                role="tab" aria-controls="nav-filter-popular" aria-selected="false">Popular</a>
+            <a class="button btnyellow {{request()->get('p') == 1 ? 'text-dark' : ''}}" id="filter-popular-tab"
+                data-bs-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular"
+                aria-selected="false" onclick="filterPopularPosts()">Popular</a>
+            <input type="hidden" name="popular" id="popular" value="{{request()->get('p') ?? 0}}" />
             <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending"
                 role="tab" aria-controls="nav-filter-trending" aria-selected="false">Trending</a>
         </div>
@@ -104,6 +109,36 @@
 </div>
 @endsection
 
+@section("footer")
+<footer id="footer">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="usefull-link">
+                <ul>
+                    <li>
+                        <a href="{{ url('terms-and-conditions') }}">Terms and conditions</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('help-and-faqs') }}">Help & FAQ</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('contact-us') }}">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="realeyze">
+                <p>©2021
+                    <a href="#">Realeyze</a>
+                    | Version {{ config('constants.app.version') }}
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+@endsection
+
 @push('scripts')
 <script src="{{ asset('assets/plugins/slick-slider/js/slick.min.js') }}"></script>
 <script>
@@ -130,14 +165,16 @@
                     breakpoint: 600,
                     settings: {
                         slidesToShow: 2,
-                        slidesToScroll: 2
+                        slidesToScroll: 2,
+                        infinite: false,
                     }
                 },
                 {
                     breakpoint: 480,
                     settings: {
                         slidesToShow: 1,
-                        slidesToScroll: 1
+                        slidesToScroll: 1,
+                        infinite: false,
                     }
                 }
             ]
@@ -146,9 +183,24 @@
     });
 </script>
 <script type="text/javascript">
+    function filterPopularPosts(){
+        if($("#popular").val() == 0){
+            $("#popular").val("1");
+            filterPosts();
+        }else{
+            $("#popular").val("0");
+            filterPosts();
+        }
+    }
+
     function filterPosts(sid) {
+
         if (sid !== undefined && sid !== null && sid !== '') {
-            $("#subject_id").val(sid);
+            if($("#subject_id").val() == sid){
+                $("#subject_id").val(0);
+            }else{
+                $("#subject_id").val(sid);
+            }
         }
 
         var search = $("#search").val();
@@ -162,6 +214,8 @@
 
         var filterUrl = '{{ url("/") }}?';
         var singleFilter = true;
+        var popular = $("#popular").val();
+
         if (search.toString().length > 0) {
             singleFilter = false;
             filterUrl += 'q=' + search;
@@ -178,20 +232,12 @@
             filterUrl += (singleFilter === false ? '&' : '') + 'c=' + isCommissionsPosts;
             singleFilter = false;
         }
+        if (parseInt(popular) == 1) {
+            filterUrl += (singleFilter === false ? '&' : '') + 'p=' + parseInt(popular);
+            singleFilter = false;
+        }
 
         window.location.href = filterUrl;
     }
-</script>
-<script>
-    $("#sortable").sortable({
-    revert: true,
-    stop: function(event, ui) {
-        if(!ui.item.data('tag') && !ui.item.data('handle')) {
-            ui.item.data('tag', true);
-            // ui.item.fadeTo(400, 0.1);
-        }
-    }
-});
-$("ul, li").disableSelection();
 </script>
 @endpush

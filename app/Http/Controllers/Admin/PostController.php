@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,7 +20,7 @@ class PostController extends Controller
     public function getPosts(Request $request)
     {
         if ($request->ajax()) {
-            $posts = Post::latest()->with(['user', 'subject', 'medium'])->get();
+            $posts = Post::latest()->with(['user', 'subject', 'medium', 'views:id,post_id,count'])->withCount(['likes', 'comments'])->get();
 
             return DataTables::of($posts)
                 ->addIndexColumn()
@@ -27,7 +28,12 @@ class PostController extends Controller
                     if ($row->image_url !== NULL) {
                         return '<img src="' . $row->image_url . '" width="70px" height="70px" class="img-thumbnail"/>';
                     } else {
-                        return '<img src="' . asset("assets/images/noimage.jpg") . '" width="70px" height="70px" class="img-thumbnail"/>';
+                        $image = Image::where('post_id', $row->id)->first();
+                        if (!empty($image)) {
+                            return '<img src="' . asset($image->image_path) . '" width="70px" height="70px" class="img-thumbnail"/>';
+                        } else {
+                            return '<img src="' . asset("assets/images/noimage.jpg") . '" width="70px" height="70px" class="img-thumbnail"/>';
+                        }
                     }
                 })
                 ->addColumn('display_name', function ($row) {
@@ -38,6 +44,9 @@ class PostController extends Controller
                 })
                 ->addColumn('medium_title', function ($row) {
                     return $row->medium->title ?? NULL;
+                })
+                ->addColumn('count', function ($row) {
+                    return '<span><i class="far fa-thumbs-up text-primary"></i>' . $row->likes_count . '</span><span><i class="fa fa-eye text-info"></i>' . $row->views->sum('count') . '</span><span><i class="fa fa-comment text-success"></i>' . $row->comments_count . '</span>';
                 })
                 ->addColumn('action', function ($row) {
                     return '<a href="' . url("admin/posts/" . $row->id) . '" class="btn btn-lg text-info p-2">
@@ -50,7 +59,7 @@ class PostController extends Controller
                                 <i class="fas fa-trash-alt"></i>
                             </button>';
                 })
-                ->rawColumns(['action', 'image_url'])
+                ->rawColumns(['action', 'image_url', 'count'])
                 ->makeHidden(['user', 'subject', 'medium'])
                 ->make(TRUE);
         }
@@ -63,8 +72,8 @@ class PostController extends Controller
 
     public function show($id = NULL)
     {
-        $post = Post::with(['user', 'subject', 'medium', 'drawnBy', 'commisionedBy', 'images'])->find($id);
-
+        $post = Post::with(['user', 'subject', 'medium', 'drawnBy', 'commisionedBy', 'images', 'likes', 'views', 'comments'])->find($id);
+        // dd($post->views->sum('count'));
         view()->share('page_title', (!empty($id) ? 'Update' : 'Create') . ' Post');
 
         return view('admin.posts.show', compact('post'));

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Follow;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use File;
+use App\Models\Post;
 
 class UserController extends Controller
 {
@@ -64,7 +66,15 @@ class UserController extends Controller
     public function show($id = NULL)
     {
         $user = User::with('usernames', 'usernames.createdBy')->find($id);
+        $user->posts = Post::with(['user', 'subject', 'medium', 'drawnBy', 'commisionedBy', 'images', 'likes', 'views', 'comments'])->where('user_id', $id)->where('status', 1)->get();
+        $user->followers = Follow::where('follow_user_id', $id)->count();
+        $user->following = Follow::where('user_id', $id)->count();
 
+        $likes_count = 0;
+        foreach ($user->posts as $post) {
+            $likes_count += $post->likes->count();
+        }
+        $user->likes_count = $likes_count;
         view()->share('page_title', 'User Details');
 
         return view('admin.users.show', compact('user'));

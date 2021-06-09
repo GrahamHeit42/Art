@@ -1,6 +1,7 @@
 @extends('frontend.layouts.app')
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" />
+
 <style>
     .gridImage {
         margin: 1.5%;
@@ -22,6 +23,19 @@
         color: red;
         font-size: 3rem;
         cursor: pointer;
+    }
+</style>
+<style>
+    input#crop {
+        padding: 5px 25px 5px 25px;
+        background: lightseagreen;
+        border: #485c61 1px solid;
+        color: #FFF;
+        visibility: hidden;
+    }
+
+    #cropped_img {
+        margin-top: 40px;
     }
 </style>
 @endpush
@@ -76,6 +90,7 @@
                             <div class="subject-matter">
                                 <select class="subject-matter-dropdown" name="subject_id" id="subject_id"
                                     title="Subject">
+                                    <option value="">Subject</option>
                                     @foreach($subjects as $subject)
                                     <option value="{{ $subject->id }}"
                                         {{ old('subject_id') == $subject->id ? 'selected' : NULL }}>
@@ -86,6 +101,7 @@
                             </div>
                             <div class="medium-dropdown">
                                 <select class="medium-matter-dropdown" name="medium_id" id="medium_id" title="Medium">
+                                    <option value="">Medium</option>
                                     @foreach($mediums as $medium)
                                     <option value="{{ $medium->id }}"
                                         {{ old('medium_id') == $subject->id ? 'selected' : NULL }}>
@@ -292,7 +308,7 @@
                             </div>
                         </div>
                         <div class="note">
-                            <h5>( not display on post )</h5>
+                            {{-- <h5>( not display on post )</h5> --}}
                         </div>
                         @endif
 
@@ -301,17 +317,48 @@
                 </div>
             </div>
             <div class="col-lg-2">
+                {{-- <a href="#" class="btngreen" id="crop_image">Crop Image</a> --}}
                 <div class="thumbnailbox">
+                    <input type="text" name="crop_cover_image" id="upload-thumbnail-image-crop" style="display: none;">
                     <div class="upload-thumb">
                         <h2 class="thumbnailtext">Thumbnail</h2>
-                        <input type="file" name="cover_image" id="upload-thumbnail-image">
+                        <input type="file" name="cover_image" id="upload-thumbnail-image" accept="image/*">
                         <img src="{{ asset('assets/images/upload-image.png') }}" alt="Upload image" width="229"
                             height="228" id="thumbnail-image-preview" />
+                        <img src="#" id="cropped_img" style="display: none;">
                         <div class="thubnailbtn">
-                            <a href="#" class="btngreen">Crop</a>
-                            <a href="#" class="btngreen">Upload</a>
+                            <a href="#" class="btngreen" id="crop">Crop</a>
+                            <a href="#" class="btngreen" id="cropUpload">Upload</a>
                         </div>
                     </div>
+                    <!-- start crop image modal-->
+                    <div id="uploadimageModal" class="modal" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    {{-- <button type="button" class="close" data-dismiss="modal">&times;</button> --}}
+                                    <h4 class="modal-title">Upload & Crop Image</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <div id="image_demo" style=""></div>
+                                        </div>
+                                        <div class="col-md-12 text-center" style="padding-top:30px;">
+                                            <button type="button" class="btn btn-success crop_image">Crop & Upload
+                                                Image</button>
+                                            <button type="button" class="btn btn-secondary btn-modal-hide"
+                                                style="margin-left: 2%">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    {{-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end crop image modal-->
                     <div class="maturitybox">
                         <h2>Maturity Rating</h2>
                         <div class="maturityrating">
@@ -572,9 +619,51 @@ name="owner_name" />- -}}
 
 @push('scripts')
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.js"></script>
 {{-- <script src="{{ asset('assets/plugins/dropzone/dropzone.min.js') }}"></script> --}}
 <script type="text/javascript">
     $(document).ready(function() {
+        //crop image
+        $image_crop = $('#image_demo').croppie({
+            enableExif: true,
+            viewport: {
+                width:200,
+                height:200,
+                type:'square' //circle
+            },
+            boundary:{
+                width:300,
+                height:300
+            }
+        });
+
+        $('#upload-thumbnail-image').on('change', function(){
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                $image_crop.croppie('bind', {
+                    url: event.target.result
+                }).then(function(){
+                    console.log('jQuery bind complete');
+                });
+            }
+            reader.readAsDataURL(this.files[0]);
+            $('#uploadimageModal').modal('show');
+        });
+
+        $('.crop_image').click(function(event){
+            $image_crop.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function(response){
+                $("#upload-thumbnail-image-crop").val(response);
+                $('#uploadimageModal').modal('hide');
+                $('#thumbnail-image-preview').attr('src',response);
+            })
+        });
+        $(".btn-modal-hide").on("click",function(){
+               $('#uploadimageModal').modal('hide');
+        });
         //set username
         setUserSpan();
         $('#username').on('change', function() {
@@ -655,6 +744,12 @@ name="owner_name" />- -}}
 
                     reader.onload = function(event) {
                         $('#thumbnail-image-preview').attr('src', event.target.result);
+
+                        // $image_crop.croppie('bind', {
+                        //     url: event.target.result
+                        // }).then(function(){
+                        //     console.log('jQuery bind complete');
+                        // });
                     }
 
                     reader.readAsDataURL(input.files[i]);
@@ -663,9 +758,9 @@ name="owner_name" />- -}}
 
         };
 
-        $('#upload-thumbnail-image').on('change', function() {
-            imagesPreview(this, '#upload-thumbnail-image');
-        });
+        // $('#upload-thumbnail-image').on('change', function() {
+            // imagesPreview(this, '#upload-thumbnail-image');
+        // });
 
         var mainImagesPreview = function(input, placeToInsertImagePreview) {
 
@@ -761,13 +856,13 @@ name="owner_name" />- -}}
     });
 </script>
 <script>
-    $(".upload-btn-wrapper").sortable({
-    revert: true,
-    stop: function(event, ui) {
-        if(!ui.item.data('tag') && !ui.item.data('handle')) {
-            ui.item.data('tag', true);
-        }
-    }
-});
+    //     $(".upload-btn-wrapper").sortable({
+//     revert: true,
+//     stop: function(event, ui) {
+//         if(!ui.item.data('tag') && !ui.item.data('handle')) {
+//             ui.item.data('tag', true);
+//         }
+//     }
+// });
 </script>
 @endpush

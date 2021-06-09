@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\UserController as FrontUserController;
 use App\Http\Controllers\Frontend\PostController as FrontPostController;
+use App\Http\Controllers\Frontend\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,7 +44,9 @@ Route::get('/posts/edit/{id}', [FrontPostController::class, 'update']);
 Route::post('/posts/image/delete', [FrontPostController::class, 'imageDelete']);
 Route::post('/likes', [FrontPostController::class, 'likes']);
 Route::post('/follow', [FrontPostController::class, 'follow']);
-Route::post('/posts/comment', [FrontPostController::class, 'comment']);
+Route::post('/posts/images-order', [FrontPostController::class, 'imagesOrder']);
+Route::post('/posts/comment', [CommentController::class, 'store']);
+Route::post('/posts/comment/reply', [CommentController::class, 'reply']);
 
 // Pages
 Route::match(['get', 'post'], 'contact-us', [PageController::class, 'contactUs']);
