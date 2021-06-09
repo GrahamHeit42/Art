@@ -37,7 +37,7 @@
                 role="tab" aria-controls="nav-filter-latest" aria-selected="false" onclick="filterPopularPosts()">Latest</a>
             <a class="button btnyellow {{request()->get('p') == 1 ? 'text-dark' : ''}}" id="filter-popular-tab"
                 data-bs-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular"
-                aria-selected="false" onclick="filterPopularPosts()">Popular</a>
+                aria-selected="false" onclick="filterPopularPosts(1)">Popular</a>
             <input type="hidden" name="popular" id="popular" value="{{request()->get('p') ?? 0}}" />
             <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending"
                 role="tab" aria-controls="nav-filter-trending" aria-selected="false" onclick="filterPopularPosts()">Trending</a>
@@ -183,11 +183,12 @@
     });
 </script>
 <script type="text/javascript">
-    function filterPopularPosts(){
-        if($("#popular").val() == 0){
+    function filterPopularPosts(is_popular){
+        if($("#popular").val() == 0 && parseInt(is_popular) === 1){
             $("#popular").val("1");
             filterPosts();
-        }else{
+        }
+        else{
             $("#popular").val("0");
             filterPosts();
         }
