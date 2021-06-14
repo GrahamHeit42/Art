@@ -257,8 +257,6 @@
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    @stack('scripts')
-
     <script src="{{ asset('assets/js/general.js') }}"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
 
@@ -286,6 +284,8 @@
         toastr.error('{{ session()->get('error') }}', 'Error', toastrOptions);
         @endif
     </script>
+
+    @stack('scripts')
 
 </body>
 

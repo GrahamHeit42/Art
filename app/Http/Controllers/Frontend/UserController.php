@@ -39,7 +39,7 @@ class UserController extends Controller
                     $username->save();
                 }
             }
-            if ($existUsername->user_id !== auth()->id()) {
+            if (!empty($existUsername) && $existUsername->user_id !== auth()->id()) {
                 // session()->flash('error', 'Username already taken.');
                 return redirect(url('settings'))->withErrors(['Username already taken.']);
             }

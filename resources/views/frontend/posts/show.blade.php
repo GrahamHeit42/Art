@@ -72,7 +72,7 @@
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->drawnBy->username ?? "Unknown"}}</a>
                                             <a class="btngreen followbtn @if(empty($post->drawnBy) || empty($post->drawnBy->user_id)) disablebtn @endif @if($post->drwan_by_follow == 1) text-dark @endif"
-                                                onclick="follow({{$post->drawnBy->id ?? 0}})"><span
+                                                onclick="follow({{$post->drawnBy->id ?? 0}}, this)"><span
                                                     class="setDrawnBy">@if($post->drwan_by_follow
                                                     == 1) Followed @else Follow @endif</span></a>
                                         </div>
@@ -90,7 +90,7 @@
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
                                             <a class="btngreen followbtn @if(empty($post->commisionedBy) || empty($post->commisionedBy->user_id)) disablebtn @endif @if($post->commisioned_by_follow == 1) text-dark @endif"
-                                                onclick="follow({{ $post->commisionedBy->id ?? 0}})"><span
+                                                onclick="follow({{ $post->commisionedBy->id ?? 0}}, this)"><span
                                                     class="setCommisionedBy">@if($post->commisioned_by_follow
                                                     == 1) Followed @else Follow @endif</span></a>
                                         </div>
@@ -248,7 +248,7 @@
                         @endif
 
                     </div>
-                    
+
                 </div>
             </div>
             <div id="review">
@@ -582,7 +582,7 @@
         });
     }
 
-    function follow(follow_user_id){
+    function follow(follow_user_id, t){
         if(!loggedIn){
             login();
         }else{
@@ -597,9 +597,9 @@
                 {
                     if (response.status === true) {
                         if(response.is_follow == 1){
-                            $(".setDrawnBy").html("Followed");
+                            $(t).find(".setDrawnBy").html("Following");
                         }else{
-                            $(".setDrawnBy").html("Follow");
+                            $(t).find(".setDrawnBy").html("Follow");
                         }
                         toastr.success(response.message, 'Success', toastrOptions);
                     } else {

@@ -122,6 +122,7 @@ class PostController extends Controller
                 $postData['commisioned_by'] = $commissionedBy;
                 $postData['user_id'] = auth()->id();
                 $postData['keywords'] = implode(',', $request->post('keywords', [])) ?? NULL;
+                $postData['keywords'] = str_replace('#', '', $postData['keywords']);
                 $postData['status'] = 1;
             }
 

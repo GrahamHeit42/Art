@@ -31,13 +31,13 @@
     </div>
     <div class="filter">
         <div class="post nav" id="nav-tab" role="tablist">
-            <a class="button btngreen" id="nav-filter-latest-tab" data-bs-toggle="tab" href="#nav-filter-latest"
+            <a class="button btngreen" id="nav-filter-latest-tab1" data-bs-toggle="tab" href="#nav-filter-latest1"
                 role="tab" aria-controls="nav-filter-latest" aria-selected="false" onclick="filterPopularPosts()">Latest</a>
             <a class="button btnyellow {{request()->get('p') == 1 ? 'text-dark' : ''}}" id="filter-popular-tab"
-                data-bs-toggle="tab" href="#nav-filter-popular" role="tab" aria-controls="nav-filter-popular"
+                data-bs-toggle="tab" href="#nav-filter-popular1" role="tab" aria-controls="nav-filter-popular"
                 aria-selected="false" onclick="filterPopularPosts(1)">Popular</a>
             <input type="hidden" name="popular" id="popular" value="{{request()->get('p') ?? 0}}" />
-            <a class="button btndarkyellow" id="filter-trending-tab" data-bs-toggle="tab" href="#nav-filter-trending"
+            <a class="button btndarkyellow" id="filter-trending-tab1" data-bs-toggle="tab" href="#nav-filter-trending1"
                 role="tab" aria-controls="nav-filter-trending" aria-selected="false" onclick="filterPopularPosts()">Trending</a>
         </div>
         <div class="artsoption">

@@ -37,7 +37,7 @@
 @section('page-footer')
 @if(session()->has('status'))
 <script type="text/javascript">
-    toastr.info('<?php echo session()->get('status'); ?>')
+    toastr.info('<?php echo session()->get("status"); ?>')
 </script>
 @endif
 @endsection
