@@ -23,6 +23,8 @@
         color: red;
         font-size: 3rem;
         cursor: pointer;
+        position: absolute;
+        right: 15%;
     }
 </style>
 <style>
@@ -48,7 +50,7 @@
             <div class="row">
                 <div class="col-lg-6 artistcol">
                     <div class="upload-info">
-                        <div class="upload-btn-wrapper">
+                        <div class="upload-btn-wrapper justify-content-center">
                             <a class="btngreen btngreen-upload">UPLOAD</a>
                             <input id="post-images" type="file" accept="image/*" multiple />
                         </div>
@@ -71,6 +73,7 @@
                                     config('constants.Commisioned'))
                                     <select class="username-matter-dropdown" name="username" id="username"
                                         title="Username">
+                                        <option value="">{{ $type === 'artist' ? 'Commissioned By' : 'Drawn By' }}</option>
                                         @foreach($usernames as $username)
                                         <option value="{{ $username->id }}">{{ $username->username }}</option>
                                         @endforeach
@@ -685,7 +688,7 @@ name="owner_name" />- -}}
 
         //use select2
         $('.username-matter-dropdown').select2({
-            placeholder: "Select User",
+            placeholder: "Select {{ $type === 'artist' ? 'Commissioned By' : 'Drawn By' }}",
             tags: true
         });
         $('.subject-matter-dropdown').select2({
@@ -695,10 +698,23 @@ name="owner_name" />- -}}
         });
         $('.medium-matter-dropdown').select2({
             placeholder: "Select Medium"
-        });
+        }); 
         $('.keywords-multiple').select2({
             placeholder: "Keywords",
-            tags: true
+            tags: true,
+            tokenSeparators: [',', ' ']
+            // createTag: function(params) {
+            //     // empty string is not allow so removing empty string
+            //     var term = $.trim(params.term).replace(/\s/g,'');
+            //     if (term === "") {
+            //         return null;
+            //     }
+            //     return {
+            //         id: term,
+            //         text: term,
+            //         newTag: true // add additional parameters
+            //     };
+            // }
         });
     });
 </script>
@@ -721,7 +737,7 @@ name="owner_name" />- -}}
 
         $(t).parent().remove();
         if (uploadImagesCount == 1) {
-            $(".w-30").addClass("w-100").removeClass("w-30");
+            $(".w-30").addClass("w-75").removeClass("w-30");
             $(".gridImage").addClass("gridSingleImage").removeClass("gridImage");
         }
         if (uploadImagesCount == 0) {
@@ -777,7 +793,7 @@ name="owner_name" />- -}}
 
                     $('.upload-btn-wrapper').addClass('row');
                     reader.onload = function(event) {
-                        $($.parseHTML('<div class="w-100"><span class="spanclose" onclick="funRemoveImage(this);">&times;</span><img class="gridSingleImage" src="' + event.target.result + '"></div>')).appendTo(placeToInsertImagePreview);
+                        $($.parseHTML('<div class="w-75" style="position: relative"><span class="spanclose" onclick="funRemoveImage(this);">&times;</span><img class="gridSingleImage" src="' + event.target.result + '"></div>')).appendTo(placeToInsertImagePreview);
                     }
 
                     reader.readAsDataURL(input.files[0]);
@@ -793,7 +809,7 @@ name="owner_name" />- -}}
                         return false;
                     }
                     $(".gridSingleImage").addClass("gridImage").removeClass("gridSingleImage");
-                    $(".w-100").addClass("w-30").removeClass("w-100");
+                    $(".w-75").addClass("w-30").removeClass("w-75");
                     if ($('div').hasClass('add-more-div')) {
                         $("#add-more-div").remove();
                     }

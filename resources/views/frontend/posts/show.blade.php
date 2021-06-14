@@ -191,11 +191,17 @@
                                     <button class="btn btn-sm btngreen" type="button" id="add-comment-btn">Add</button>
                                 </form>
                             </div> --}}
+                            <div class="makecomment">
+                            <form onsubmit="return false" class="row-wrap">
+                                <input type="text" placeholder="Make a comment" class="make-control" id="add-comment">
+                                <button class="btn btn-sm btngreen w-10-p" type="button" id="add-comment-btn">Add</button>
+                            </form>
+                        </div>
                             <div class="usercommentbox">
                                 @if(!@empty($post->comments))
                                 {{-- @foreach ($post->comments as $comment)
                                 <div class="usercomment row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 user-image">
                                         <img src="{{(!empty($comment->user->profile_image)) ? asset($comment->user->profile_image) : asset('assets/images/profile.png') }}"
                                 alt="profile" width="64" height="64" />
                             </div>
@@ -242,12 +248,7 @@
                         @endif
 
                     </div>
-                    <div class="makecomment">
-                        <form onsubmit="return false" class="row">
-                            <input type="text" placeholder="Make a comment" class="make-control" id="add-comment">
-                            <button class="btn btn-sm btngreen w-10-p" type="button" id="add-comment-btn">Add</button>
-                        </form>
-                    </div>
+                    
                 </div>
             </div>
             <div id="review">

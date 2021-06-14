@@ -128,7 +128,8 @@
                                     </h5>
                                     <div id="full-stars-example-two">
                                         <div class="rating-group">
-                                            @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
+                                            @for($rating = 0; $rating <= 5; $rating++) 
+                                                @if($rating> 0)
                                                 <label aria-label="{{ $rating }} star" class="rating__label"
                                                     for="transaction-{{ $rating }}">
                                                     <i class="rating__icon rating__icon--star fa fa-star"></i>
@@ -139,7 +140,7 @@
                                                     name="transaction" id="transaction-{{ $rating }}"
                                                     value="{{ $rating }}" type="radio"
                                                     {{ $rating === 0 ? 'disabled checked' : ($rating == $post->transaction ? 'checked' : NULL) }}>
-                                                @endfor
+                                            @endfor
                                         </div>
                                     </div>
                                 </div>
@@ -386,7 +387,7 @@
     //check if rating given then edit only subject, medium, keywords
     @if($post->price != 0 || $post->speed != 0 || $post->quality != 0 || $post->communication != 0 || $post->transaction != 0 || $post->concept != 0 || $post->understanding != 0)
         $('#post-images').attr('disabled','disabled');
-        $('.spanclose').hide();
+        // $('.spanclose').hide();
         $("#add-more").css({"background-color":"gray","border-color":"gray"});
         $('#username').attr('disabled','disabled');
         $('#title').attr('disabled','disabled');
@@ -482,7 +483,19 @@
         });
         $('.keywords-multiple').select2({
             placeholder: "Keywords",
-            tags: true
+            tags: true,
+            createTag: function(params) {
+                // empty string is not allow
+                var term = $.trim(params.term).replace(/\s/g,'');
+                if (term === "") {
+                    return null;
+                }
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                };
+            }
         });
     });
 </script>
@@ -536,15 +549,14 @@
     }
 
     // set username
-    <?php
-    $username = "";
-
-    if($type == config('constants.Commisioned')){
+    @php
+        $username = "";
+        if($type == config('constants.Commisioned')){
         $username = $post->commisioned_by;
     }else if($type == config('constants.Commissioner')){
         $username = $post->drawn_by;
     }
-    ?>
+    @endphp
     var username_id = {!! json_encode($username) !!};
     $('[name=username]').val(username_id);
     //end set username
@@ -577,7 +589,12 @@
     }else{
         $(".upload-btn-wrapper").append(addMoreBtn);
         postImagesArr.forEach(function(data){
-            $('<div class="w-30" data-id="'+data.id+'" data-order=""><span class="spanclose" data-imgpath="'+data.image_path+'">&times;</span><img class="gridImage" src="{{ asset('/') }}'+data.image_path+'"></div>').insertBefore(".add-more-div");
+            if(postImages.length == 1){
+                $('<div class="w-30" data-id="'+data.id+'" data-order=""><img class="gridImage" src="{{ asset('/') }}'+data.image_path+'"></div>').insertBefore(".add-more-div");
+            }
+            else{
+                $('<div class="w-30" data-id="'+data.id+'" data-order=""><span class="spanclose" data-imgpath="'+data.image_path+'">&times;</span><img class="gridImage" src="{{ asset('/') }}'+data.image_path+'"></div>').insertBefore(".add-more-div");
+            }
         });
         // $(".upload-btn-wrapper").append('<div id="add-more-div" class="text-center add-more-div"><button type="button" id="add-more" class="btn btn-success" ><input id="post-images" type="file" accept="image/*" multiple />Add More</button></div>');
 

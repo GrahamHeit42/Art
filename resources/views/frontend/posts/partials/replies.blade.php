@@ -1,6 +1,6 @@
 @foreach($comments as $comment)
 <div class="usercomment row">
-    <div class="col-md-3">
+    <div class="col-md-3 user-image">
         <img src="{{(!empty($comment->user->profile_image)) ? asset($comment->user->profile_image) : asset('assets/images/profile.png') }}"
             alt="profile" width="64" height="64" />
     </div>

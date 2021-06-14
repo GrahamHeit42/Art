@@ -25,7 +25,7 @@ class Post extends Model
         'title', 'description', 'keywords', 'cover_image',
         'price', 'speed', 'quality', 'communication',
         'transaction', 'concept', 'understanding', //'communication',
-        'want_work_again', 'status', 'maturity_rating'
+        'want_work_again', 'status', 'maturity_rating', 'type_id'
     ];
 
     protected $appends = [
@@ -85,7 +85,7 @@ class Post extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class)->orderby('display_order');
     }
 
     public function getcomments(): HasMany

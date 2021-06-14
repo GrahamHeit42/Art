@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div class="gallery">
+<div class="gallery art-page-gallery">
     <div class="gallery-tab">
         <div class="container-fluid">
             <div class="row">
@@ -15,12 +15,10 @@
                     <input type="hidden" name="subject_id" id="subject_id" value="{{ request()->get('sid') ?? 0 }}">
                     <div class="tab-button nav gallertab owl-carousel " id="nav-tab" role="tablist">
                         @foreach($subjects as $key => $subject)
-                        <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}">
+                        <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}" style="background-color: {{ request()->get("sid") == $subject->id ? '#c0c416' : '' }}">
                             <a href="javascript:" onclick="filterPosts({{ $subject->id }})">
-                                {{-- <div class="tabbox" style="background-image: url('{{ $subject->image_url }}')">
-                                --}}
                                 <div class="tabbox"
-                                    style="{{ request()->get('sid') == $subject->id ? 'background-image: url("'.$subject->image_url.'")' : '' }}">
+                                    style="background-image: url('{{ $subject->image_url }}');">
                                     <h2>{{ $subject->title }}</h2>
                                 </div>
                             </a>

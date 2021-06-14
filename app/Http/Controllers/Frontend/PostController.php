@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Models\Comment;
-use App\Models\Image;
-use App\Models\Medium;
-use App\Models\Post;
-use App\Models\Subject;
-use App\Models\User;
-use App\Models\Username;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Follow;
 use App\Models\Like;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Image;
+use App\Models\Follow;
+use App\Models\Medium;
+use App\Models\Comment;
+use App\Models\Subject;
 use App\Models\PostView;
+use App\Models\Username;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -52,17 +53,22 @@ class PostController extends Controller
                 'medium_id' => 'required',
                 'title' => 'required_if:id,null',
                 'description' => 'required_if:id,null',
-                'images' => 'required',
             ]);
-            // dd("stop");
+            // dd($request);
+            $postId = $request->post('id') ?? NULL;
+            $postType = $request->post('type');
+            if (is_null($postId)) {
+                $request->validate([
+                    'images' => 'required',
+                ]);
+            }
             if ($request->post('type') === config('constants.Commissioner') || $request->post('type') === config('constants.Commisioned')) {
                 $request->validate([
                     'username' => 'required_if:id,null',
                 ]);
             }
 
-            $postId = $request->post('id');
-            $postType = $request->post('type');
+
 
             if (!empty($request->post('username'))) {
                 $username = $request->post('username');
@@ -133,6 +139,7 @@ class PostController extends Controller
                 $image_array_2 = explode(",", $image_array_1[1]);
                 $data = base64_decode($image_array_2[1]);
                 $imageName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
+                $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $imageName);
                 file_put_contents(storage_path('app/public/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $imageName), $data);
 
 
