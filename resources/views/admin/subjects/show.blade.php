@@ -29,7 +29,7 @@
                         <label for="image">Image</label>
                         @if(isset($subject) && $subject->image_path !== NULL)
                         <div class="text-center">
-                            <img src="{{asset($subject->image_path)}}" class="form-control subject-img" />
+                            <img src="{{asset($subject->image_path)}}" class="form-control subject-img w-25" />
                             <button type="button" data-id="{{$subject->id}}" class="btn btn-danger delete">Remove
                                 Image</button>
                         </div>
