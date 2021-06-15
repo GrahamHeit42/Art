@@ -129,7 +129,7 @@
             <div class="realeyze">
                 <p>©2021
                     <a href="#">Realeyze</a>
-                    | Version {{ config('constants.app.version') }}
+                    | Version {{ $settings['app_version'] ?? config('constants.app.version') }}
                 </p>
             </div>
         </div>
