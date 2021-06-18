@@ -18,6 +18,7 @@ class NewPasswordController extends Controller
      */
     public function create(Request $request)
     {
+        view()->share('page_title', 'Reset Password');
          return view('auth.reset-password', ['request' => $request]);
 //        return view('frontend.auth.new-password', ['request' => $request]);
     }

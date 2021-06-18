@@ -26,6 +26,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
+        view()->share('page_title', 'Registration');
         // return view('auth.register');
         return view('auth.register');
     }

@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // dd($request);
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         $mediums = Medium::whereStatus(1)->get();
         $subjects = Subject::whereStatus(1)->get();
         // $posts = Post::latest();

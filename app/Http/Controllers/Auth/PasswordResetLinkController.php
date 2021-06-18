@@ -15,6 +15,7 @@ class PasswordResetLinkController extends Controller
      */
     public function create()
     {
+        view()->share('page_title', 'Forgot Password');
         // return view('auth.forgot-password');
         return view('auth.forgot-password');
     }
