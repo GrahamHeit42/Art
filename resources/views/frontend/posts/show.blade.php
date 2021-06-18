@@ -25,9 +25,9 @@
                 <div class="postbox">
                     <div class="postslider owl-carousel">
                         @foreach ($post->images as $image)
-                        <div class="item">
-                            <img src="{{ asset($image->image_path) }}" alt="Post" width="" height="" />
-                        </div>
+                            <div class="item">
+                                <img src="{{ asset($image->image_path) }}" alt="Post" width="" height="" />
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                                     <h2>Drawn by:</h2>
                                     <div class="desusercaption">
                                         <a href="">
-                                            <img src="{{ asset($post->drawnBy->profile_image ?? 'assets/images/user.png') }}"
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ asset($post->drawnBy->user->profile_image ?? 'assets/images/user.png') }}"
                                                 alt="user" />
                                         </a>
                                         <div class="descuerbox">
@@ -74,7 +74,7 @@
                                             <a class="btngreen followbtn @if(empty($post->drawnBy) || empty($post->drawnBy->user_id)) disablebtn @endif @if($post->drwan_by_follow == 1) text-dark @endif"
                                                 onclick="follow({{$post->drawnBy->id ?? 0}}, this)"><span
                                                     class="setDrawnBy">@if($post->drwan_by_follow
-                                                    == 1) Followed @else Follow @endif</span></a>
+                                                    == 1) Following @else Follow @endif</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                     <h2>Commisioned by:</h2>
                                     <div class="desusercaption">
                                         <a href="">
-                                            <img src="{{ asset($post->commisionedBy->profile_image ?? 'assets/images/user.png') }}"
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ asset($post->commisionedBy->user->profile_image ?? 'assets/images/user.png') }}"
                                                 alt="user" />
                                         </a>
                                         <div class="descuerbox">
@@ -92,7 +92,7 @@
                                             <a class="btngreen followbtn @if(empty($post->commisionedBy) || empty($post->commisionedBy->user_id)) disablebtn @endif @if($post->commisioned_by_follow == 1) text-dark @endif"
                                                 onclick="follow({{ $post->commisionedBy->id ?? 0}}, this)"><span
                                                     class="setCommisionedBy">@if($post->commisioned_by_follow
-                                                    == 1) Followed @else Follow @endif</span></a>
+                                                    == 1) Following @else Follow @endif</span></a>
                                         </div>
 
                                     </div>
@@ -587,7 +587,7 @@
             login();
         }else{
             $.ajax({
-                url: '/follow',
+                url: '{{ url("follow") }}',
                 data: {
                     "_token" : '{{csrf_token()}}',
                     "follow_user_id": follow_user_id
@@ -596,10 +596,12 @@
                 success: function(response)
                 {
                     if (response.status === true) {
-                        if(response.is_follow == 1){
+                        if(parseInt(response.is_follow) === 1){
                             $(t).find(".setDrawnBy").html("Following");
+                            $(t).find(".setCommisionedBy").html("Following");
                         }else{
                             $(t).find(".setDrawnBy").html("Follow");
+                            $(t).find(".setCommisionedBy").html("Follow");
                         }
                         toastr.success(response.message, 'Success', toastrOptions);
                     } else {

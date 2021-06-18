@@ -19,6 +19,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        view()->share('page_title', 'Login');
         return view('auth.login');
     }
 

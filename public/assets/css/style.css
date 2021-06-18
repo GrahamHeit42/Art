@@ -137,7 +137,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-    content: '';
+    /* content: ''; */
     content: none;
 }
 
@@ -960,8 +960,6 @@ h6 {
     background-color: #e9ebe9;
 }
 
-.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {}
-
 .select2-container--default .select2-search--dropdown .select2-search__field {
     outline: none;
 }
@@ -1006,9 +1004,9 @@ h6 {
     /* background-image: url(../images/gallerytab.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
-    border-radius: 5px;
+    /* border-radius: 5px;
     margin: 5px;
-    height: 40px;
+    height: 40px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1016,7 +1014,7 @@ h6 {
     font-family: 'Verdana, sans-serif' !important;
     font-weight: bold;
     font-size: 14px;
-    color: #fffffff;
+    /* color: #FFFFFF; */
 }
 
 
@@ -1268,7 +1266,9 @@ h6 {
     background-color: #e9ebe9;
 }
 
+
 /*.commentsbox,*/
+
 .reviewbox {
     padding: 10px;
     height: 110vh;
@@ -1527,27 +1527,131 @@ h6 {
     padding: 5px;
 }
 
-.usercomment p{
+.usercomment p {
     color: gray;
 }
 
-.displayname{
+.displayname {
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 2%;
     color: white;
     font-weight: bolder;
 }
-.art-page-gallery .atrtspostimg a, .postslider .owl-item .item{display: block;width: 100%;position: relative;overflow: hidden;max-width: 16.66%;}
-.art-page-gallery .atrtspostimg a:after, .postslider .owl-item .item:after{content: "";padding-bottom: 100%;display: block;width: 100%;}
+
+.art-page-gallery .atrtspostimg a,
+.postslider .owl-item .item {
+    display: block;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    max-width: 16.66%;
+}
+
+.art-page-gallery .atrtspostimg a:after,
+.postslider .owl-item .item:after {
+    content: "";
+    padding-bottom: 100%;
+    display: block;
+    width: 100%;
+}
+
 .art-page-gallery .atrtspostimg a img,
-.postslider .owl-item .item img{width: 100%;height: 100%;position: absolute;object-fit: cover;}
-.row-wrap{display: flex;flex-wrap: wrap;}
-#comments{background-color: #e9ebe9;}
-#comments .makecomment{padding:0px 15px 15px;}
-#comments .makecomment .btngreen{border-radius:0px;width: 100%;max-width: 100px;}
-#comments .makecomment .btngreen:hover{background-color: #000;color: #fff;border-color: #000;}
-#comments .makecomment .make-control{max-width: calc(100% - 100px);}
-.commentsbox .usercomment{max-width: 100%;overflow: hidden;}
-.usercommentbox .user-image{text-align: center;}
-.postslider .owl-item .item{max-width: 100%;}
+.postslider .owl-item .item img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+}
+
+.row-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#comments {
+    background-color: #e9ebe9;
+}
+
+#comments .makecomment {
+    padding: 0px 15px 15px;
+}
+
+#comments .makecomment .btngreen {
+    border-radius: 0px;
+    width: 100%;
+    max-width: 100px;
+}
+
+#comments .makecomment .btngreen:hover {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+#comments .makecomment .make-control {
+    max-width: calc(100% - 100px);
+}
+
+.commentsbox .usercomment {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.usercommentbox .user-image {
+    text-align: center;
+}
+
+.postslider .owl-item .item {
+    max-width: 100%;
+}
+
+.gridImage {
+    margin: 1.5%;
+    width: 100%;
+    height: 200px;
+}
+
+.w-30 {
+    width: 30%;
+    position: relative;
+    margin: 1.5%;
+}
+
+.w-30 .spanclose {
+    right: 10% !important;
+}
+
+.spanclose {
+    position: absolute;
+    /* top: -1rem; */
+    z-index: 100;
+    color: red;
+    font-size: 2rem;
+    cursor: pointer;
+    right: 17% !important;
+}
+
+.first-image .spanclose {
+    right: 7% !important;
+}
+
+.gridSingleImage {
+    width: 100%;
+}
+
+input#crop {
+    padding: 5px 25px 5px 25px;
+    background: lightseagreen;
+    border: #485c61 1px solid;
+    color: #FFF;
+    visibility: hidden;
+}
+
+#cropped_img {
+    margin-top: 40px;
+}
+
+#post-images-preview .col-md-4 img {
+    height: 200px;
+}

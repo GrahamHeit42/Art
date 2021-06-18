@@ -203,7 +203,8 @@ class PostController extends Controller
     {
         view()->share('page_title', 'Post Information');
         // $post = Post::with('images', 'drawnBy', 'commisionedBy', 'comments.user:id,display_name,profile_image', 'comments.replies')->find($id);
-        $post = Post::with('images', 'drawnBy', 'commisionedBy')->find($id);
+
+        $post = Post::with('images', 'drawnBy.user', 'commisionedBy.user')->find($id);
 
         $user_id = auth()->id() ?? NULL;
         $count = 0;
@@ -316,7 +317,8 @@ class PostController extends Controller
 
         if (Follow::where('user_id', $user_id)->where('follow_user_id', $follow_user_id)->count() > 0) {
             $follow = Follow::where('user_id', $user_id)->where('follow_user_id', $follow_user_id)->delete();
-        } else {
+        }
+        else {
             $follow = Follow::create([
                 'user_id' => $user_id,
                 'follow_user_id' => $follow_user_id,
