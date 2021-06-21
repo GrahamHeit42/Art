@@ -1685,3 +1685,7 @@ input#crop {
 .filter-fixed-gallery {
     margin-top: 8% !important;
 }
+
+.fixed_header#header {
+    top: 0 !important;
+}

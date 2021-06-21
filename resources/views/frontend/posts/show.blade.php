@@ -18,7 +18,7 @@
 @endpush
 
 @section('content')
-<div id="container">
+<div id="container" style="padding-top: 5%;">
     <div class="container-fluid postwrapper">
         <div class="row">
             <div class="col-lg-7 postcol">

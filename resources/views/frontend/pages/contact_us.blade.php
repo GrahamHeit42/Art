@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="login-register">
+<div class="login-register" style="padding-top: 5%;">
     <div class="container">
         <div class="row">
             <div class="col-md-12">

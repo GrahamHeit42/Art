@@ -1,8 +1,7 @@
 @extends('frontend.layouts.app')
 @section('content')
-    <div id="main">
         <div class="faq">
-            <div class="container">
+            <div class="container" style="padding-top: 5%;">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="faq-info">
@@ -19,5 +18,4 @@
                 </div>
             </div>
         </div>
-    </div>
 @endsection
