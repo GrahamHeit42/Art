@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 @endpush
 @section('content')
-<div id="main">
+<div id="main" style="padding-top: 4%;">
     <div class="profile-setting">
         @if(!empty($user->profile_image_url))
         <div class="col-md-12 text-center mb-4">

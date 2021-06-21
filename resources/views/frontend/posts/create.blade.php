@@ -54,7 +54,7 @@
 </style>
 @endpush
 @section('content')
-<div id="container">
+<div id="container" style="padding-top: 4%;">
     <div class="container-fluid artistwrapper">
         <form id="create-post-form" class="upload-post" action="{{ url('posts/store') }}" method="post"
             enctype="multipart/form-data">
@@ -79,40 +79,40 @@
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                 </div>
                 <div class="row">
@@ -120,19 +120,19 @@
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                     <div class="col-md-4">
                         <div class="drop-zone">
                                 <span class="drop-zone__prompt"><button class="btn btn-info" type="button">Upload</button></span>
                                 <input type="file" name="myFile" class="drop-zone__input">
-                            </div> 
+                            </div>
                         </div>
                 </div>
                 </div>
@@ -749,7 +749,7 @@
             }
         });
     });
-    // IMAGE 
+    // IMAGE
 document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
   const dropZoneElement = inputElement.closest(".drop-zone");
 
