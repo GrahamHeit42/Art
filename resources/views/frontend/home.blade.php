@@ -7,8 +7,8 @@
 @endpush
 
 @section('content')
-<div class="gallery art-page-gallery">
-    <div class="gallery-tab">
+<div class="gallery art-page-gallery filter-fixed">
+    <div class="gallery-tab suject-filter-fixed bg-white">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="filter">
+    <div class="filter fixed-header-filter bg-white">
         <div class="post nav" id="nav-tab" role="tablist">
             <a class="button btngreen" id="nav-filter-latest-tab1" data-bs-toggle="tab" href="#nav-filter-latest1"
                 role="tab" aria-controls="nav-filter-latest" aria-selected="false" onclick="filterPopularPosts()">Latest</a>
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="tab-content" id="nav-tabContent">
+    <div class="tab-content filter-fixed-gallery" id="nav-tabContent">
         <div class="post tab-pane fade show active" id="nav-filter-latest" role="tabpanel"
             aria-labelledby="nav-filter-latest-tab">
             <div class="atrtspostimg row no-spacing" id="sortable">

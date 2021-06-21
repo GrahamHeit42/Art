@@ -36,7 +36,7 @@
 
 <body>
     <div id="wrapper">
-        <header id="header">
+        <header id="header" class="fixed_header">
             <div class="row">
                 <div class="col-lg-2">
                     <div id="logo">

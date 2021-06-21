@@ -552,7 +552,8 @@ h6 {
 }
 
 .filter {
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    padding-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1654,4 +1655,29 @@ input#crop {
 
 #post-images-preview .col-md-4 img {
     height: 200px;
+}
+
+.fixed_header {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
+.fixed-header-filter,
+.suject-filter-fixed {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
+.fixed-header-filter {
+    top: 17% !important;
+}
+
+.filter-fixed.gallery {
+    padding: 70px 0px;
+}
+
+.filter-fixed-gallery {
+    margin-top: 7% !important;
 }
