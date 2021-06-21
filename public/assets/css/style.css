@@ -1670,8 +1670,12 @@ input#crop {
     z-index: 999;
 }
 
+.suject-filter-fixed {
+    padding-bottom: 10px;
+}
+
 .fixed-header-filter {
-    top: 17% !important;
+    top: 19% !important;
 }
 
 .filter-fixed.gallery {
@@ -1679,5 +1683,5 @@ input#crop {
 }
 
 .filter-fixed-gallery {
-    margin-top: 7% !important;
+    margin-top: 8% !important;
 }
