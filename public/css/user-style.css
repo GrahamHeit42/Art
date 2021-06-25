@@ -1,0 +1,116 @@
+
+.user-banner{
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: relative;
+    padding-bottom: 30px
+}
+
+
+.user-info {
+    max-width: 252px;
+    background:#e9ebe9;
+    height: 300px;
+    border-radius: 0 0 150px 150px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+.user-img {
+    width: 230px;
+    height: 230px;
+    border-radius: 100%;
+    overflow: hidden;
+    position: absolute;
+    bottom: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.edit-user a, .edit-user a:focus{
+    background: #e9ebe9;margin-top: 20px
+}
+.user-banner:before{
+content: "";
+width: 50%;
+height: 100%;
+left: 0;
+top: 0;
+background: -moz-linear-gradient(left,  rgba(40,201,162,1) 0%, rgba(125,185,232,0) 100%);
+background: -webkit-linear-gradient(left,  rgba(40,201,162,1) 0%,rgba(125,185,232,0) 100%);
+background: linear-gradient(to right,  rgba(40,201,162,1) 0%,rgba(125,185,232,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#28c9a2', endColorstr='#007db9e8',GradientType=1 );
+
+position: absolute;
+}
+.user-dital{width: 270px;position: relative;}
+.user-name{position: relative;text-align: center;margin-top: 15px}
+.user-name h3{font-size: 35px;color: #2f2f2f}
+.user-name p{font-size: 20px;margin-top: 10px;color: #2f2f2f}
+.user-sociat-tital {padding: 20px 10px;}
+.bg-green{background:#28c9a2 !important}
+.user-sociat-tital h2{color: #fff;text-align: center;font-size: 22px;font-weight: normal;}
+.borer-green{border-right: 3px solid #28c9a2 !important}
+.user-sociat-info{padding:30px 30px;text-align: center;}
+.text-green{color:#28c9a2 !important}
+.social-tital{font-weight: normal;}
+.social-media-icon ul{display: inline-block;}
+.social-media-icon ul li{float: left;margin: 0 15px}
+.social-media-icon ul li a{font-size: 30px;color: #28c9a2}
+.social-media-icon{margin-top: 20px;margin-bottom: 20px}
+.user-sociat-info p {
+    font-family: 'Open Sans', sans-serif;
+    text-align: left;
+    color: #a3a6a3;
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 10px
+}
+.user-sociat-info .social-tital{
+    font-size: 25px;
+    font-weight: 600;
+}
+.portfoliy-tab {
+    background: #f0e864;
+    display: flex;
+    width: 100%;
+    min-height: 66px;
+    align-items: center;
+    padding: 15px
+}
+.portfoliy-tab ul li{float: left;}
+.portfoliy-tab ul li a{padding: 10px;color: #fff;font-family: 'Open Sans', sans-serif;font-weight: 600;font-size: 20px}
+.edit-profile-tab .nav-tabs {
+    border-bottom: 2px solid #28c9a2;
+}
+.edit-profile-tab .nav-tabs .nav-link {
+    margin-bottom: 0px;}
+
+ .edit-profile-tab .nav-tabs .nav-item.show .nav-link, .edit-profile-tab .nav-tabs .nav-link.active{
+    background: rgb(254,255,255);
+background: -moz-linear-gradient(top,  rgba(254,255,255,1) 0%, rgba(221,241,249,1) 35%, rgba(40,201,162,1) 100%);
+background: -webkit-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,rgba(40,201,162,1) 100%);
+background: linear-gradient(to bottom,  rgba(254,255,255,1) 0%,rgba(221,241,249,1) 35%,rgba(40,201,162,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#28c9a2',GradientType=0 );
+  border: 0px
+ }
+ .edit-profile-tab {text-align: center;}
+ .edit-profile-tab .nav-tabs{justify-content: center;}
+ .edit-profile-tab .nav-tabs .nav-link:focus,  .edit-profile-tab .nav-tabs .nav-link:hover{border-color: transparent;}
+ #edit-profile .modal-dialog {max-width: 800px;}
+ .edit-profile-left{padding: 20px 10px;text-align: center;}
+  .edit-profile-left a.btn, .edit-profile-left a.btn:focus{border: 1px solid #d9d9d9;width: 100%;text-transform: uppercase;}
+ .edit-profile-left .left-nav{margin-top: 10px}
+ .edit-profile-left .left-nav .nav-item .nav-link {
+    padding: 5px 0px;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: #a4a2a2;
+}
+#edit-profile .modal-footer{border-top:2px solid #28c9a2 }
+#edit-profile  .modal-body{padding-left: 0;padding-right: 0;padding-bottom: 0;padding-top: 0}
+#edit-profile.upload-popup .modal-header::after{border: 0px}
+#edit-profile .modal-header{border-bottom: 0px}
+.all-img img{max-width: 360px;width: 100%;height: auto;}

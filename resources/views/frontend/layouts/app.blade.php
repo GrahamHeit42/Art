@@ -243,7 +243,7 @@
 
     {{-- <script src="{{ asset('assets/js/jquery.mini.js') }}"></script> --}}
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/popper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/arts.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
@@ -285,6 +285,10 @@
     </script>
     @endforeach
     @endif
+
+    <script>
+        // $(".dropdown-menu.profile_dropdown").on("class",)
+    </script>
 </body>
 
 </html>

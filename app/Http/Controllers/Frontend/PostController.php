@@ -45,7 +45,6 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         if ($request->ajax()) {
             $request->validate([
                 'type' => 'required_if:id,null',
@@ -67,8 +66,6 @@ class PostController extends Controller
                     'username' => 'required_if:id,null',
                 ]);
             }
-
-
 
             if (!empty($request->post('username'))) {
                 $username = $request->post('username');
@@ -142,8 +139,6 @@ class PostController extends Controller
                 $imageName = (time() + 10) . '.' . $coverImage->getClientOriginalExtension();
                 $coverImage->storeAs('posts/cover_images/' . $year . '/' . auth()->id(), $imageName);
                 file_put_contents(storage_path('app/public/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $imageName), $data);
-
-
 
                 // $image_array_1 = explode(";", $coverImage);
                 // $image_array_2 = explode(",", $image_array_1[1]);
@@ -261,9 +256,13 @@ class PostController extends Controller
 
     public function imageDelete(Request $request)
     {
-        if (!empty($request->post('image_path'))) {
-            $delete = Image::where('image_path', $request->post('image_path'))->delete();
+        if (!empty($request->post('image_id'))) {
+            $image_id = $request->post('image_id');
+            // $delete = Image::where('image_path', $request->post('image_path'))->delete();
+            $image = Image::find($image_id);
+            $delete = $image->delete();
             if ($delete) {
+                Image::where('display_order', '>', $image->display_order)->update(['display_order' => DB::raw('display_order - 1')]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Image delete Successfully.',
@@ -343,13 +342,16 @@ class PostController extends Controller
     public function imagesOrder(Request $request)
     {
         if ($request->ajax()) {
+            // dd($request->all());
             $request->validate([
-                'image_id' => 'required',
-                'order_id' => 'required',
+                'sorting_images' => 'required',
+                // 'order_id' => 'required',
             ]);
-            $image = Image::find($request->post('image_id'));
-            $image->display_order = $request->post('order_id');
-            $save = $image->save();
+            $sorting_images = json_decode($request->post('sorting_images'), true);
+            $save = false;
+            foreach($sorting_images as $image) {
+                $save = Image::find($image['image_id'])->update(['display_order' => $image['order_id']]);
+            }
             if ($save) {
                 return response()->json([
                     'status' => true,
