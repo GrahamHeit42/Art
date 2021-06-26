@@ -257,9 +257,9 @@
     </div>
 
     <script src="{{ asset('assets/plugins/jquery/jquery-3.5.1.slim.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/popper/popper.min.js') }}"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 
     <script src="{{ asset('assets/js/general.js') }}"></script>
