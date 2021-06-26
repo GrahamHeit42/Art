@@ -510,7 +510,7 @@ h6 {
 
 .tabbox {
     display: inline-block;
-    padding: 15px;
+    padding: 15px 10px;
     background-image: url(../images/gallerytab.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -984,8 +984,10 @@ h6 {
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    top: -14px;
-    font-size: 34px;
+    /* top: -14px;
+    font-size: 34px; */
+    top: 0px;
+    font-size: 16px;
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
@@ -1627,7 +1629,7 @@ input#crop {
 .suject-filter-fixed {
     position: fixed;
     width: 100%;
-    z-index: 999;
+    z-index: 9;
 }
 
 .suject-filter-fixed {
@@ -1648,4 +1650,12 @@ input#crop {
 
 .fixed_header#header {
     top: 0 !important;
+}
+
+#postUploadModal .modal-body .btn {
+    width: 145px !important;
+}
+
+#select2-keywords-container .select2-selection__choice__display {
+    padding-left: 10px !important;
 }

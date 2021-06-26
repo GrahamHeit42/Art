@@ -90,7 +90,7 @@
 </style>
 @endpush
 @section('content')
-<div id="container">
+<div id="container" style="padding-top: 4%;">
     <div class="container-fluid artistwrapper">
         <form id="edit-post-form" class="upload-post" action="{{ url('posts/store') }}" method="post"
             enctype="multipart/form-data">
