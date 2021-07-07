@@ -4,6 +4,13 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/slick-slider/css/slick.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/slick-slider/css/slick-theme.css') }}">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/dot-luv/jquery-ui.css">
+<style>
+    /* .owl-carousel .owl-prev.disabled,
+    .owl-carousel .owl-next.disabled {
+        pointer-events: none !important;
+        opacity: 0 !important;
+    } */
+</style>
 @endpush
 
 @section('content')
@@ -13,12 +20,12 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <input type="hidden" name="subject_id" id="subject_id" value="{{ request()->get('sid') ?? 0 }}">
-                    <div class="tab-button nav gallertab owl-carousel " id="nav-tab" role="tablist">
+                    <div class="tab-button nav gallertab owl-carousel" id="nav-tabSubject" role="tablist">
                         @foreach($subjects as $key => $subject)
-                        <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}" style="background-color: {{ request()->get("sid") == $subject->id ? '#c0c416' : '' }}">
+                        <div class="item mr-3 {{ request()->get('sid') == $subject->id ? 'item-active' : '' }}"
+                            style="background-color: {{ request()->get("sid") == $subject->id ? '#c0c416' : '' }}">
                             <a href="javascript:" onclick="filterPosts({{ $subject->id }})">
-                                <div class="tabbox"
-                                    style="background-image: url('{{ $subject->image_url }}');">
+                                <div class="tabbox" style="background-image: url('{{ $subject->image_url }}');">
                                     <h2>{{ $subject->title }}</h2>
                                 </div>
                             </a>
@@ -31,14 +38,18 @@
     </div>
     <div class="filter fixed-header-filter bg-white">
         <div class="post nav" id="nav-tab" role="tablist">
-            <a class="button btngreen" id="nav-filter-latest-tab1" data-bs-toggle="tab" href="#nav-filter-latest1"
-                role="tab" aria-controls="nav-filter-latest" aria-selected="false" onclick="filterPopularPosts()">Latest</a>
-            <a class="button btnyellow {{request()->get('p') == 1 ? 'text-dark' : ''}}" id="filter-popular-tab"
+            <a class="button btngreen {{request()->get('l') == 1 ? 'text-dark active' : ''}}"
+                id="nav-filter-latest-tab1" data-bs-toggle="tab" href="#nav-filter-latest1" role="tab"
+                aria-controls="nav-filter-latest" aria-selected="false" onclick="filterLatestPosts(1)">Latest</a>
+            <input type="hidden" name="latest" id="latest" value="{{request()->get('l') ?? 0}}" />
+            <a class="button btnyellow {{request()->get('p') == 1 ? 'text-dark active' : ''}}" id="filter-popular-tab"
                 data-bs-toggle="tab" href="#nav-filter-popular1" role="tab" aria-controls="nav-filter-popular"
                 aria-selected="false" onclick="filterPopularPosts(1)">Popular</a>
             <input type="hidden" name="popular" id="popular" value="{{request()->get('p') ?? 0}}" />
-            <a class="button btndarkyellow" id="filter-trending-tab1" data-bs-toggle="tab" href="#nav-filter-trending1"
-                role="tab" aria-controls="nav-filter-trending" aria-selected="false" onclick="filterPopularPosts()">Trending</a>
+            <a class="button btndarkyellow {{request()->get('t') == 1 ? 'text-dark active' : ''}}"
+                id="filter-trending-tab1" data-bs-toggle="tab" href="#nav-filter-trending1" role="tab"
+                aria-controls="nav-filter-trending" aria-selected="false" onclick="filterTrendingPosts(1)">Trending</a>
+            <input type="hidden" name="trending" id="trending" value="{{request()->get('t') ?? 0}}" />
         </div>
         <div class="artsoption">
             <div class="commissions">
@@ -140,12 +151,17 @@
 @push('scripts')
 <script src="{{ asset('assets/plugins/slick-slider/js/slick.min.js') }}"></script>
 <script>
+//     $('#nav-tabSubject').owlCarousel({
+//        loop: false, 
+// });
     $(document).ready(function() {
+
         $('.gallerybtn-slider').slick({
             slidesToShow: 7,
             slidesToScroll: 1,
             autoplay: false,
             arrow: true,
+            infinite: false,
             prevArrow: "<button type='button' class='slick-prev pull-left'><i class='fas fa-chevron-left'></i></button>",
             nextArrow: "<button type='button' class='slick-next pull-right'><i class='fas fa-chevron-right'></i></button>",
             // centerMode: true,
@@ -181,9 +197,39 @@
     });
 </script>
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('.owl-prev').hide();
+        $('.owl-next').click(function() {
+            $('.owl-prev').show();
+        });
+        $('.owl-prev').click(function() {
+            $('.owl-prev').show();
+        });
+    });
     function filterPopularPosts(is_popular){
         if($("#popular").val() == 0 && parseInt(is_popular) === 1){
             $("#popular").val("1");
+            filterPosts();
+        }
+        else{
+            $("#popular").val("0");
+            filterPosts();
+        }
+
+    }
+    function filterLatestPosts(){
+        if($("#latest").val() == 0){ //latest
+            $("#latest").val("1");
+            filterPosts();
+        }
+        else{
+            $("#popular").val("0");
+            filterPosts();
+        }
+    }
+    function filterTrendingPosts(){
+        if($("#trending").val() == 0){ //trending
+            $("#trending").val("1");
             filterPosts();
         }
         else{
@@ -214,6 +260,8 @@
         var filterUrl = '{{ url("/") }}?';
         var singleFilter = true;
         var popular = $("#popular").val();
+        var latest = $("#latest").val();
+        var trending = $("#trending").val();
 
         if (search.toString().length > 0) {
             singleFilter = false;
@@ -233,6 +281,14 @@
         }
         if (parseInt(popular) == 1) {
             filterUrl += (singleFilter === false ? '&' : '') + 'p=' + parseInt(popular);
+            singleFilter = false;
+        }
+        if (parseInt(latest) == 1) {
+            filterUrl += (singleFilter === false ? '&' : '') + 'l=' + parseInt(latest);
+            singleFilter = false;
+        }
+        if (parseInt(trending) == 1) {
+            filterUrl += (singleFilter === false ? '&' : '') + 't=' + parseInt(trending);
             singleFilter = false;
         }
 

@@ -27,7 +27,7 @@ class UserController extends Controller
             $request->validate([
                 'display_name' => 'required',
                 // 'username' => 'required|unique:usernames,username,NULL,id,user_id,' . $user->id,
-                'username' => 'required',
+                'username' => 'required|min:3',
                 'email' => 'required|unique:users,email,' . $user->id
             ]);
 

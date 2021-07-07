@@ -82,20 +82,21 @@
 					</div>
 					<div class="row" style="display: none;" id="image-row-1">
 						<div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
-							<div class="drop-zone" style="position: relative;">
-								<span class="drop-zone__prompt">
-									<button class="btn btn-info" type="button">Upload</button>
-								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
-								<input type="file" name="images[1]" id="post-images-1" class="drop-zone__input">
-							</div>
+								<div class="drop-zone" style="position: relative;">
+									
+									<span class="drop-zone__prompt">
+										<button class="btn btn-info" type="button">Upload</button>
+									</span>
+									<span style="display: none;" class="removeImage" onclick="removeImage(1)">X</span>
+									<input type="file" name="images[1]" id="post-images-1" class="drop-zone__input">
+								</div>
 						</div>
 						<div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
 							<div class="drop-zone" style="position: relative;">
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(2)">X</span>
 								<input type="file" name="images[2]" id="post-images-2" class="drop-zone__input">
 							</div>
 						</div>
@@ -104,7 +105,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(3)">X</span>
 								<input type="file" name="images[3]" id="post-images-3" class="drop-zone__input">
 							</div>
 						</div>
@@ -128,7 +129,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(4)">X</span>
 								<input type="file" name="images[4]" id="post-images-4" class="drop-zone__input">
 							</div>
 						</div>
@@ -137,7 +138,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(5)">X</span>
 								<input type="file" name="images[5]" id="post-images-5" class="drop-zone__input">
 							</div>
 						</div>
@@ -146,7 +147,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(6)">X</span>
 								<input type="file" name="images[6]" id="post-images-6" class="drop-zone__input">
 							</div>
 						</div>
@@ -164,7 +165,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(7)">X</span>
 								<input type="file" name="images[7]" id="post-images-7" class="drop-zone__input">
 							</div>
 						</div>
@@ -173,7 +174,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(8)">X</span>
 								<input type="file" name="images[8]" id="post-images-8" class="drop-zone__input">
 							</div>
 						</div>
@@ -182,7 +183,7 @@
 								<span class="drop-zone__prompt">
 									<button class="btn btn-info" type="button">Upload</button>
 								</span>
-                                <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                <span style="display: none;" class="removeImage" onclick="removeImage(9)">X</span>
 								<input type="file" name="images[9]" id="post-images-9" class="drop-zone__input">
 							</div>
 						</div>
@@ -242,6 +243,7 @@
 								<select class="keywords-multiple" name="keywords[]" multiple="multiple" title="Keywords" id="keywords"></select>
 							</div>
 
+							@if($type !== config('constants.Artist'))
 							<div class="review">
 								<h3>Review : &nbsp;</h3>
 								<p>( Optional )</p>
@@ -374,6 +376,7 @@
 								@endif
 
 							</div>
+							@endif
 							@if($type !== config('constants.Artist'))
 							<div class="feedback">
 								<h5>Would you Work with <span id="setUser"></span> again?</h5>
@@ -401,10 +404,10 @@
 							<input type="file" name="cover_image" id="upload-thumbnail-image" accept="image/*">
 							<img src="{{ asset('assets/images/upload-image.png') }}" alt="Upload image" width="229" height="228" id="thumbnail-image-preview" />
 							<img src="#" id="cropped_img" style="display: none;">
-							<div class="thubnailbtn">
-								<a href="#" class="btngreen" id="crop">Crop</a>
-								<a href="#" class="btngreen" id="cropUpload">Upload</a>
-							</div>
+						</div>
+						<div class="thubnailbtn">
+							<a href="#" class="btngreen" id="crop">Crop</a>
+							<a href="#" class="btngreen" id="cropUpload">Upload</a>
 						</div>
 						<!-- start crop image modal-->
 						<div id="uploadimageModal" class="modal" role="dialog">
@@ -483,7 +486,19 @@
 				height: 300
 			}
 		});
-
+		
+		$('#crop').on('click',function(){
+			if(document.getElementById("upload-thumbnail-image").value != "") {
+				// you have a file
+				$('#uploadimageModal').modal('show');
+			}
+			else{
+				document.getElementById("upload-thumbnail-image").click();
+			}
+		});
+		$('#cropUpload').on('click',function(){
+			document.getElementById("upload-thumbnail-image").click();
+		});
 		$('#upload-thumbnail-image').on('change', function() {
 			var reader = new FileReader();
 			reader.onload = function(event) {
@@ -552,19 +567,19 @@
 		$('.keywords-multiple').select2({
 			placeholder: "Keywords",
 			tags: true,
-			tokenSeparators: [',', ' ']
-			// createTag: function(params) {
-			//     // empty string is not allow so removing empty string
-			//     var term = $.trim(params.term).replace(/\s/g,'');
-			//     if (term === "") {
-			//         return null;
-			//     }
-			//     return {
-			//         id: term,
-			//         text: term,
-			//         newTag: true // add additional parameters
-			//     };
-			// }
+			tokenSeparators: [',', ' '],
+			createTag: function(params) {
+			    // empty string is not allow so removing empty string
+			    var term = $.trim(params.term).replace('#','');
+			    if (term === "") {
+			        return null;
+			    }
+			    return {
+			        id: term,
+			        text: term,
+			        newTag: true // add additional parameters
+			    };
+			}
 		});
 	});
 
@@ -749,11 +764,24 @@
 	});
 
 	// IMAGE
+	// document.querySelectorAll(".removeImage").forEach((removeElement) => {
+	// 	const removeElementOP = removeElement.closest(".removeImage");
+	// 	removeElementOP.addEventListener("click", (event) => {
+	// 		// removeImage(10);
+	// 		removeElementOP.click();
+	// 	});
+	// });
 	document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
 		const dropZoneElement = inputElement.closest(".drop-zone");
-
 		dropZoneElement.addEventListener("click", (e) => {
-			inputElement.click();
+			// 
+			if (!e.target.classList.contains('removeImage')) {
+        		// your code
+				inputElement.click();
+			}
+			else{
+				removeImageFrontEnd(dropZoneElement);
+			}
 		});
 
 		inputElement.addEventListener("change", (e) => {
@@ -824,7 +852,19 @@
 		}
 	}
 
-
+	//remove image
+    // $(".spanclose").click(function () {
+		function removeImage(imageId) {
+			var post = $("#post-images-"+imageId);
+			post.val('');
+			$("#post-images-"+imageId).closest('.removeImage').style.display = 'none';
+		}
+		function removeImageFrontEnd(dropZoneElement){
+			dropZoneElement.querySelector(".removeImage").style.display = 'none';
+			dropZoneElement.querySelector(".drop-zone__prompt").style.display = '';
+			let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+			dropZoneElement.removeChild(thumbnailElement);
+		}
 	// -------------------------------------
 
 	function mainUploadClick() {

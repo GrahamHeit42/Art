@@ -263,6 +263,14 @@ h6 {
     display: inline-block;
 }
 
+.btngreen.active{
+    font-size: large;
+    margin-top: -21px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
+}
+
 .btnyellow {
     background-color: #f0e965;
     padding: 10px;
@@ -275,6 +283,14 @@ h6 {
     display: inline-block;
 }
 
+.btnyellow.active{
+    font-size: large;
+    margin-top: -21px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
+}
+
 .btndarkyellow {
     background-color: #c0c416;
     padding: 10px;
@@ -285,6 +301,13 @@ h6 {
     text-align: center;
     color: #ffffff;
     display: inline-block;
+}
+.btndarkyellow.active{
+    font-size: large;
+    margin-top: -21px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 20px;
 }
 
 
@@ -465,6 +488,11 @@ h6 {
     display: block;
 }
 
+.owl-carousel .owl-stage-outer{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
 .gallertab.owl-carousel .owl-nav [class*="owl-"] {
     margin: 0;
     padding: 0;
@@ -475,6 +503,8 @@ h6 {
     position: absolute;
     top: 50%;
     margin-top: -20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .gallertab.owl-carousel .owl-nav [class*="owl-"]:hover {
@@ -498,6 +528,9 @@ h6 {
     right: -12px;
 }
 
+.owl-next.disabled, .owl-prev.disabled {
+    display: none !important;
+}
 .gallertab.owl-carousel .owl-dots {
     position: absolute;
     width: 100%;
@@ -1003,7 +1036,7 @@ h6 {
     height: 40px; */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     font-weight: bold;
     font-size: 14px;
     /* color: #FFFFFF; */
@@ -1174,6 +1207,12 @@ h6 {
     max-width: 600px;
     margin: auto;
     background-color: #eaeaea;
+}
+
+.owl-carousel .owl-prev.disabled,
+.owl-carousel .owl-next.disabled{
+    pointer-events: none;
+    opacity: 0;
 }
 
 .postslider.owl-carousel .owl-nav.disabled {
@@ -1403,8 +1442,14 @@ h6 {
     border-radius: 0px;
     width: 90%;
     padding: 10px;
-    text-align: center;
+    /* text-align: center; */
 }
+.make-control::-webkit-input-placeholder {
+    text-align: left;
+  }
+  .make-control:-moz-placeholder {
+    text-align: left;
+  }
 
 .usercommentbox {
     height: 470px;

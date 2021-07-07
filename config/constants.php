@@ -31,6 +31,11 @@ return [
     'Commisioned' => 'commissioned',
     'Commissioner' => 'commissioner',
 
+    'artist' => '1',
+    'commissioned' => '2',
+    'commissioner' =>  '3',
+
+
     'admin' => [
         'display_name' => env('ADMIN_NAME'),
         'username' => env('ADMIN_USERNAME'),

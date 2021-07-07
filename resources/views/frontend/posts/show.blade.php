@@ -14,6 +14,14 @@
     .usercomment .usercomment {
         margin-left: 40px;
     }
+
+    .border-left {
+        border-left: 8px solid green;
+    }
+
+    .make-control {
+        text-align: left;
+    }
 </style>
 @endpush
 
@@ -25,9 +33,9 @@
                 <div class="postbox">
                     <div class="postslider owl-carousel">
                         @foreach ($post->images as $image)
-                            <div class="item">
-                                <img src="{{ asset($image->image_path) }}" alt="Post" width="" height="" />
-                            </div>
+                        <div class="item">
+                            <img src="{{ asset($image->image_path) }}" alt="Post" width="" height="" />
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -43,17 +51,27 @@
 
                 </div>
                 @if(isset($post) && Auth::check() && $post->user_id == Auth::user()->id)
-                <div class=""><a href="{{url('/posts/edit',$post->id)}}" class="btn btn-info">Edit</a></div>
+                <div class="mb-4"><a href="{{url('/posts/edit',$post->id)}}" class="btn btn-info">Edit</a></div>
                 @endif
                 <div id="postdetails">
                     <ul class="posttab row">
-                        <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#description"
-                                class="btngreen">Description</a></li>
-                        <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#comments"
-                                class="btnyellow">{{($post->getcomments->count()) == 0 ? '' : $post->getcomments->count()}}
+                        @if($post->type_id == 1)
+                        <li class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><a href="#description" class="btngreen active"
+                                id="desBtn" onclick="btnGreen(this)">Description</a></li>
+                        <li class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><a href="#comments" class="btnyellow"
+                                id="commentBtn"
+                                onclick="btnYellow(this)">{{($post->getcomments->count()) == 0 ? '' : $post->getcomments->count()}}
                                 Comments</a></li>
-                        <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#review"
-                                class="btndarkyellow">Review</a></li>
+                        @else
+                        <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#description" class="btngreen active"
+                                id="desBtn" onclick="btnGreen(this)">Description</a></li>
+                        <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#comments" class="btnyellow"
+                                id="commentBtn"
+                                onclick="btnYellow(this)">{{($post->getcomments->count()) == 0 ? '' : $post->getcomments->count()}}
+                                Comments</a></li>
+                        <li class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><a href="#review" class="btndarkyellow"
+                                id="reviewBtn" onclick="btndarkYellow(this)">Review</a></li>
+                        @endif
                     </ul>
                     <div id="description">
                         <div class="descriptionbox">
@@ -66,15 +84,18 @@
                                     <h2>Drawn by:</h2>
                                     <div class="desusercaption">
                                         <a href="">
-                                            <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ asset($post->drawnBy->user->profile_image ?? 'assets/images/user.png') }}"
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;"
+                                                src="{{ asset($post->drawnBy->user->profile_image ?? 'assets/images/user.png') }}"
                                                 alt="user" />
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->drawnBy->username ?? "Unknown"}}</a>
+                                            @if($post->drawnBy->user_id != Auth::id())
                                             <a class="btngreen followbtn @if(empty($post->drawnBy) || empty($post->drawnBy->user_id)) disablebtn @endif @if($post->drwan_by_follow == 1) text-dark @endif"
-                                                onclick="follow({{$post->drawnBy->id ?? 0}}, this)"><span
+                                                onclick="follow({{$post->drawnBy->user_id ?? 0}}, this)"><span
                                                     class="setDrawnBy">@if($post->drwan_by_follow
                                                     == 1) Following @else Follow @endif</span></a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -84,15 +105,18 @@
                                     <h2>Commisioned by:</h2>
                                     <div class="desusercaption">
                                         <a href="">
-                                            <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ asset($post->commisionedBy->user->profile_image ?? 'assets/images/user.png') }}"
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;"
+                                                src="{{ asset($post->commisionedBy->user->profile_image ?? 'assets/images/user.png') }}"
                                                 alt="user" />
                                         </a>
                                         <div class="descuerbox">
                                             <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
+                                            @if($post->commisionedBy->user_id != Auth::id())
                                             <a class="btngreen followbtn @if(empty($post->commisionedBy) || empty($post->commisionedBy->user_id)) disablebtn @endif @if($post->commisioned_by_follow == 1) text-dark @endif"
-                                                onclick="follow({{ $post->commisionedBy->id ?? 0}}, this)"><span
+                                                onclick="follow({{ $post->commisionedBy->user_id ?? 0}}, this)"><span
                                                     class="setCommisionedBy">@if($post->commisioned_by_follow
                                                     == 1) Following @else Follow @endif</span></a>
+                                            @endif
                                         </div>
 
                                     </div>
@@ -180,9 +204,51 @@
                                 height="100" /> --}}
                                 <h2>{{$post->title}}</h2>
                             </div>
-                            <div class="desowner">
-                                {{-- <a href="#">By:Username</a> --}}
-                                {{-- <a href="#">Posted: March 31 2021</a> --}}
+                            <div class="debox mb-5">
+                                @if(!empty($post->drawnBy))
+                                <div class="descuserbox">
+                                    <h2>Drawn by:</h2>
+                                    <div class="desusercaption">
+                                        <a href="">
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;"
+                                                src="{{ asset($post->drawnBy->user->profile_image ?? 'assets/images/user.png') }}"
+                                                alt="user" />
+                                        </a>
+                                        <div class="descuerbox">
+                                            <a class="desuername">{{$post->drawnBy->username ?? "Unknown"}}</a>
+                                            @if($post->drawnBy->user_id != Auth::id())
+                                            <a class="btngreen followbtn @if(empty($post->drawnBy) || empty($post->drawnBy->user_id)) disablebtn @endif @if($post->drwan_by_follow == 1) text-dark @endif"
+                                                onclick="follow({{$post->drawnBy->user_id ?? 0}}, this)"><span
+                                                    class="setDrawnBy">@if($post->drwan_by_follow
+                                                    == 1) Following @else Follow @endif</span></a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if(!empty($post->commisionedBy))
+                                <div class="descuserbox">
+                                    <h2>Commisioned by:</h2>
+                                    <div class="desusercaption">
+                                        <a href="">
+                                            <img style="width: 60px; height: 60px; border-radius: 50%;"
+                                                src="{{ asset($post->commisionedBy->user->profile_image ?? 'assets/images/user.png') }}"
+                                                alt="user" />
+                                        </a>
+                                        <div class="descuerbox">
+                                            <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
+                                            @if($post->commisionedBy->user_id != Auth::id())
+                                            <a class="btngreen followbtn @if(empty($post->commisionedBy) || empty($post->commisionedBy->user_id)) disablebtn @endif @if($post->commisioned_by_follow == 1) text-dark @endif"
+                                                onclick="follow({{ $post->commisionedBy->user_id ?? 0}}, this)"><span
+                                                    class="setCommisionedBy">@if($post->commisioned_by_follow
+                                                    == 1) Following @else Follow @endif</span></a>
+                                            @endif
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @endif
+
                             </div>
                             {{--                             <div class="makecomment">
                                 <form onsubmit="return false">
@@ -192,11 +258,13 @@
                                 </form>
                             </div> --}}
                             <div class="makecomment">
-                            <form onsubmit="return false" class="row-wrap">
-                                <input type="text" placeholder="Make a comment" class="make-control" id="add-comment">
-                                <button class="btn btn-sm btngreen w-10-p" type="button" id="add-comment-btn">Add</button>
-                            </form>
-                        </div>
+                                <form onsubmit="return false" class="row-wrap">
+                                    <input type="text" placeholder="Make a comment" class="make-control"
+                                        id="add-comment">
+                                    <button class="btn btn-sm btngreen w-10-p" type="button"
+                                        id="add-comment-btn">Add</button>
+                                </form>
+                            </div>
                             <div class="usercommentbox">
                                 @if(!@empty($post->comments))
                                 {{-- @foreach ($post->comments as $comment)
@@ -253,8 +321,52 @@
             </div>
             <div id="review">
                 <div class="reviewbox">
-                    @if($post->type == config('constants.Artist') || $post->type ==
-                    config('constants.Commisioned'))
+                    <div class="debox">
+                        @if(!empty($post->drawnBy))
+                        <div class="descuserbox">
+                            <h2>Drawn by:</h2>
+                            <div class="desusercaption">
+                                <a href="">
+                                    <img style="width: 60px; height: 60px; border-radius: 50%;"
+                                        src="{{ asset($post->drawnBy->user->profile_image ?? 'assets/images/user.png') }}"
+                                        alt="user" />
+                                </a>
+                                <div class="descuerbox">
+                                    <a class="desuername">{{$post->drawnBy->username ?? "Unknown"}}</a>
+                                    @if($post->drawnBy->user_id != Auth::id())
+                                    <a class="btngreen followbtn @if(empty($post->drawnBy) || empty($post->drawnBy->user_id)) disablebtn @endif @if($post->drwan_by_follow == 1) text-dark @endif"
+                                        onclick="follow({{$post->drawnBy->user_id ?? 0}}, this)"><span
+                                            class="setDrawnBy">@if($post->drwan_by_follow
+                                            == 1) Following @else Follow @endif</span></a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @if(!empty($post->commisionedBy))
+                        <div class="descuserbox">
+                            <h2>Commisioned by:</h2>
+                            <div class="desusercaption">
+                                <a href="">
+                                    <img style="width: 60px; height: 60px; border-radius: 50%;"
+                                        src="{{ asset($post->commisionedBy->user->profile_image ?? 'assets/images/user.png') }}"
+                                        alt="user" />
+                                </a>
+                                <div class="descuerbox">
+                                    <a class="desuername">{{$post->commisionedBy->username ?? "UserName"}}</a>
+                                    @if($post->commisionedBy->user_id != Auth::id())
+                                    <a class="btngreen followbtn @if(empty($post->commisionedBy) || empty($post->commisionedBy->user_id)) disablebtn @endif @if($post->commisioned_by_follow == 1) text-dark @endif"
+                                        onclick="follow({{ $post->commisionedBy->user_id ?? 0}}, this)"><span
+                                            class="setCommisionedBy">@if($post->commisioned_by_follow
+                                            == 1) Following @else Follow @endif</span></a>
+                                    @endif
+                                </div>
+
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @if($post->type == config('constants.Commisioned'))
                     {{-- <div class="destitle">
                             <img src="{{ asset('assets/images/user.png') }}" alt="user" width="100" height="100" />
                     <h2>Artist Username</h2>
@@ -274,13 +386,10 @@
                                 @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                     <label aria-label="{{ $rating }} star" class="rating__label"
                                         for="transaction-{{ $rating }}">
-                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                        <i class="fa fa-star" @if($post->transaction >= $rating)style="color: orange; "
+                                            @else style="color:#ddd;" @endif></i>
                                     </label>
                                     @endif
-                                    <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                        name="transaction" id="transaction-{{ $rating }}" value="{{ $rating }}"
-                                        type="radio"
-                                        {{ $rating === 0 ? 'disabled checked' : ($rating == $post->transaction ? 'checked' : NULL) }}>
                                     @endfor
                             </div>
                         </div>
@@ -295,12 +404,10 @@
                                 @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                     <label aria-label="{{ $rating }} star" class="rating__label"
                                         for="speed-{{ $rating }}">
-                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                        <i class="fa fa-star" @if($post->speed >= $rating)style="color: orange; " @else
+                                            style="color:#ddd;" @endif></i>
                                     </label>
                                     @endif
-                                    <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                        name="speed" id="speed-{{ $rating }}" value="{{ $rating }}" type="radio"
-                                        {{ $rating === 0 ? 'disabled checked' : ($rating == $post->speed ? 'checked' : NULL) }}>
                                     @endfor
                             </div>
                         </div>
@@ -315,13 +422,10 @@
                                 @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                     <label aria-label="{{ $rating }} star" class="rating__label"
                                         for="communication-{{ $rating }}">
-                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                        <i class="fa fa-star" @if($post->communication >= $rating)style="color: orange;
+                                            " @else style="color:#ddd;" @endif></i>
                                     </label>
                                     @endif
-                                    <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                        name="communication" id="communication-{{ $rating }}" value="{{ $rating }}"
-                                        type="radio"
-                                        {{ $rating === 0 ? 'disabled checked' : ($rating == $post->communication ? 'checked' : NULL) }}>
                                     @endfor
                             </div>
                         </div>
@@ -336,12 +440,10 @@
                                 @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                     <label aria-label="{{ $rating }} star" class="rating__label"
                                         for="concept-{{ $rating }}">
-                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                        <i class="fa fa-star" @if($post->concept >= $rating)style="color: orange; "
+                                            @else style="color:#ddd;" @endif></i>
                                     </label>
                                     @endif
-                                    <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                        name="concept" id="concept-{{ $rating }}" value="{{ $rating }}" type="radio"
-                                        {{ $rating === 0 ? 'disabled checked' : ($rating == $post->concept ? 'checked' : NULL) }}>
                                     @endfor
                             </div>
                         </div>
@@ -367,12 +469,10 @@
                         <div class="rating-group">
                             @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                 <label aria-label="{{ $rating }} star" class="rating__label" for="price-{{ $rating }}">
-                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                    <i class="fa fa-star" @if($post->price >= $rating)style="color: orange; " @else
+                                        style="color:#ddd;" @endif></i>
                                 </label>
                                 @endif
-                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                    name="price" id="price-{{ $rating }}" value="{{ $rating }}" type="radio"
-                                    {{ $rating === 0 ? 'disabled checked' : ($rating == $post->price ? 'checked' : NULL) }}>
                                 @endfor
                         </div>
                     </div>
@@ -386,12 +486,10 @@
                         <div class="rating-group">
                             @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                 <label aria-label="{{ $rating }} star" class="rating__label" for="speed-{{ $rating }}">
-                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                    <i class="fa fa-star" @if($post->speed >= $rating)style="color: orange; " @else
+                                        style="color:#ddd;" @endif></i>
                                 </label>
                                 @endif
-                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                    name="speed" id="speed-{{ $rating }}" value="{{ $rating }}" type="radio"
-                                    {{ $rating === 0 ? 'disabled checked' : ($rating == $post->speed ? 'checked' : NULL) }}>
                                 @endfor
                         </div>
                     </div>
@@ -406,12 +504,10 @@
                             @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                 <label aria-label="{{ $rating }} star" class="rating__label"
                                     for="quality-{{ $rating }}">
-                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                    <i class="fa fa-star" @if($post->quality >= $rating)style="color: orange; " @else
+                                        style="color:#ddd;" @endif></i>
                                 </label>
                                 @endif
-                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                    name="quality" id="quality-{{ $rating }}" value="{{ $rating }}" type="radio"
-                                    {{ $rating === 0 ? 'disabled checked' : ($rating == $post->quality ? 'checked' : NULL) }}>
                                 @endfor
                         </div>
                     </div>
@@ -427,13 +523,11 @@
                             @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                 <label aria-label="{{ $rating }} star" class="rating__label"
                                     for="professionalism-{{ $rating }}">
-                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                    <i class="fa fa-star" @if($post->professionalism >= $rating)style="color: orange; "
+                                        @else style="color:#ddd;" @endif></i>
                                 </label>
                                 @endif
-                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                    name="professionalism" id="professionalism-{{ $rating }}" value="{{ $rating }}"
-                                    type="radio"
-                                    {{ $rating === 0 ? 'disabled checked' : ($rating == $post->professionalism ? 'checked' : NULL) }}>
+
                                 @endfor
                         </div>
                     </div>
@@ -449,13 +543,10 @@
                             @for($rating = 0; $rating <= 5; $rating++) @if($rating> 0)
                                 <label aria-label="{{ $rating }} star" class="rating__label"
                                     for="communication-{{ $rating }}">
-                                    <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                    <i class="fa fa-star" @if($post->communication >= $rating)style="color: orange; "
+                                        @else style="color:#ddd;" @endif></i>
                                 </label>
                                 @endif
-                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
-                                    name="communication" id="communication-{{ $rating }}" value="{{ $rating }}"
-                                    type="radio"
-                                    {{ $rating === 0 ? 'disabled checked' : ($rating == $post->communication ? 'checked' : NULL) }}>
                                 @endfor
                         </div>
                     </div>
@@ -484,7 +575,7 @@
                                 <h2 class="loginregistertext">Login</h2>
                                 <div class="login-registerwrapper">
                                     <div class="login-register-form">
-                                        <form onsubmit="return false" action="{{ route('login') }}" method="post">
+                                        <form action="{{ route('login') }}" method="post">
                                             @csrf
                                             <input id="post_id" name="post_id" value="{{ $post->id }}" type="hidden" />
                                             <div class="artsinput">
@@ -526,8 +617,39 @@
 @endsection
 @push('scripts')
 <script type="text/javascript">
+    $(document).ready(function() {
+        // $('.owl-prev').hide();
+        // $('.owl-next').click(function() {
+        //     $('.owl-prev').show();
+        // });
+        // $('.owl-prev').click(function() {
+        //     $('.owl-prev').show();
+        // });
+
+    });
     var loggedIn = {{ auth()->check() ? 'true' : 'false' }};
 
+    function btnYellow(t){
+        //comment section
+        $("#desBtn").removeClass('active');
+        $("#reviewBtn").removeClass('active');
+        $("#commentBtn").removeClass('active');
+        $(t).addClass('active');
+    }
+    function btndarkYellow(t){
+        //review
+        $("#desBtn").removeClass('active');
+        $("#reviewBtn").removeClass('active');
+        $("#commentBtn").removeClass('active');
+        $(t).addClass('active');
+    }
+    function btnGreen(t){
+        //description
+        $("#desBtn").removeClass('active');
+        $("#reviewBtn").removeClass('active');
+        $("#commentBtn").removeClass('active');
+        $(t).addClass('active');
+    }
     function likes(){
 
         if (loggedIn){
@@ -597,11 +719,41 @@
                 {
                     if (response.status === true) {
                         if(parseInt(response.is_follow) === 1){
-                            $(t).find(".setDrawnBy").html("Following");
-                            $(t).find(".setCommisionedBy").html("Following");
+                            var drawnBy =  $(t).find(".setDrawnBy");
+                            var commissionedBy = $(t).find(".setCommisionedBy");
+                            if(drawnBy.length){
+                                $(".setDrawnBy").html("Following");
+                                $(".setDrawnBy").addClass('text-dark');
+                            }
+                            if(commissionedBy.length){
+                                $(".setCommisionedBy").html("Following");
+                                $(".setCommisionedBy").addClass('text-dark');
+                            }
+                            // if($(t).find(".setDrawnBy")){
+                            //     $(".setDrawnBy").html("Following");
+                            //     $(".setDrawnBy").addClass('text-dark');
+                            // }
+                            // if($(t).find(".setCommisionedBy")){
+                            //     $(".setCommisionedBy").html("Following");
+                            //     $(".setCommisionedBy").addClass('text-dark');
+                            // }
+                            // $(t).find(".setDrawnBy").html("Following");
+                            // $(t).find(".setDrawnBy").addClass('text-dark');
+                            // $(t).find(".setCommisionedBy").html("Following");
+                            // $(t).find(".setCommisionedBy").addClass('text-dark');
                         }else{
-                            $(t).find(".setDrawnBy").html("Follow");
-                            $(t).find(".setCommisionedBy").html("Follow");
+                            var drawnBy =  $(t).find(".setDrawnBy");
+                            var commissionedBy = $(t).find(".setCommisionedBy");
+                            if(drawnBy.length){
+                                $(".setDrawnBy").html("Follow");
+                                $(".setDrawnBy").removeClass('text-dark');
+                                $(".setDrawnBy").addClass('text-light');
+                            }
+                            if(commissionedBy.length){
+                                $(".setCommisionedBy").html("Follow");
+                                $(".setCommisionedBy").removeClass('text-dark');
+                                $(".setCommisionedBy").addClass('text-light');
+                            }
                         }
                         toastr.success(response.message, 'Success', toastrOptions);
                     } else {
@@ -637,7 +789,6 @@
         if(!loggedIn){
             login();
         }else{
-
             var token = "{{csrf_token()}}";
             var post_id = $('#comment_post_id').val();
             var comment_id = $('#comment_id').val();

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static find( $id )
@@ -14,7 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Post extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
+
+    protected static $logAttributes = ['*'];
 
     // user_type : 1 = artist, 2=Commissioner
     // artist_type : 1=personal, 2=Commissioned
@@ -25,7 +28,7 @@ class Post extends Model
         'title', 'description', 'keywords', 'cover_image',
         'price', 'speed', 'quality', 'communication',
         'transaction', 'concept', 'understanding', //'communication',
-        'want_work_again', 'status', 'maturity_rating', 'type_id'
+        'want_work_again', 'status', 'maturity_rating', 'type_id', 'professionalism'
     ];
 
     protected $appends = [

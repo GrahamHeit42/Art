@@ -23,8 +23,8 @@ class HomeController extends Controller
     {
         // dd($request);
         // DB::enableQueryLog();
-        $mediums = Medium::whereStatus(1)->get();
-        $subjects = Subject::whereStatus(1)->get();
+        $mediums = Medium::whereStatus(1)->orderby('title', 'asc')->get();
+        $subjects = Subject::whereStatus(1)->orderby('title', 'asc')->get();
         // $posts = Post::latest();
         $posts = new Post();
         view()->share('page_title', 'Home');

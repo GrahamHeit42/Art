@@ -38,7 +38,7 @@ class PostController extends Controller
         view()->share('page_title', 'Create Post');
         $subjects = Subject::whereStatus(1)->get();
         $mediums = Medium::whereStatus(1)->get();
-        $usernames = Username::all();
+        $usernames = Username::where('user_id', '!=', auth()->user()->id)->get();
 
         return view('frontend.posts.create', compact('type', 'subjects', 'mediums', 'usernames'));
     }
@@ -53,9 +53,32 @@ class PostController extends Controller
                 'title' => 'required_if:id,null',
                 'description' => 'required_if:id,null',
             ]);
-            // dd($request);
+            // dd($request->post('type'));
+            // if($request->)
+            if ($request->post('type') === config('constants.Commissioner')) {
+                if ($request->post("price") || $request->post("speed") || $request->post("communication") || $request->post("quality") || $request->post("professionalism")) {
+                    $request->validate([
+                        'price' => 'required',
+                        'speed' => 'required',
+                        'communication' => 'required',
+                        'quality' => 'required',
+                        'professionalism' => 'required',
+                    ]);
+                }
+            }
+            if ($request->post('type') === config('constants.Commisioned')) {
+                if ($request->post("transaction") || $request->post("speed") || $request->post("communication") || $request->post("concept")) {
+                    $request->validate([
+                        'transaction' => 'required',
+                        'speed' => 'required',
+                        'communication' => 'required',
+                        'concept' => 'required',
+                    ]);
+                }
+            }
             $postId = $request->post('id') ?? NULL;
             $postType = $request->post('type');
+
             if (is_null($postId)) {
                 $request->validate([
                     'images' => 'required',
@@ -111,7 +134,13 @@ class PostController extends Controller
                 $commissionedBy = NULL;
             }
             if (!empty($postId)) {
-                $postData = $request->only('subject_id', 'medium_id', 'keywords');
+                if ($request->post('type') === config('constants.Commissioner')) {
+                    $postData = $request->only('subject_id', 'medium_id', 'keywords', 'price', 'speed', 'communication', 'quality', 'professionalism');
+                } elseif ($request->post('type') === config('constants.Commisioned')) {
+                    $postData = $request->only('subject_id', 'medium_id', 'keywords', 'transaction', 'speed', 'communication', 'concept');
+                } else {
+                    $postData = $request->only('subject_id', 'medium_id', 'keywords');
+                }
                 $postData['keywords'] = implode(',', $request->post('keywords', [])) ?? NULL;
             } else {
                 $postData = $request->post();
@@ -121,8 +150,16 @@ class PostController extends Controller
                 $postData['keywords'] = implode(',', $request->post('keywords', [])) ?? NULL;
                 $postData['keywords'] = str_replace('#', '', $postData['keywords']);
                 $postData['status'] = 1;
-            }
 
+                if ($postType === config('constants.Commissioner')) {
+                    $postData['type_id'] = config('constants.commissioner');
+                } else if ($postType === config('constants.Commisioned')) {
+                    $postData['type_id'] = config('constants.commissioned');
+                } else if ($postType === config('constants.Artist')) {
+                    $postData['type_id'] = config('constants.artist');
+                }
+            }
+            // dd($postData);
             if (isset($request->work_again)) {
                 $postData['want_work_again'] = $request->work_again;
             }
@@ -151,7 +188,7 @@ class PostController extends Controller
                 $path = 'storage/posts/cover_images/' . $year . '/' . auth()->id() . '/' . $imageName;
                 $postData['cover_image'] = $path;
             }
-
+            // dd($request->file('images'));
             $post = Post::updateOrCreate(
                 ['id' => $postId],
                 $postData
@@ -223,14 +260,11 @@ class PostController extends Controller
         $post->likes = Like::where('post_id', $id)->count() ?? 0;
 
         $getUsernames = Username::select('user_id')->where('id', $post->drawn_by)->first();
-        if (empty($post->commisioned_by)) {
-            $post->type = config('constants.Artist');
-        } else if ($post->user_id == $getUsernames->user_id) {
+        if ($post->type_id == 2) {
             $post->type = config('constants.Commisioned');
         } else {
             $post->type = config('constants.Commissioner');
         }
-
         return view('frontend.posts.show', compact('post'));
     }
 
@@ -240,16 +274,25 @@ class PostController extends Controller
 
         $subjects = Subject::whereStatus(1)->get();
         $mediums = Medium::whereStatus(1)->get();
-        $usernames = Username::all();
+        $usernames = Username::where('user_id', '!=', auth()->user()->id)->get();
         $post = Post::with('images', 'drawnBy', 'commisionedBy')->find($id);
         $getUsernames = Username::select('user_id')->where('id', $post->drawn_by)->first();
-        if (empty($post->commisioned_by)) {
+        // if (empty($post->commisioned_by)) {
+        //     $type = config('constants.Artist');
+        // } else if ($post->user_id == $getUsernames->user_id) {
+        //     $type = config('constants.Commisioned');
+        // } else {
+        //     $type = config('constants.Commissioner');
+        // }
+
+        if ($post->type_id == 1) {
             $type = config('constants.Artist');
-        } else if ($post->user_id == $getUsernames->user_id) {
+        } elseif ($post->type_id == 2) {
             $type = config('constants.Commisioned');
         } else {
             $type = config('constants.Commissioner');
         }
+        // dd($post->commisioned_by);
 
         return view('frontend.posts.edit', compact('post', 'type', 'subjects', 'mediums', 'usernames'));
     }
@@ -316,8 +359,7 @@ class PostController extends Controller
 
         if (Follow::where('user_id', $user_id)->where('follow_user_id', $follow_user_id)->count() > 0) {
             $follow = Follow::where('user_id', $user_id)->where('follow_user_id', $follow_user_id)->delete();
-        }
-        else {
+        } else {
             $follow = Follow::create([
                 'user_id' => $user_id,
                 'follow_user_id' => $follow_user_id,
@@ -349,7 +391,7 @@ class PostController extends Controller
             ]);
             $sorting_images = json_decode($request->post('sorting_images'), true);
             $save = false;
-            foreach($sorting_images as $image) {
+            foreach ($sorting_images as $image) {
                 $save = Image::find($image['image_id'])->update(['display_order' => $image['order_id']]);
             }
             if ($save) {

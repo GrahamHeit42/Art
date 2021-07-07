@@ -108,7 +108,9 @@
                         @foreach ($post->images as $key => $image)
                             <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 images-row" data-id="{{ $image->id }}">
                                 <div class="drop-zone" style="position: relative;">
-                                    <span class="removeImage" onclick="removeImage({{ $image->id }})">X</span>
+                                    @if(count($post->images) != 1)
+                                        <span class="removeImage" onclick="removeImage({{ $image->id }})">X</span>
+                                    @endif
                                     <img src="{{ asset($image->image_path) }}" style="height: 100%; width: 100%;"/>
                                 </div>
                             </div>
@@ -121,7 +123,7 @@
                                     <span class="drop-zone__prompt">
                                         <button class="btn btn-info" type="button">Upload</button>
                                     </span>
-                                    <span style="display: none;" class="removeImage" onclick="removeImage(this)">X</span>
+                                    <span style="display: none;" class="removeImage" onclick="removeImageFile({{ $remainImage }})">X</span>
                                     <input type="file" name="images[{{ $remainImage }}]" id="post-images-{{ $remainImage }}" class="drop-zone__input">
                                 </div>
                             </div>
@@ -208,7 +210,7 @@
                                     @endif
                                 </select>
                             </div>
-
+                            @if($type !== config('constants.Artist'))
                             <div class="review">
                                 <h3>Review : &nbsp;</h3>
                                 <p>( Optional )</p>
@@ -219,7 +221,7 @@
                                     <span>Very Good</span>
                                 </div>
 
-                                @if($type === 'artist')
+                                @if($type === config('constants.Commisioned'))
                                 <div class="rateing">
                                     <h5>Transaction
                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
@@ -311,7 +313,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($type === 'artist')
+                                @if($type === config('constants.Commisioned'))
                                 <div class="rateing">
                                     <h5>Prepertion / Concept
                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
@@ -358,7 +360,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--  <div class="rateing">
+                                 <div class="rateing">
                                     <h5>Professionalism
                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
                                             data-placement="top" title="Professionalism"></i>
@@ -372,17 +374,18 @@
                                 <i class="rating__icon rating__icon--star fa fa-star"></i>
                                 </label>
                                 @endif
-                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
+                                                <input class="rating__input {{ $rating === 0 ? 'rating__input--none' : '' }}"
                                     name="professionalism" id="professionalism-{{ $rating }}" value="{{ $rating }}"
                                     type="radio"
                                     {{ $rating === 0 ? 'disabled checked' : ($rating == $post->professionalism ? 'checked' : NULL) }}>
                                 @endfor
-                            </div>
-                        </div>
-                    </div> --}}
+                                        </div>
+                                    </div>
+                                 </div>
                     @endif
 
                 </div>
+                @endif
                 @if($type !== config('constants.Artist'))
                 <div class="feedback">
                     <h5>Would you Work with <span id="setUser"></span> again?</h5>
@@ -492,7 +495,7 @@
         @if($post->price != 0 || $post->speed != 0 || $post->quality != 0 || $post->communication != 0 || $post->transaction != 0 || $post->concept != 0 || $post->understanding != 0)
             $('#post-images').attr('disabled','disabled');
             // $('.spanclose').hide();
-            $("#add-more").css({"background-color":"gray","border-color":"gray"});
+            // $("#add-more").css({"background-color":"gray","border-color":"gray"});
             $('#username').attr('disabled','disabled');
             $('#title').attr('disabled','disabled');
             $('#description').attr('disabled','disabled');
@@ -696,7 +699,9 @@
             success: function(response) {
                 // console.log(response.message);
                 if(response.status === true) {
+                   
                     toastr.success('Success', response.message, toastrOptions);
+                    // window.location.reload();
                 }
                 else {
                     toastr.error('Error', response.message, toastrOptions);
@@ -708,19 +713,6 @@
             }
         });
     }
-
-    // set username
-    // @php
-    //     $username = "";
-    //     if($type == config('constants.Commisioned')){
-    //     $username = $post->commisioned_by;
-    // }else if($type == config('constants.Commissioner')){
-    //     $username = $post->drawn_by;
-    // }
-    // @endphp
-    // var username_id = {!! json_encode($username) !!};
-    // alert(username_id);
-    // $('[name=username]').val(username_id);
 
     //end set username
     //set keywords
@@ -806,6 +798,17 @@
         });
     }
 
+    function removeImageFile(imageId) {
+			var post = $("#post-images-"+imageId);
+			post.val('');
+			$("#post-images-"+imageId).closest('.removeImage').style.display = 'none';
+		}
+		function removeImageFrontEnd(dropZoneElement){
+			dropZoneElement.querySelector(".removeImage").style.display = 'none';
+			dropZoneElement.querySelector(".drop-zone__prompt").style.display = '';
+			let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+			dropZoneElement.removeChild(thumbnailElement);
+		}
     // function funRemoveImage(t) {
     //     --uploadImagesCount;
 
@@ -1009,7 +1012,14 @@
 		const dropZoneElement = inputElement.closest(".drop-zone");
 
 		dropZoneElement.addEventListener("click", (e) => {
-			inputElement.click();
+            if (!e.target.classList.contains('removeImage')) {
+        		// your code
+				inputElement.click();
+			}
+            else{
+                removeImageFrontEnd(dropZoneElement);
+            }
+			// inputElement.click();
 		});
 
 		inputElement.addEventListener("change", (e) => {
